@@ -802,6 +802,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
+
     private void SetData() {
         if (objMemberMaster != null) {
             if (objMemberMaster.getHomeNumberStreet() != null) {
