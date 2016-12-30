@@ -206,6 +206,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     }
                 }
 
+
                 @Override
                 public void afterTextChanged(Editable s) {
                     if(!s.toString().startsWith("+91",0)){
