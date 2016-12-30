@@ -171,6 +171,26 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 }
             });
 
+            etPhone1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if(hasFocus)
+                    {
+                        etPhone1.setSelection(etPhone1.getText().toString().length());
+                    }
+                }
+            });
+
+            etPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if(hasFocus)
+                    {
+                        etPhone.setSelection(etPhone.getText().toString().length());
+                    }
+                }
+            });
+
             etPhone.addTextChangedListener(new TextWatcher() {
                 String mobile;
                 @Override
@@ -180,7 +200,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if (etPhone.getText().toString().length() < 4) {
+                    if (etPhone.length() < 4) {
                         etPhone.setText("+91 ");
                         etPhone.setSelection(etPhone.getText().toString().length());
                     }
@@ -188,7 +208,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    if(!s.toString().startsWith("+91 ",0)){
+                    if(!s.toString().startsWith("+91",0)){
                         etPhone.setText(mobile);
                         Selection.setSelection(etPhone.getText(), 4);
                     }
@@ -204,7 +224,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if (etPhone1.getText().toString().length() < 4) {
+                    if (etPhone1.length() < 4) {
                         etPhone1.setText("+91 ");
                         etPhone1.setSelection(etPhone1.getText().toString().length());
                     }
@@ -212,7 +232,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    if(!s.toString().startsWith("+91 ",0)){
+                    if(!s.toString().startsWith("+91",0)){
                         etPhone.setText(mobile);
                         Selection.setSelection(etPhone1.getText(), 4);
                     }

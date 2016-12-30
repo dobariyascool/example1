@@ -113,6 +113,26 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
             }
         }
 
+        etMobile.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus)
+                {
+                    etMobile.setSelection(etMobile.getText().toString().length());
+                }
+            }
+        });
+
+        etMobile1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus)
+                {
+                    etMobile1.setSelection(etMobile1.getText().toString().length());
+                }
+            }
+        });
+
         etMobile.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -158,7 +178,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(!s.toString().startsWith("+91 ",0)){
+                if(!s.toString().startsWith("+91",0)){
                     etMobile.setText(mobile);
                     Selection.setSelection(etMobile.getText(), 4);
                 }
@@ -174,7 +194,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (etMobile1.getText().toString().length() < 4) {
+                if (etMobile1.length() < 4) {
                     etMobile1.setText("+91 ");
                     etMobile1.setSelection(etMobile1.getText().toString().length());
                 }
@@ -182,7 +202,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(!s.toString().startsWith("+91 ",0)){
+                if(!s.toString().startsWith("+91",0)){
                     etMobile1.setText(mobile);
                     Selection.setSelection(etMobile1.getText(), 4);
                 }
