@@ -158,7 +158,7 @@ public class AdvertisementListFragment extends Fragment implements AdvertiseJSON
         }
         progressDialog.show(getActivity().getSupportFragmentManager(), "");
         AdvertiseJSONParser objAdvertiseJSONParser = new AdvertiseJSONParser();
-        objAdvertiseJSONParser.SelectAllAdvertiseMasterPageWise(String.valueOf(CurrentPage), String.valueOf(10), getActivity(), this);
+        objAdvertiseJSONParser.SelectAllAdvertiseMasterPageWise(String.valueOf(CurrentPage), String.valueOf(25), getActivity(), this);
     }
 
     private void UpdateAdvertiseMaster(AdvertiseMaster objAdvertiseMaster, boolean isEnable) {

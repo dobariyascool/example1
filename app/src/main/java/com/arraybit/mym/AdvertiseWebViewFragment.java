@@ -122,7 +122,7 @@ public class AdvertiseWebViewFragment extends Fragment {
             menu.findItem(R.id.accept).setVisible(false);
             menu.findItem(R.id.cancle).setVisible(false);
         } else if (getActivity() instanceof HomeActivity) {
-            menu.findItem(R.id.action_search).setVisible(false);
+//            menu.findItem(R.id.action_search).setVisible(false);
             menu.findItem(R.id.memberRequest).setVisible(false);
             menu.findItem(R.id.notification).setVisible(false);
             menu.findItem(R.id.memberFilter).setVisible(false);

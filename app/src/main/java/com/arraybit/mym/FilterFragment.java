@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.Spinner;
 
 import com.arraybit.global.Globals;
@@ -20,6 +21,9 @@ import com.arraybit.global.Service;
 import com.arraybit.parser.MemberJSONParser;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.EditText;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -143,7 +147,7 @@ public class FilterFragment extends Fragment implements View.OnClickListener, Me
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.action_search).setVisible(false);
+//        menu.findItem(R.id.action_search).setVisible(false);
         menu.findItem(R.id.memberRequest).setVisible(false);
         menu.findItem(R.id.notification).setVisible(false);
         menu.findItem(R.id.memberFilter).setVisible(false);
@@ -157,7 +161,7 @@ public class FilterFragment extends Fragment implements View.OnClickListener, Me
         } else if (v.getId() == R.id.actQualification) {
             actQualification.showDropDown();
         } else if (v.getId() == R.id.btnClear) {
-            isFilter = false;
+//            isFilter = false;
             actQualification.setText("");
             actDesignation.setText("");
             etName.setText("");
@@ -212,13 +216,53 @@ public class FilterFragment extends Fragment implements View.OnClickListener, Me
     }
 
     private void RequestProfessions() {
-        MemberJSONParser objMemeberJSONParser = new MemberJSONParser();
-        objMemeberJSONParser.SelectAllProfession(getActivity(), this);
+//        MemberJSONParser objMemeberJSONParser = new MemberJSONParser();
+//        objMemeberJSONParser.SelectAllProfession(getActivity(), this);
+        ArrayList<String> lstStrings = new ArrayList<>();
+
+        try {
+            JSONObject jsonObject = Service.HttpGetService(Service.Url + "SelectAllProfession");
+            if (jsonObject != null) {
+                JSONArray jsonArray = jsonObject.getJSONArray("SelectAllProfessionResult");
+                if (jsonArray != null) {
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        lstStrings.add(jsonArray.getString(i));
+                    }
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.row_spinner, lstStrings);
+                    actDesignation.setAdapter(adapter);
+                }
+            }
+        } catch (Exception e) {
+
+        }
     }
 
     private void RequestQualification() {
-        MemberJSONParser objMemeberJSONParser = new MemberJSONParser();
-        objMemeberJSONParser.SelectAllQualification(getActivity(), this);
+//        MemberJSONParser objMemeberJSONParser = new MemberJSONParser();
+//        objMemeberJSONParser.SelectAllQualification(getActivity(), this);
+        ArrayList<String> lstStrings = new ArrayList<>();
+
+        try {
+            JSONObject jsonObject = Service.HttpGetService(Service.Url + "SelectAllQualification");
+            if (jsonObject != null) {
+                JSONArray jsonArray = jsonObject.getJSONArray("SelectAllQualificationResult");
+                if (jsonArray != null) {
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        lstStrings.add(jsonArray.getString(i));
+                    }
+                    if (lstStrings != null && lstStrings.size() > 0) {
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.row_spinner, lstStrings);
+//                        alString = lstStrings;
+//                        alStringFilter = new ArrayList<>();
+                        actQualification.setAdapter(adapter);
+//                        actQualification.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            // Log exception
+
+        }
     }
 
     public interface SelectFilterListerner {

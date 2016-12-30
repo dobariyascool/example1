@@ -70,7 +70,8 @@ import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class HomeActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, NavigationView.OnNavigationItemSelectedListener,
+//SearchView.OnQueryTextListener,
+public class HomeActivity extends AppCompatActivity implements  NavigationView.OnNavigationItemSelectedListener,
         MemberListAdapter.OnCardClickListener, View.OnClickListener, MemberJSONParser.MembersListRequestListener, MemberJSONParser.MemberRequestListener,
         AdvertiseJSONParser.AdvretiseRequestListener, FilterFragment.SelectFilterListerner, ConfirmDialog.ConfirmationResponseListener {
 
@@ -91,7 +92,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     String searchText, isAdmin = "";
     boolean isAdvertise = true, isValid = true, isFilter, isLogout = false, isPrint = false, isSave = false, isDelete = false;
     ProgressDialog progressDialog = new ProgressDialog();
-    int CurrentPage = 1, CurrentPageAdvertise = 1, position;
+    int CurrentPage = 1, CurrentPageAdvertise = 1, position, pagesize=25;
     MemberMaster objMemberMaster, objMember;
     Toast toast = null;
     Timer timer = new Timer();
@@ -182,7 +183,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                     if (current_page > CurrentPage) {
                         CurrentPage = current_page;
                         if (Service.CheckNet(HomeActivity.this)) {
-                            RequestMemberMaster(10);
+                            RequestMemberMaster(pagesize);
                         } else {
                             Toast.makeText(HomeActivity.this, getResources().getString(R.string.MsgCheckConnection), Toast.LENGTH_LONG).show();
                         }
@@ -199,7 +200,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                     if (objMemberMaster.getIsApproved()) {
                         isValid = true;
                         if (Service.CheckNet(HomeActivity.this)) {
-                            RequestMemberMaster(10);
+                            RequestMemberMaster(pagesize);
                         } else {
                             Toast.makeText(HomeActivity.this, getResources().getString(R.string.MsgCheckConnection), Toast.LENGTH_LONG).show();
                         }
@@ -235,33 +236,33 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_admin_home, menu);
-        searchItem = menu.findItem(R.id.action_search);
-        final SearchView mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        mSearchView.setInputType(InputType.TYPE_CLASS_TEXT);
-        mSearchView.setMaxWidth(displayMetrics.widthPixels);
-        mSearchView.setOnQueryTextListener(this);
-        searchText = mSearchView.getQuery().toString();
-
-        MenuItemCompat.setOnActionExpandListener(searchItem,
-                new MenuItemCompat.OnActionExpandListener() {
-                    @Override
-                    public boolean onMenuItemActionCollapse(MenuItem item) {
-                        // Do something when collapsed
-
-                        if (lstMemberList != null && lstMemberList.size() != 0) {
-                            adapter.SetSearchFilter(lstMemberList);
-                            Globals.HideKeyBoard(HomeActivity.this, MenuItemCompat.getActionView(searchItem));
-                        }
-
-                        return true; // Return true to collapse action view
-                    }
-
-                    @Override
-                    public boolean onMenuItemActionExpand(MenuItem item) {
-                        // Do something when expanded
-                        return true; // Return true to expand action view
-                    }
-                });
+//        searchItem = menu.findItem(R.id.action_search);
+//        final SearchView mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+//        mSearchView.setInputType(InputType.TYPE_CLASS_TEXT);
+//        mSearchView.setMaxWidth(displayMetrics.widthPixels);
+//        mSearchView.setOnQueryTextListener(this);
+//        searchText = mSearchView.getQuery().toString();
+//
+//        MenuItemCompat.setOnActionExpandListener(searchItem,
+//                new MenuItemCompat.OnActionExpandListener() {
+//                    @Override
+//                    public boolean onMenuItemActionCollapse(MenuItem item) {
+//                        // Do something when collapsed
+//
+//                        if (lstMemberList != null && lstMemberList.size() != 0) {
+//                            adapter.SetSearchFilter(lstMemberList);
+//                            Globals.HideKeyBoard(HomeActivity.this, MenuItemCompat.getActionView(searchItem));
+//                        }
+//
+//                        return true; // Return true to collapse action view
+//                    }
+//
+//                    @Override
+//                    public boolean onMenuItemActionExpand(MenuItem item) {
+//                        // Do something when expanded
+//                        return true; // Return true to expand action view
+//                    }
+//                });
         return true;
     }
 
@@ -269,12 +270,12 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
     public boolean onPrepareOptionsMenu(Menu menu) {
 
         if (Globals.memberType.equals(Globals.MemberType.Admin.getMemberType())) {
-            menu.findItem(R.id.action_search).setVisible(true);
+//            menu.findItem(R.id.action_search).setVisible(true);
             menu.findItem(R.id.memberRequest).setVisible(true);
             menu.findItem(R.id.notification).setVisible(true);
             menu.findItem(R.id.memberFilter).setVisible(true);
         } else {
-            menu.findItem(R.id.action_search).setVisible(true);
+//            menu.findItem(R.id.action_search).setVisible(true);
             menu.findItem(R.id.memberRequest).setVisible(false);
             menu.findItem(R.id.notification).setVisible(true);
             menu.findItem(R.id.memberFilter).setVisible(true);
@@ -296,7 +297,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
         } else if (item.getItemId() == R.id.notification) {
             Intent intent = new Intent(HomeActivity.this, NotificationActivity.class);
-            startActivityForResult(intent, 130);
+            startActivityForResult(intent, 120);
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
         } else if (item.getItemId() == R.id.memberFilter) {
             FilterFragment objFilterFragment = new FilterFragment();
@@ -331,7 +332,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         } else if (item.getItemId() == R.id.nav_notification) {
             Intent intent = new Intent(HomeActivity.this, NotificationActivity.class);
             drawer.closeDrawer(navigationView);
-            startActivityForResult(intent, 130);
+            startActivityForResult(intent, 120);
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
         } else if (item.getItemId() == R.id.nav_my_account) {
             Intent intent = new Intent(HomeActivity.this, DetailActivity.class);
@@ -342,7 +343,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         } else if (item.getItemId() == R.id.nav_advertisement) {
             Intent intent = new Intent(HomeActivity.this, AdvertisementActivity.class);
             drawer.closeDrawer(navigationView);
-            startActivityForResult(intent, 130);
+            startActivityForResult(intent, 120);
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
         } else if (item.getItemId() == R.id.nav_exit) {
             System.exit(0);
@@ -369,12 +370,12 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
             if (resultCode == RESULT_OK && requestCode == 130) {
                 CurrentPage = 1;
                 lstMemberList = new ArrayList<>();
-                RequestMemberMaster(10);
+                RequestMemberMaster(pagesize);
             } else if (resultCode == RESULT_OK && requestCode == 110) {
                 CurrentPage = 1;
                 lstMemberList = new ArrayList<>();
                 SetUserName();
-                RequestMemberMaster(10);
+                RequestMemberMaster(pagesize);
             } else if (resultCode == RESULT_OK && requestCode == 1) {
                 Toast.makeText(HomeActivity.this, "Contact saved successfully.", Toast.LENGTH_SHORT).show();
             }
@@ -412,7 +413,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                     if (objMemberMaster.getIsApproved()) {
                         isValid = true;
                         if (Service.CheckNet(HomeActivity.this)) {
-                            RequestMemberMaster(10);
+                            RequestMemberMaster(pagesize);
                         } else {
                             Toast.makeText(HomeActivity.this, getResources().getString(R.string.MsgCheckConnection), Toast.LENGTH_LONG).show();
                         }
@@ -530,7 +531,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                 if (objMemberMaster.getIsApproved()) {
                     isValid = true;
                     if (Service.CheckNet(HomeActivity.this)) {
-                        RequestMemberMaster(10);
+                        RequestMemberMaster(25);
                     } else {
                         Toast.makeText(HomeActivity.this, getResources().getString(R.string.MsgCheckConnection), Toast.LENGTH_LONG).show();
                     }
@@ -608,7 +609,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
             this.qualification = "";
             this.designation = "";
             this.bloodGroup = "";
-            RequestMemberMaster(10);
+            RequestMemberMaster(pagesize);
         } else {
             this.name = name;
             this.designation = designation;
@@ -618,20 +619,20 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
         }
     }
 
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        if (lstMemberList != null && lstMemberList.size() != 0) {
-            searchText = newText;
-            final ArrayList<MemberMaster> filteredList = Filter(lstMemberList, newText);
-            adapter.SetSearchFilter(filteredList);
-        }
-        return false;
-    }
+//    @Override
+//    public boolean onQueryTextSubmit(String query) {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean onQueryTextChange(String newText) {
+//        if (lstMemberList != null && lstMemberList.size() != 0) {
+//            searchText = newText;
+//            final ArrayList<MemberMaster> filteredList = Filter(lstMemberList, newText);
+//            adapter.SetSearchFilter(filteredList);
+//        }
+//        return false;
+//    }
 
     @Override
     public void onBackPressed() {
@@ -642,15 +643,15 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
             } else if (getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName() != null
                     && getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName().equals("Filter")) {
                 getSupportFragmentManager().popBackStack("Filter", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                if (!FilterFragment.isFilter) {
-                    CurrentPage = 1;
-                    name = "";
-                    qualification = "";
-                    designation = "";
-                    bloodGroup = "";
-                    lstMemberList = new ArrayList<>();
-                    RequestMemberMaster(10);
-                }
+//                if (!FilterFragment.isFilter) {
+//                    CurrentPage = 1;
+//                    name = "";
+//                    qualification = "";
+//                    designation = "";
+//                    bloodGroup = "";
+//                    lstMemberList = new ArrayList<>();
+//                    RequestMemberMaster(pagesize);
+//                }
             }
         } else {
             if (FilterFragment.isFilter) {
@@ -661,7 +662,7 @@ public class HomeActivity extends AppCompatActivity implements SearchView.OnQuer
                 designation = "";
                 bloodGroup = "";
                 lstMemberList = new ArrayList<>();
-                RequestMemberMaster(10);
+                RequestMemberMaster(pagesize);
             } else if (!isValid) {
                 Intent intent = new Intent(HomeActivity.this, SignInActivity.class);
                 Globals.ClearUserPreference(HomeActivity.this);

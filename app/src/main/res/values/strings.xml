@@ -15,7 +15,7 @@
     <string name="MsgNoRecord">There is no record.</string>
     <string name="MsgSelectFail">Failed to select record</string>
     <string name="retry">Retry</string>
-    <string name="title_activity_home">Home</string>
+    <string name="title_activity_home">SMYM</string>
     <string name="title_fragment_change_password">Change Password</string>
     <string name="title_activity_notification">Notification</string>
     <string name="title_activity_detail">User Detail</string>

@@ -206,7 +206,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     }
                 }
 
-
                 @Override
                 public void afterTextChanged(Editable s) {
                     if(!s.toString().startsWith("+91",0)){
@@ -387,15 +386,14 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 //        progressDialog.show(RegistrationActivity.this.getSupportFragmentManager(), "");
 
         try {
-
 //            MemberJSONParser objMemberJSONParser = new MemberJSONParser();
             MemberMasterNew objMemberMaster = new MemberMasterNew();
             objMemberMaster.setMemberName(etFirstName.getText().toString().trim() + " " + etLastName.getText().toString().trim());
             objMemberMaster.setEmail(etEmail.getText().toString().trim());
             objMemberMaster.setPassword(etPassword.getText().toString().trim());
-            objMemberMaster.setPhone1(etPhone.getText().toString().trim());
+            objMemberMaster.setPhone1(etPhone.getText().toString().substring(4));
             if (!etPhone1.getText().toString().isEmpty()) {
-                objMemberMaster.setPhone2(etPhone1.getText().toString().trim());
+                objMemberMaster.setPhone2(etPhone1.getText().toString().substring(4));
             }
             if (imageName != null && !imageName.equals("")) {
 //                strImageName = imageName.substring(0, imageName.lastIndexOf(".")) + "_" + simpleDateFormat.format(new Date()) + imageName.substring(imageName.lastIndexOf("."), imageName.length());

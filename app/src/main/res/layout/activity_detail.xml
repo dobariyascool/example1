@@ -107,6 +107,7 @@
                             android:layout_marginEnd="@dimen/control_SpecingNormal"
                             android:layout_marginStart="@dimen/control_SpecingNormal"
                             android:layout_marginTop="@dimen/control_SpecingTiny"
+                            android:visibility="gone"
                             android:orientation="horizontal">
 
                             <LinearLayout
@@ -121,7 +122,6 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:padding="@dimen/control_SpecingTiny"
-                                    android:text="9874562102"
                                     android:textColor="@color/navColor"
                                     android:textSize="16sp" />
 
@@ -163,6 +163,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/control_SpecingTiny"
                             android:layout_marginEnd="@dimen/control_SpecingNormal"
+                            android:visibility="gone"
                             android:layout_marginStart="@dimen/control_SpecingNormal"
                             android:layout_marginTop="@dimen/control_SpecingTiny"
                             android:orientation="horizontal">
@@ -179,7 +180,6 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:padding="@dimen/control_SpecingTiny"
-                                    android:text="9874562102"
                                     android:textColor="@color/navColor"
                                     android:textSize="16sp" />
 
@@ -221,6 +221,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/control_SpecingTiny"
                             android:layout_marginEnd="@dimen/control_SpecingNormal"
+                            android:visibility="gone"
                             android:layout_marginStart="@dimen/control_SpecingNormal"
                             android:layout_marginTop="@dimen/control_SpecingTiny"
                             android:orientation="horizontal">
@@ -237,7 +238,6 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:padding="@dimen/control_SpecingTiny"
-                                    android:text="mym@gmail.com"
                                     android:textColor="@color/navColor"
                                     android:textSize="16sp" />
 
@@ -268,6 +268,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/control_SpecingTiny"
+                            android:visibility="gone"
                             android:layout_marginEnd="@dimen/control_SpecingNormal"
                             android:layout_marginStart="@dimen/control_SpecingNormal"
                             android:layout_marginTop="@dimen/control_SpecingTiny"
@@ -285,7 +286,6 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:padding="@dimen/control_SpecingTiny"
-                                    android:text="05/10/1994"
                                     android:textColor="@color/navColor"
                                     android:textSize="16sp" />
 
@@ -343,6 +343,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="@dimen/control_SpecingTiny"
                                 android:layout_marginEnd="@dimen/control_SpecingNormal"
+                                android:visibility="gone"
                                 android:layout_marginStart="@dimen/control_SpecingNormal"
                                 android:layout_marginTop="@dimen/control_SpecingTiny"
                                 android:orientation="horizontal">
@@ -378,6 +379,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="@dimen/control_SpecingTiny"
                                 android:layout_marginEnd="@dimen/control_SpecingNormal"
+                                android:visibility="gone"
                                 android:layout_marginStart="@dimen/control_SpecingNormal"
                                 android:layout_marginTop="@dimen/control_SpecingTiny"
                                 android:orientation="horizontal">
@@ -411,6 +413,7 @@
                                 android:id="@+id/llBloodGroup"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:visibility="gone"
                                 android:layout_marginBottom="@dimen/control_SpecingTiny"
                                 android:layout_marginEnd="@dimen/control_SpecingNormal"
                                 android:layout_marginStart="@dimen/control_SpecingNormal"
@@ -448,6 +451,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="@dimen/control_SpecingTiny"
                                 android:layout_marginEnd="@dimen/control_SpecingNormal"
+                                android:visibility="gone"
                                 android:layout_marginStart="@dimen/control_SpecingNormal"
                                 android:background="@drawable/card_line"
                                 android:layout_marginTop="@dimen/control_SpecingTiny"
@@ -1245,6 +1249,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="@dimen/control_SpecingTiny"
+                                android:visibility="gone"
                                 android:layout_marginEnd="@dimen/control_SpecingNormal"
                                 android:layout_marginStart="@dimen/control_SpecingNormal"
                                 android:layout_marginTop="@dimen/control_SpecingTiny"
@@ -1261,9 +1266,7 @@
                                         android:id="@+id/txtAddress"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:maxLines="2"
                                         android:padding="@dimen/control_SpecingTiny"
-                                        android:text="@string/address"
                                         android:textColor="@color/navColor"
                                         android:textSize="16sp" />
 
@@ -1295,6 +1298,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="@dimen/control_SpecingTiny"
                                 android:layout_marginEnd="@dimen/control_SpecingNormal"
+                                android:visibility="gone"
                                 android:layout_marginStart="@dimen/control_SpecingNormal"
                                 android:layout_marginTop="@dimen/control_SpecingTiny"
                                 android:orientation="horizontal">
@@ -1329,6 +1333,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="@dimen/control_SpecingTiny"
+                                android:visibility="gone"
                                 android:layout_marginEnd="@dimen/control_SpecingNormal"
                                 android:layout_marginStart="@dimen/control_SpecingNormal"
                                 android:layout_marginTop="@dimen/control_SpecingTiny"
@@ -1373,6 +1378,7 @@
                                 android:id="@+id/llOfficeNo"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:visibility="gone"
                                 android:layout_marginBottom="@dimen/control_SpecingTiny"
                                 android:layout_marginEnd="@dimen/control_SpecingNormal"
                                 android:layout_marginStart="@dimen/control_SpecingNormal"
@@ -1439,7 +1445,6 @@
         android:background="@color/primary_text"
         android:gravity="center"
         android:maxLines="2"
-        android:text="text"
         android:textColor="@color/offwhite"
         android:textSize="16dp"
         android:visibility="gone" />
