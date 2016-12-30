@@ -1,0 +1,50 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <item
+        android:id="@+id/cancle"
+        android:orderInCategory="300"
+        android:icon="@drawable/cancle"
+        android:title="@string/detail_decline"
+        android:visible="false"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/accept"
+        android:icon="@drawable/accept"
+        android:orderInCategory="400"
+        android:title="@string/detail_approve"
+        android:visible="false"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/saveContact"
+        android:orderInCategory="500"
+        android:title="@string/detail_save_contact"
+        android:visible="false"
+        android:icon="@drawable/account_save"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/share"
+        android:orderInCategory="600"
+        android:title="@string/detail_share"
+        android:visible="false"
+        android:icon="@drawable/share"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/changePassword"
+        android:orderInCategory="700"
+        android:title="@string/detail_change_password"
+        android:visible="false"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/close"
+        android:icon="@drawable/close_circle"
+        android:orderInCategory="300"
+        android:title="Close"
+        android:visible="false"
+        app:showAsAction="always" />
+</menu>

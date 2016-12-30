@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--<color name="colorPrimary">#388E3C</color>-->
+    <!--<color name="colorPrimaryLight">#4CAF50</color>-->
+    <!--<color name="colorPrimaryDark">#1B5E20</color>-->
+    <color name="colorPrimary">#1565C0</color>
+    <color name="colorPrimaryLight">#1E88E5</color>
+    <color name="colorPrimaryDark">#0D47A1</color>
+    <!--<color name="colorAccent">#FF4081</color>-->
+    <!--<color name="colorAccentLight">#FF4081</color>-->
+    <!--<color name="colorAccentDark">#FF4081</color> -->
+    <color name="colorAccent">#1565C0</color>
+    <color name="colorAccentLight">#1E88E5</color>
+    <color name="colorAccentDark">#0D47A1</color>
+    <color name="cardColor">#65062048</color>
+
+    <color name="card_enable">#509E9E9E</color>
+    <color name="card_enable1">#90EEEEEE</color>
+    <color name="card_disable">#30212121</color>
+    <color name="green">#4CAF50</color>
+    <color name="red">#F44336</color>
+
+    <color name="grey_400">#BDBDBD</color>
+    <color name="grey_500">#9E9E9E</color>
+    <color name="grey_800">#424242</color>
+    <color name="grey_700">#616161</color>
+    <color name="grey_600">#757575</color>
+    <color name="grey">#AFAFAF</color>
+    <color name="blue_grey">#263238</color>
+    <color name="error_text">#FF5252</color>
+    <color name="hint_text">#9E9E9E</color>
+
+    <color name="navColor">#212121</color>
+    <color name="rippleColor">#66999999</color>
+    <color name="navigationdrawerText">#616161</color>
+    <color name="offwhite">#EEEEEE</color>
+    <color name="offWhiteDark">#f1efef</color>
+    <color name="white">#ffffffff</color>
+    <color name="card_option_ripple_color">#55000000</color>
+    <color name="card_white">#fafafa</color>
+
+    <array name="colorArray">
+        <item name="first">#FFBB00</item>
+        <item name="second">#FF9800</item>
+        <item name="third">#FF6F00</item>
+    </array>
+
+    <color name="primary_text">#000000</color>
+    <color name="secondary_text">#727272</color>
+    <color name="background_img">#F5F5F5</color>
+
+    <color name="orange">#E65100</color>
+    <color name="orange_light">#F17826</color>
+    <color name="amber_500">#FFC107</color>
+    <color name="snackBarActionColor">#FFAB00</color>
+
+</resources>

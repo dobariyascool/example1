@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cvItem"
+    style="@style/CardViewTransparent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/llAd"
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                android:layout_height="50dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/ivNotificationImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" />
+
+                <com.rey.material.widget.TextView
+                    android:id="@+id/txtNotificationText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:background="@color/primary_text"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:textColor="@color/offwhite"
+                    android:textSize="@dimen/control_TextSmall"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/ivProfile1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.rey.material.widget.TextView
+                android:id="@+id/txtNotificationEnable"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:maxLines="1"
+                android:layout_marginStart="@dimen/control_SpecingSmall"
+                android:paddingBottom="@dimen/control_SpecingXS"
+                android:textColor="@color/green"
+                android:textSize="@dimen/control_TextSmall" />
+
+            <com.rey.material.widget.TextView
+                android:id="@+id/txtNotificationTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:maxLines="1"
+                android:layout_marginEnd="@dimen/control_SpecingSmall"
+                android:paddingBottom="@dimen/control_SpecingXS"
+                android:textColor="@color/grey_500"
+                android:textSize="@dimen/control_TextSmall" />
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llSignin"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    tools:context="com.arraybit.mym.SignInActivity">
+
+    <include
+        android:id="@+id/internetLayout"
+        layout="@layout/internet_layout"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/signInLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
+
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="112dp"
+            android:layout_height="112dp"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:src="@drawable/mandal"
+            tools:ignore="ContentDescription" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/control_SpecingTiny"
+            android:layout_marginEnd="@dimen/control_SpecingSmall"
+            android:layout_marginStart="@dimen/control_SpecingSmall">
+
+            <EditText
+                android:id="@+id/etUserName"
+                style="@style/EditTextForLogin"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/border"
+                android:focusableInTouchMode="true"
+                android:hint="@string/siEmail"
+                android:imeOptions="actionNext"
+                android:inputType="textWebEmailAddress"
+                android:maxLines="1"
+                android:paddingEnd="@dimen/control_SpecingNormal"
+                android:paddingStart="@dimen/control_SpecingNormal"
+                android:textColor="@color/offwhite"
+                android:textSize="15dp" />
+
+            <ImageView
+                android:id="@+id/ibClear"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:contentDescription="@string/clear_text"
+                android:padding="@dimen/control_SpecingSmall"
+                android:tint="#757575"
+                android:visibility="gone"
+                app:srcCompat="@mipmap/close" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/control_SpecingSmall"
+            android:layout_marginStart="@dimen/control_SpecingSmall"
+            android:layout_marginTop="@dimen/control_SpecingTiny">
+
+            <EditText
+                android:id="@+id/etPassword"
+                style="@style/EditTextForLogin"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/border"
+                android:focusableInTouchMode="true"
+                android:hint="@string/siPassword"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:paddingEnd="@dimen/control_SpecingNormal"
+                android:paddingStart="@dimen/control_SpecingNormal"
+                android:textColor="@color/offwhite"
+                android:textSize="15dp" />
+
+            <ToggleButton
+                android:id="@+id/tbPasswordShow"
+                style="@style/EditTextToogleButton"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/control_SpecingSmall"
+                android:background="@drawable/showhideselector"
+                android:padding="@dimen/control_SpecingNormal"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <com.rey.material.widget.Button
+            android:id="@+id/btnSignIn"
+            style="@style/Button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_Height"
+            android:layout_marginTop="@dimen/control_SpecingNormal"
+            android:text="@string/siLogIn"
+            android:textSize="16sp" />
+
+        <com.rey.material.widget.CompoundButton
+            android:id="@+id/cbForgotPassword"
+            style="@style/CompoundButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/control_SpecingSmall"
+            android:layout_marginStart="@dimen/control_SpecingSmall"
+            android:layout_marginTop="@dimen/control_SpecingNormal"
+            android:gravity="center"
+            android:paddingEnd="@dimen/control_SpecingTiny"
+            android:paddingStart="@dimen/control_SpecingTiny"
+            android:text="Forgot Password?"
+            android:textColor="@color/grey_400"
+            app:et_supportMaxLines="1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/control_SpecingSmall"
+            android:layout_weight="3"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.rey.material.widget.TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/control_SpecingTiny"
+                    android:text="@string/siNewUser"
+                    android:textColor="@color/offwhite" />
+
+                <com.rey.material.widget.CompoundButton
+                    android:id="@+id/cbSignUp"
+                    style="@style/CompoundButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/control_SpecingTiny"
+                    android:text="@string/siSignupHere" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

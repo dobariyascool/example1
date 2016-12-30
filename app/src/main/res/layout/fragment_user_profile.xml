@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/myprofile"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/offwhite"
+    android:orientation="vertical"
+    tools:context="com.arraybit.mym.UserProfileFragment">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar_layout" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/control_SpecingMedium"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.rey.material.widget.EditText
+                android:id="@+id/etFirstNameUser"
+                style="@style/EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/suFirstName"
+                android:inputType="textPersonName|textCapSentences"
+                app:et_supportMaxLines="1" />
+
+            <com.rey.material.widget.EditText
+                android:id="@+id/etLastNameUser"
+                style="@style/EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/suLastName"
+                android:inputType="textPersonName|textCapSentences"
+                app:et_supportMaxLines="1" />
+
+            <com.rey.material.widget.EditText
+                android:id="@+id/etMobileUser"
+                style="@style/EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Mobile1"
+                android:inputType="number"
+                android:maxLength="14"
+                android:text="+91 "
+                app:et_supportMaxLines="1" />
+
+            <com.rey.material.widget.EditText
+                android:id="@+id/etMobileUser1"
+                style="@style/EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Mobile2"
+                android:inputType="number"
+                android:maxLength="14"
+                android:text="+91 "
+                app:et_supportMaxLines="1" />
+
+            <com.rey.material.widget.EditText
+                android:id="@+id/etDateOfBirthUser"
+                style="@style/EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/suBirthDate"
+                android:imeOptions="actionDone" />
+
+            <RadioGroup
+                android:id="@+id/rgMainUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rbMaleUser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="@string/suMale" />
+
+                <RadioButton
+                    android:id="@+id/rbFemaleUser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/control_SpecingMedium"
+                    android:gravity="center"
+                    android:text="@string/suFemale" />
+            </RadioGroup>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.rey.material.widget.Button
+        android:id="@+id/btnUpdate"
+        style="@style/Button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_Height"
+        android:layout_gravity="bottom"
+        android:text="@string/upUpdateprofile" />
+
+</LinearLayout>
