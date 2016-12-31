@@ -3,10 +3,6 @@ package com.arraybit.global;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
 public class SharePreferenceManage {
 
     public void CreatePreference(String preferenceName, String name, String value, Context context) {
@@ -33,23 +29,6 @@ public class SharePreferenceManage {
     public String GetPreference(String CreatedPreferenceName, String name, Context context) {
         SharedPreferences preference = context.getApplicationContext().getSharedPreferences(CreatedPreferenceName, 0);
         return preference.getString(name, null);
-    }
-
-    public void CreateStringListPreference(String preferenceName, String name, ArrayList<String> alString, Context context) {
-        SharedPreferences preference = context.getApplicationContext().getSharedPreferences(preferenceName, 0);
-        Set<String> set = new HashSet<String>();
-        set.addAll(alString);
-        SharedPreferences.Editor editor = preference.edit();
-        editor.putStringSet(name, set);
-        editor.apply();
-    }
-
-    public ArrayList<String> GetStringListPreference(String CreatedPreferenceName, String name, Context context) {
-        SharedPreferences preference = context.getApplicationContext().getSharedPreferences(CreatedPreferenceName, 0);
-        if (preference.getStringSet(name, null) != null) {
-            return new ArrayList<String>(preference.getStringSet(name, null));
-        }
-        return null;
     }
 
 }

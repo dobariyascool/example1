@@ -61,11 +61,6 @@ public class MemberListAdapter extends RecyclerView.Adapter<MemberListAdapter.Me
         holder.txtEmail.setText(objMemberMaster.getEmail());
         holder.txtProfession.setText(objMemberMaster.getProfession());
         holder.txtContactNo.setText(objMemberMaster.getPhone1());
-//        if (objMemberMaster.getMemberType() != null && objMemberMaster.getMemberType().equals("Admin")) {
-//            holder.txtAdmin.setVisibility(View.VISIBLE);
-//        } else {
-//            holder.txtAdmin.setVisibility(View.GONE);
-//        }
 
         if (objMemberMaster.getImageName() != null) {
             Glide.with(context).load(objMemberMaster.getImageName()).asBitmap().centerCrop()
@@ -126,13 +121,6 @@ public class MemberListAdapter extends RecyclerView.Adapter<MemberListAdapter.Me
     @Override
     public int getItemCount() {
         return alMemberMasters.size();
-    }
-
-    public void SetSearchFilter(ArrayList<MemberMaster> result) {
-        isItemAnimate = false;
-        alMemberMasters = new ArrayList<>();
-        alMemberMasters.addAll(result);
-        notifyDataSetChanged();
     }
 
     public interface OnCardClickListener {
@@ -223,13 +211,6 @@ public class MemberListAdapter extends RecyclerView.Adapter<MemberListAdapter.Me
                             return false;
                         }
                     });
-//                    menu.add(0, 114, 400, context.getResources().getString(R.string.message)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-//                        @Override
-//                        public boolean onMenuItemClick(MenuItem item) {
-//                            onCardClickListener.OnCardClick(alMemberMasters.get(getAdapterPosition()), context.getResources().getString(R.string.message), getAdapterPosition());
-//                            return false;
-//                        }
-//                    });
                     menu.add(0, 116, 600, context.getResources().getString(R.string.email)).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {

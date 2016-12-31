@@ -4,13 +4,9 @@ package com.arraybit.mym;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.SslErrorHandler;
@@ -37,21 +33,14 @@ public class AdvertiseWebViewFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_advertise_web_view, container, false);
         try {
-//            Toolbar toolbar = (Toolbar) view.findViewById(R.id.app_bar);
-//            if (toolbar != null) {
-//                ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-////                ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("");
-//            }
-//            setHasOptionsMenu(true);
             Bundle bundle = getArguments();
             String url = null;
             if (bundle != null) {
                 url = bundle.getString("url");
             }
-            ImageView ivCancle  =(ImageView) view.findViewById(R.id.ivCancle);
+            ImageView ivCancle = (ImageView) view.findViewById(R.id.ivCancle);
 
-            Log.e("url", " " + url);
+            //layout
             wvAdvertise = (WebView) view.findViewById(R.id.wvAdvertise);
             wvAdvertise.getSettings().setJavaScriptEnabled(true);
             wvAdvertise.getSettings().setLoadsImagesAutomatically(true);
@@ -77,7 +66,7 @@ public class AdvertiseWebViewFragment extends Fragment {
 
                 public void onPageFinished(WebView view, String url) {
                     try {
-                            progressDialog.dismiss();
+                        progressDialog.dismiss();
                     } catch (Exception exception) {
                         exception.printStackTrace();
                     }
@@ -122,7 +111,6 @@ public class AdvertiseWebViewFragment extends Fragment {
             menu.findItem(R.id.accept).setVisible(false);
             menu.findItem(R.id.cancle).setVisible(false);
         } else if (getActivity() instanceof HomeActivity) {
-//            menu.findItem(R.id.action_search).setVisible(false);
             menu.findItem(R.id.memberRequest).setVisible(false);
             menu.findItem(R.id.notification).setVisible(false);
             menu.findItem(R.id.memberFilter).setVisible(false);

@@ -115,10 +115,6 @@
             android:layout_marginBottom="@dimen/control_SpecingTiny"
             android:orientation="horizontal">
 
-            <!--<View-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_weight="1.5"/>-->
             <com.rey.material.widget.Button
                 android:id="@+id/btnCancle"
                 style="@style/ButtonRequest"

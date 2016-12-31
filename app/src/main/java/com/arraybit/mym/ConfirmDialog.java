@@ -1,6 +1,5 @@
 package com.arraybit.mym;
 
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -15,8 +14,6 @@ import java.util.Date;
 
 public class ConfirmDialog extends DialogFragment implements View.OnClickListener {
 
-
-    Date time;
     ConfirmationResponseListener objConfirmationResponseListener;
     boolean isDeleteConfirm;
     String message;
@@ -25,14 +22,12 @@ public class ConfirmDialog extends DialogFragment implements View.OnClickListene
         // Required empty public constructor
     }
 
-
     @SuppressLint("ValidFragment")
     public ConfirmDialog(boolean isDeleteConfirm, String message) {
         // Required empty public constructor
         this.isDeleteConfirm = isDeleteConfirm;
         this.message = message;
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,8 +57,6 @@ public class ConfirmDialog extends DialogFragment implements View.OnClickListene
 
         if (isDeleteConfirm) {
             txtMessage.setText(message);
-        } else {
-            SetOrderMessage(txtOrderMessage);
         }
 
         txtCancel.setOnClickListener(this);
@@ -86,25 +79,6 @@ public class ConfirmDialog extends DialogFragment implements View.OnClickListene
         } else if (v.getId() == R.id.txtCancel) {
             dismiss();
         }
-    }
-
-    @SuppressLint("SetTextI18n")
-    private void SetOrderMessage(TextView txtMessage) {
-//        try {
-//            if (!objCheckOut.getOrderTime().equals(getActivity().getResources().getString(R.string.coaTime))) {
-//                time = new SimpleDateFormat(Globals.DisplayTimeFormat, Locale.US).parse(objCheckOut.getOrderTime());
-////                targetTime.setTime(targetTime.getTime() + 20 * 60 * 1000); //add minute
-////                time = targetTime;
-//            } else {
-//                Date date = new Date();
-//                date.setTime(date.getTime() + 20 * 60 * 1000);
-//                time = date;
-//            }
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//
-//        txtMessage.setText(String.format(getActivity().getResources().getString(R.string.cdfMsg), objCheckOut.getOrderType() == Globals.OrderType.TakeAway.getValue() ? "take away" : "home delivery") + " " + objCheckOut.getOrderDate() + " " + new SimpleDateFormat(Globals.DisplayTimeFormat, Locale.US).format(time));
     }
 
     public interface ConfirmationResponseListener {

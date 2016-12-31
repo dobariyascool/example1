@@ -11,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -21,11 +20,8 @@ import android.text.Selection;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.MimeTypeMap;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -38,7 +34,6 @@ import com.arraybit.global.Service;
 import com.arraybit.global.SharePreferenceManage;
 import com.arraybit.modal.MemberMaster;
 import com.arraybit.modal.MemberMasterNew;
-import com.arraybit.parser.MemberJSONParser;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -50,20 +45,16 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
-public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener, MemberJSONParser.MemberRequestListener {
+public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
 
 
     public static String imagePhysicalNameBytes;
-    final int PIC_CROP = 1;
     EditText etFirstName, etLastName, etEmail, etPassword, etConfirmPassword, etPhone, etPhone1, etBirthDate;
     RadioGroup rgMain;
     RadioButton rbMale, rbFemale;
     Button btnSignUp;
     ImageView ivImage;
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss.SSS", Locale.US);
     SharePreferenceManage objSharePreferenceManage;
     ProgressDialog progressDialog;
     String imageName, strImageName, picturePath = "";
@@ -87,8 +78,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             }
             getSupportActionBar().setTitle(getResources().getString(R.string.title_fragment_signup));
             //end
-            Globals.SetToolBarBackground(RegistrationActivity.this, app_bar, ContextCompat.getColor(RegistrationActivity.this, R.color.colorPrimary), ContextCompat.getColor(RegistrationActivity.this, android.R.color.white));
 
+            //permission for higher version from 23
             marshMallowPermission = new MarshMallowPermission(RegistrationActivity.this);
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (!marshMallowPermission.checkPermissionForCamera()) {
@@ -103,9 +94,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 FCMTokenGenerate();
             }
 
-            //EditText
+            //layout
             signUpActivity = (LinearLayout) findViewById(R.id.signUpActivity);
-
             etFirstName = (EditText) findViewById(R.id.etFirstName);
             etLastName = (EditText) findViewById(R.id.etLastName);
             etPassword = (EditText) findViewById(R.id.etPassword);
@@ -116,37 +106,14 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             etBirthDate = (EditText) findViewById(R.id.etDateOfBirth);
             etBirthDate.setInputType(InputType.TYPE_NULL);
             ivImage = (ImageView) findViewById(R.id.ivImage);
-
-            //end
-
-            //Radiogroup
             rgMain = (RadioGroup) findViewById(R.id.rgMain);
-            //
-
-            //RadioButton
             rbMale = (RadioButton) findViewById(R.id.rbMale);
             rbFemale = (RadioButton) findViewById(R.id.rbFemale);
-            //end
-
-            //button
             btnSignUp = (Button) findViewById(R.id.btnSignUp);
-            //end
 
-            //Spinner
-            //
-
-            //compound button
-            CompoundButton cbSignIn = (CompoundButton) findViewById(R.id.cbSignIn);
-            //end
-
-            //event
-            cbSignIn.setOnClickListener(this);
             btnSignUp.setOnClickListener(this);
             ivImage.setOnClickListener(this);
             etBirthDate.setOnClickListener(this);
-            //end
-
-//        Globals.CustomView(btnSignUp, ContextCompat.getColor(getActivity(),R.color.accent), ContextCompat.getColor(getActivity(),android.R.color.white));
 
             etPhone.setSelection(etPhone.getText().toString().length());
             etPhone1.setSelection(etPhone1.getText().toString().length());
@@ -174,8 +141,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             etPhone1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
-                    if(hasFocus)
-                    {
+                    if (hasFocus) {
                         etPhone1.setSelection(etPhone1.getText().toString().length());
                     }
                 }
@@ -184,57 +150,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             etPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
-                    if(hasFocus)
-                    {
+                    if (hasFocus) {
                         etPhone.setSelection(etPhone.getText().toString().length());
-                    }
-                }
-            });
-
-            etPhone.addTextChangedListener(new TextWatcher() {
-                String mobile;
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    mobile= etPhone.getText().toString();
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if (etPhone.length() < 4) {
-                        etPhone.setText("+91 ");
-                        etPhone.setSelection(etPhone.getText().toString().length());
-                    }
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    if(!s.toString().startsWith("+91",0)){
-                        etPhone.setText(mobile);
-                        Selection.setSelection(etPhone.getText(), 4);
-                    }
-                }
-            });
-
-            etPhone1.addTextChangedListener(new TextWatcher() {
-                String mobile;
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    mobile= etPhone1.getText().toString();
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if (etPhone1.length() < 4) {
-                        etPhone1.setText("+91 ");
-                        etPhone1.setSelection(etPhone1.getText().toString().length());
-                    }
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    if(!s.toString().startsWith("+91",0)){
-                        etPhone.setText(mobile);
-                        Selection.setSelection(etPhone1.getText(), 4);
                     }
                 }
             });
@@ -248,6 +165,55 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 }
             });
 
+            etPhone.addTextChangedListener(new TextWatcher() {
+                String mobile;
+
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    mobile = etPhone.getText().toString();
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (etPhone.length() < 4) {
+                        etPhone.setText("+91 ");
+                        etPhone.setSelection(etPhone.getText().toString().length());
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (!s.toString().startsWith("+91", 0)) {
+                        etPhone.setText(mobile);
+                        Selection.setSelection(etPhone.getText(), 4);
+                    }
+                }
+            });
+
+            etPhone1.addTextChangedListener(new TextWatcher() {
+                String mobile;
+
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    mobile = etPhone1.getText().toString();
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (etPhone1.length() < 4) {
+                        etPhone1.setText("+91 ");
+                        etPhone1.setSelection(etPhone1.getText().toString().length());
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (!s.toString().startsWith("+91", 0)) {
+                        etPhone.setText(mobile);
+                        Selection.setSelection(etPhone1.getText(), 4);
+                    }
+                }
+            });
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -275,32 +241,21 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 Globals.ShowSnackBar(v, getResources().getString(R.string.MsgValidation), RegistrationActivity.this, 1000);
                 return;
             }
+            //Registration data collect and go on next page
             if (Service.CheckNet(this)) {
-//                new SignUpLoadingTask().execute();
                 RegistrationRequest();
             } else {
                 Globals.ShowSnackBar(v, getResources().getString(R.string.MsgCheckConnection), RegistrationActivity.this, 1000);
             }
-        } else if (v.getId() == R.id.cbSignIn) {
-            getSupportFragmentManager().popBackStack();
         } else if (v.getId() == R.id.ivImage) {
             Globals.HideKeyBoard(this, v);
-            SelectImageProfile(this, 100, 101);
+            SelectImageProfile(this, 101);
         } else if (v.getId() == R.id.etDateOfBirth) {
             EditTextOnClick(v);
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        return super.onPrepareOptionsMenu(menu);
-    }
-
+    //Option menu
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -311,39 +266,14 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         return super.onOptionsItemSelected(item);
     }
 
+    //date picker on click of edittext
     public void EditTextOnClick(View v) {
         Globals.ShowDatePickerDialog(etBirthDate, RegistrationActivity.this, false);
     }
 
-    @Override
-    public void MemberResponse(String errorCode, MemberMaster objMemberMaster) {
-        progressDialog.dismiss();
-        SetError(errorCode, objMemberMaster);
-    }
-
-    @Override
-    public void MemberUpdate(String errorCode, MemberMaster objMemberMaster) {
-
-    }
-
+    //set image
     public void SelectImage(int requestCode, Intent data) {
-        if (requestCode == 100) {
-//            strImageName = "CameraImage_" + simpleDateFormat.format(new Date()) + imageName.substring(imageName.lastIndexOf("."), imageName.length()) + ".jpg";
-//            File file = new File(android.os.Environment.getExternalStorageDirectory(), strImageName);
-//            picturePath = file.getAbsolutePath();
-//            imageName = "Member_" + Globals.memberMasterId + "." + MimeTypeMap.getFileExtensionFromUrl(picturePath);
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            long millis = System.currentTimeMillis();
-            imageName = String.valueOf(millis) + ".jpg";
-            ivImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            ivImage.setImageBitmap(bitmap);
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 110, bos);
-            byte[] byteData = bos.toByteArray();
-            imagePhysicalNameBytes = Base64.encodeToString(byteData, Base64.DEFAULT);
-//            UpdateUserProfileImageRequest();
-            return;
-        } else if (requestCode == 101 && data != null && data.getData() != null) {
+        if (requestCode == 101 && data != null && data.getData() != null) {
             Uri selectedImage = data.getData();
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
@@ -352,13 +282,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             picturePath = cursor.getString(columnIndex);
-            String extension = MimeTypeMap.getFileExtensionFromUrl(picturePath);
             long millis = System.currentTimeMillis();
-//            if (extension != null) {
-//                imageName = String.valueOf(millis) + "." + MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//            } else {
             imageName = String.valueOf(millis) + ".jpg";
-//            }
             cursor.close();
         }
         if (!picturePath.equals("")) {
@@ -379,14 +304,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    //region Private Methods and Interface
+    //region Private Methods
 
     private void RegistrationRequest() {
-//        progressDialog = new ProgressDialog();
-//        progressDialog.show(RegistrationActivity.this.getSupportFragmentManager(), "");
-
         try {
-//            MemberJSONParser objMemberJSONParser = new MemberJSONParser();
             MemberMasterNew objMemberMaster = new MemberMasterNew();
             objMemberMaster.setMemberName(etFirstName.getText().toString().trim() + " " + etLastName.getText().toString().trim());
             objMemberMaster.setEmail(etEmail.getText().toString().trim());
@@ -396,10 +317,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 objMemberMaster.setPhone2(etPhone1.getText().toString().substring(4));
             }
             if (imageName != null && !imageName.equals("")) {
-//                strImageName = imageName.substring(0, imageName.lastIndexOf(".")) + "_" + simpleDateFormat.format(new Date()) + imageName.substring(imageName.lastIndexOf("."), imageName.length());
                 strImageName = imageName;
                 objMemberMaster.setImageName(strImageName);
-//                objMemberMaster.setImageNameBytes(imagePhysicalNameBytes);
             }
             if (rbMale.isChecked()) {
                 objMemberMaster.setGender(rbMale.getText().toString());
@@ -411,33 +330,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 objMemberMaster.setBirthDate(etBirthDate.getText().toString());
             }
             objMemberMaster.setMemberType(Globals.MemberType.User.getMemberType());
-//            if (imageName != null && !imageName.equals("")) {
-//                strImageName = imageName.substring(0, imageName.lastIndexOf(".")) + "_" + simpleDateFormat.format(new Date()) + imageName.substring(imageName.lastIndexOf("."), imageName.length());
-//                objMemberMaster.setImageName(strImageName);
-//                objMemberMaster.setImageNamePhysicalNameBytes(imagePhysicalNameBytes);
-//            }
-//            if (SignInActivity.token != null) {
-//                Log.e("Registrartion", " encoded token:" + SignInActivity.token.replace(":", "2E2").replace("-", "3E3").replace("_", "4E4"));
             objMemberMaster.setFCMToken(SignInActivity.token);
-//            }
-//            objMemberJSONParser.InsertMemberMaster(RegistrationActivity.this, RegistrationFragment.this, objMemberMaster);
-
-//            RegistrationDetailFragment objRegistrationDetailFragment = new RegistrationDetailFragment();
-//            Bundle bundle = new Bundle();
-//            bundle.putParcelable("MemberMaster", objMemberMaster);
-//            objRegistrationDetailFragment.setArguments(bundle);
-//            FragmentTransaction fragmentTransaction = RegistrationActivity.this.getSupportFragmentManager().beginTransaction();
-//            fragmentTransaction.setCustomAnimations(R.anim.right_in, R.anim.left_out, 0, R.anim.right_exit);
-//            fragmentTransaction.replace(R.id.signUpFragment, objRegistrationDetailFragment, "PersonalDetail");
-//            fragmentTransaction.addToBackStack("PersonalDetail");
-//            fragmentTransaction.commit();
-//            RegistrationFragment.onNext objOnNext =(RegistrationFragment.onNext) ((SignInActivity)getActivity());
-//            objOnNext.OnNext(objMemberMaster);
 
             Intent intent = new Intent(RegistrationActivity.this, RegistrationDetailActivity.class);
             intent.putExtra("MemberMaster", objMemberMaster);
             startActivity(intent);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -445,79 +342,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     private boolean ValidateControls() {
         boolean IsValid = true;
-
-//        if (etFirstName.getText().toString().equals("")
-//                && !etEmail.getText().toString().equals("")
-//                && !etPassword.getText().toString().equals("")) {
-//            if (Globals.IsValidEmail(etEmail.getText().toString())) {
-//                etEmail.clearError();
-//            } else {
-//                etEmail.setError("Enter " + getResources().getString(R.string.suValidEmail));
-//            }
-//            etFirstName.setError("Enter " + getResources().getString(R.string.suFirstName));
-//            etPassword.clearError();
-//            IsValid = false;
-//
-//        } else if (etEmail.getText().toString().equals("")
-//                && !etFirstName.getText().toString().equals("")
-//                && !etPassword.getText().toString().equals("")) {
-//            etEmail.setError("Enter " + getResources().getString(R.string.suEmail));
-//            etPassword.clearError();
-//            etFirstName.clearError();
-//            IsValid = false;
-//        } else if (etPassword.getText().toString().equals("")
-//                && !etFirstName.getText().toString().equals("")
-//                && !etEmail.getText().toString().equals("")) {
-//            if (Globals.IsValidEmail(etEmail.getText().toString())) {
-//                etEmail.clearError();
-//            } else {
-//                etEmail.setError("Enter " + getResources().getString(R.string.suValidEmail));
-//            }
-//            etPassword.setError("Enter " + getResources().getString(R.string.suPassword));
-//            etFirstName.clearError();
-//            IsValid = false;
-//        } else if (etFirstName.getText().toString().equals("")
-//                && etEmail.getText().toString().equals("")
-//                && !etPassword.getText().toString().equals("")) {
-//            etPassword.clearError();
-//            etFirstName.setError("Enter " + getResources().getString(R.string.suFirstName));
-//            etEmail.setError("Enter " + getResources().getString(R.string.suEmail));
-//            IsValid = false;
-//        } else if (etFirstName.getText().toString().equals("")
-//                && !etEmail.getText().toString().equals("")
-//                && etPassword.getText().toString().equals("")) {
-//            if (Globals.IsValidEmail(etEmail.getText().toString())) {
-//                etEmail.clearError();
-//            } else {
-//                etEmail.setError("Enter " + getResources().getString(R.string.suValidEmail));
-//            }
-//            etFirstName.setError("Enter " + getResources().getString(R.string.suFirstName));
-//            etPassword.setError("Enter " + getResources().getString(R.string.suPassword));
-//            IsValid = false;
-//        } else if (etEmail.getText().toString().equals("")
-//                && !etFirstName.getText().toString().equals("")
-//                && etPassword.getText().toString().equals("")) {
-//            etPassword.setError("Enter " + getResources().getString(R.string.suPassword));
-//            etEmail.setError("Enter " + getResources().getString(R.string.suEmail));
-//            etFirstName.clearError();
-//            IsValid = false;
-//        } else if (etFirstName.getText().toString().equals("")
-//                && etEmail.getText().toString().equals("")
-//                && etPassword.getText().toString().equals("")) {
-//            etFirstName.setError("Enter " + getResources().getString(R.string.suFirstName));
-//            etEmail.setError("Enter " + getResources().getString(R.string.suEmail));
-//            etPassword.setError("Enter " + getResources().getString(R.string.suPassword));
-//            IsValid = false;
-//        } else if (!etFirstName.getText().toString().equals("") && !etEmail.getText().toString().equals("") && !etPassword.getText().toString().equals("")) {
-//            if (Globals.IsValidEmail(etEmail.getText().toString())) {
-//                etEmail.clearError();
-//            } else {
-//                etEmail.setError("Enter " + getResources().getString(R.string.suValidEmail));
-//                IsValid = false;
-//            }
-//            etFirstName.clearError();
-//            etPassword.clearError();
-//        }
         if (etPhone.getText().toString().substring(4).equals("") || etPhone.getText().toString().substring(4).length() != 10) {
             etPhone.setError("Enter 10 digit Mobile No");
             IsValid = false;
@@ -580,7 +404,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 etConfirmPassword.clearError();
             }
         }
-
         return IsValid;
     }
 
@@ -708,7 +531,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void FCMTokenGenerate() {
-
         //Checking play service is available or not
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(RegistrationActivity.this.getApplicationContext());
 
@@ -719,22 +541,17 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 //Displaying message that play service is not installed
                 Toast.makeText(getApplicationContext(), "Google Play Service is not install/enabled in this device!", Toast.LENGTH_LONG).show();
                 GooglePlayServicesUtil.showErrorNotification(resultCode, getApplicationContext());
-
-                //If play service is not supported
-                //Displaying an error message
             } else {
                 Toast.makeText(getApplicationContext(), "This device does not support for Google Play Service!", Toast.LENGTH_LONG).show();
             }
-
-            //If play service is available
         } else {
             FirebaseMessaging.getInstance().subscribeToTopic("news");
 
             SignInActivity.token = FirebaseInstanceId.getInstance().getToken();
         }
-
     }
 
+    //convert image in small size
     private Bitmap decodeFile(File f) {
         try {
             // Decode image size
@@ -761,8 +578,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         return null;
     }
 
-    private void SelectImageProfile(final Context context, final int requestCodeCamera, final int requestCodeGallery) {
-//        final CharSequence[] items = {"Take Photo", "Choose from Gallery", "Remove Image"};
+    //select image from gallary or remove in image view
+    private void SelectImageProfile(final Context context, final int requestCodeGallery) {
         final CharSequence[] items = {"Choose from Gallery", "Remove Image"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialog);
@@ -770,13 +587,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (items[item].equals("Take Photo")) {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File f = new File(android.os.Environment
-                            .getExternalStorageDirectory(), "temp.jpg");
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-                    startActivityForResult(intent, requestCodeCamera);
-                } else if (items[item].equals("Choose from Gallery")) {
+                if (items[item].equals("Choose from Gallery")) {
                     Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
                     startActivityForResult(Intent.createChooser(intent, "Select File"), requestCodeGallery);

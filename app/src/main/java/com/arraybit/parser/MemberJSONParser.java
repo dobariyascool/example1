@@ -1,9 +1,7 @@
 package com.arraybit.parser;
 
-
 import android.content.Context;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -31,7 +29,6 @@ import java.util.Locale;
 
 public class MemberJSONParser {
 
-    public String InsertMemberMaster = "InsertMemberMaster";
     public String InsertMemberMasterDetail = "InsertMemberMasterDetail";
     public String UpdateMemberMasterAdmin = "UpdateMemberMasterAdmin";
     public String UpdateMemberMasterPassword = "UpdateMemberMasterPassword";
@@ -51,14 +48,10 @@ public class MemberJSONParser {
     SimpleDateFormat sdfDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
     MemberRequestListener objMemberRequestListener;
     MembersListRequestListener objMemberListRequestListener;
-    DetailRequestListener objDetailRequestListener;
 
     private String SelectAllMemberMasterPageWise = "SelectAllMemberMasterPageWise";
     private String SelectAllMemberMasterFilterPageWise = "SelectAllMemberMasterFilterPageWise";
     private String SelectAllNewMemberMasterPageWise = "SelectAllNewMemberMasterPageWise";
-    private String SelectAllQualification = "SelectAllQualification";
-    private String SelectAllProfession = "SelectAllProfession";
-    private String SelectAllStates = "SelectAllStates";
     private String ForgotPasswordMemberMaster = "ForgotPasswordMemberMaster";
 
     //region class Methods
@@ -293,7 +286,6 @@ public class MemberJSONParser {
             }
             return lstMemberMaster;
         } catch (Exception e) {
-            Log.e("exception", " " + e.getMessage());
             e.printStackTrace();
             return null;
         }
@@ -302,89 +294,6 @@ public class MemberJSONParser {
     //endregion
 
     //region Insert
-    public void InsertMemberMaster(final Context context, final Fragment fragment, final MemberMaster objMemberMaster) {
-        try {
-            JSONStringer stringer = new JSONStringer();
-            stringer.object();
-
-            stringer.key("memberMaster");
-            stringer.object();
-
-            stringer.key("MemberName").value(objMemberMaster.getMemberName());
-            stringer.key("ImageName").value(objMemberMaster.getImageName());
-            stringer.key("Phone1").value(objMemberMaster.getPhone1());
-            stringer.key("Email").value(objMemberMaster.getEmail());
-            stringer.key("Password").value(objMemberMaster.getPassword());
-            stringer.key("MemberType").value(objMemberMaster.getMemberType());
-            stringer.key("Gender").value(objMemberMaster.getGender());
-            if (objMemberMaster.getBirthDate() != null) {
-                dt = sdfControlDateFormat.parse(objMemberMaster.getBirthDate());
-                stringer.key("BirthDate").value(sdfDateFormat.format(dt));
-            }
-            String token1 = null;
-            if (objMemberMaster.getFCMToken() != null) {
-                token1 = Globals.UrlEncode(objMemberMaster.getFCMToken());
-            }
-            stringer.key("FCMToken").value(token1);
-            stringer.key("ImageNameBytes").value(objMemberMaster.getImageNameBytes());
-
-            stringer.endObject();
-
-            stringer.endObject();
-
-            String url = Service.Url + this.InsertMemberMaster;
-
-            RequestQueue queue = Volley.newRequestQueue(context);
-            Log.e("url", " " + url);
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(stringer.toString()), new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject jsonObject) {
-                    try {
-                        Log.e("json", " " + jsonObject.toString());
-                        JSONObject jsonResponse = jsonObject.getJSONObject(InsertMemberMaster + "Result");
-                        if (jsonResponse != null) {
-                            objMemberRequestListener = (MemberRequestListener) fragment;
-                            MemberMaster objMemberMaster = new MemberMaster();
-                            objMemberMaster.setMemberMasterId(jsonResponse.getInt("MemberMasterId"));
-                            objMemberMaster.setMemberName(jsonResponse.getString("MemberName"));
-                            objMemberMaster.setPhone1(jsonResponse.getString("Phone1"));
-                            objMemberMaster.setEmail(jsonResponse.getString("Email"));
-                            objMemberMaster.setPassword(jsonResponse.getString("Password"));
-                            objMemberMaster.setMemberType(jsonResponse.getString("MemberType"));
-                            objMemberMaster.setGender(jsonResponse.getString("Gender"));
-                            if (jsonResponse.getString("BirthDate") != null && !jsonResponse.getString("BirthDate").equals("null")) {
-                                dt = sdfDateFormat.parse(jsonResponse.getString("BirthDate"));
-                                objMemberMaster.setBirthDate(sdfControlDateFormat.format(dt));
-                            }
-                            objMemberRequestListener.MemberResponse("0", objMemberMaster);
-                        } else {
-                            objMemberRequestListener = (MemberRequestListener) fragment;
-                            objMemberRequestListener.MemberResponse("0", null);
-                        }
-                    } catch (Exception e) {
-                        objMemberRequestListener = (MemberRequestListener) fragment;
-                        objMemberRequestListener.MemberResponse("-1", null);
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError volleyError) {
-                    objMemberRequestListener = (MemberRequestListener) fragment;
-                    objMemberRequestListener.MemberResponse("-1", null);
-                }
-            });
-
-            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
-                    30000,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-            queue.add(jsonObjectRequest);
-        } catch (Exception ex) {
-            objMemberRequestListener = (MemberRequestListener) fragment;
-            objMemberRequestListener.MemberResponse("-1", null);
-        }
-    }
 
     public void InsertMemberMasterDetail(final Context context, final Fragment fragment, final MemberMasterNew objMemberMaster, ArrayList<MemberRelativesTran> objMemberRelativesTren) {
         try {
@@ -456,25 +365,8 @@ public class MemberJSONParser {
                 }
                 stringer.endArray();
             }
-//            if (objMemberMaster.getLstMemberRelativeTran() != null && objMemberMaster.getLstMemberRelativeTran().size() > 0) {
-//                stringer.key("lstMemberRelativeTran");
-//                stringer.array();
-//                for (int i = 0; i < objMemberMaster.getLstMemberRelativeTran().size(); i++) {
-//                    stringer.object();
-//                    stringer.key("linktoMemberMasterId").value(objMemberMaster.getLstMemberRelativeTran().get(i).getlinktoMemberMasterId());
-//                    stringer.key("RelativeName").value(objMemberMaster.getLstMemberRelativeTran().get(i).getRelativeName());
-//                    stringer.key("ImageName").value(objMemberMaster.getLstMemberRelativeTran().get(i).getImageName());
-//                    stringer.key("Gender").value(objMemberMaster.getLstMemberRelativeTran().get(i).getGender());
-//                    dt = sdfControlDateFormat.parse(objMemberMaster.getLstMemberRelativeTran().get(i).getBirthDate());
-//                    stringer.key("BirthDate").value(sdfDateFormat.format(dt));
-//                    stringer.key("Relation").value(objMemberMaster.getLstMemberRelativeTran().get(i).getRelation());
-//                    stringer.key("ImageNameBytes").value(objMemberMaster.getLstMemberRelativeTran().get(i).getImageNameBytes());
-//                    stringer.endObject();
-//                }
-//                stringer.endArray();
-//            }
 
-//            Contact Detail
+            //Contact Detail
             stringer.key("HomeCountry").value(objMemberMaster.getHomeCountry());
             stringer.key("HomeState").value(objMemberMaster.getHomeState());
             stringer.key("HomeCity").value(objMemberMaster.getHomeCity());
@@ -499,13 +391,10 @@ public class MemberJSONParser {
             String url = Service.Url + this.InsertMemberMasterDetail;
 
             RequestQueue queue = Volley.newRequestQueue(context);
-            Log.e("url", " " + url);
-            Log.e("json", " " + stringer.toString());
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(stringer.toString()), new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                     try {
-                        Log.e("json", " " + jsonObject.toString());
                         JSONObject jsonResponse = jsonObject.getJSONObject(InsertMemberMasterDetail + "Result");
                         if (jsonResponse != null) {
                             if (fragment != null) {
@@ -514,10 +403,8 @@ public class MemberJSONParser {
                                 objMemberRequestListener = (MemberRequestListener) context;
                             }
                             MemberMaster objMemberMaster = new MemberMaster();
-                            if(jsonResponse.getString("errorCode")!= null && !jsonResponse.getString("errorCode").equals(""))
-                            {
-                                if (jsonResponse.getString("errorCode").equals("-2"))
-                                {
+                            if (jsonResponse.getString("errorCode") != null && !jsonResponse.getString("errorCode").equals("")) {
+                                if (jsonResponse.getString("errorCode").equals("-2")) {
                                     objMemberRequestListener.MemberUpdate("-2", null);
                                     return;
                                 }
@@ -534,7 +421,6 @@ public class MemberJSONParser {
                                 objMemberMaster.setBirthDate(sdfControlDateFormat.format(dt));
                             }
                             objMemberRequestListener.MemberUpdate("0", objMemberMaster);
-//                            objMemberRequestListener.MemberUpdate("0", SetClassPropertiesFromJSONObject(jsonResponse));
                         } else {
                             if (fragment != null) {
                                 objMemberRequestListener = (MemberRequestListener) fragment;
@@ -593,7 +479,6 @@ public class MemberJSONParser {
             stringer.object();
 
             stringer.key("MemberMasterId").value(objMemberMaster.getMemberMasterId());
-//            stringer.key("ImageName").value(objMemberMaster.getImageName());
             stringer.key("MemberName").value(objMemberMaster.getMemberName());
             stringer.key("Phone1").value(objMemberMaster.getPhone1());
             stringer.key("Phone2").value(objMemberMaster.getPhone2());
@@ -602,7 +487,6 @@ public class MemberJSONParser {
                 dt = sdfControlDateFormat.parse(objMemberMaster.getBirthDate());
                 stringer.key("BirthDate").value(sdfDateFormat.format(dt));
             }
-//            stringer.key("ImageNameBytes").value(objMemberMaster.getImageNameBytes());
 
             stringer.endObject();
 
@@ -611,12 +495,10 @@ public class MemberJSONParser {
             String url = Service.Url + this.UpdateMemberMasterByMemberMasterId;
 
             RequestQueue queue = Volley.newRequestQueue(context);
-            Log.e("url", " " + url);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(stringer.toString()), new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                     try {
-                        Log.e("json", " " + jsonObject.toString());
                         JSONObject jsonResponse = jsonObject.getJSONObject(UpdateMemberMasterByMemberMasterId + "Result");
                         if (jsonResponse != null) {
                             objMemberRequestListener = (MemberRequestListener) fragment;
@@ -670,19 +552,16 @@ public class MemberJSONParser {
             String url = Service.Url + this.UpdateMemberMasterImageByMemberMasterId;
 
             RequestQueue queue = Volley.newRequestQueue(context);
-            Log.e("url", " " + url);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(stringer.toString()), new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                     try {
-                        Log.e("json", " " + jsonObject.toString());
                         String stringImage = jsonObject.getString(UpdateMemberMasterImageByMemberMasterId + "Result");
                         MemberMaster objMemberMaster = new MemberMaster();
                         if (stringImage != null && !stringImage.equals("") && !stringImage.equals("null")) {
                             objMemberRequestListener = (MemberRequestListener) context;
                             objMemberMaster.setImageName(stringImage);
                             objMemberRequestListener.MemberUpdate("0", objMemberMaster);
-//                            objMemberRequestListener.MemberUpdate(String.valueOf(jsonResponse.getInt("ErrorCode")), null);
                         } else {
                             objMemberRequestListener = (MemberRequestListener) context;
                             objMemberRequestListener.MemberUpdate("-1", objMemberMaster);
@@ -746,12 +625,10 @@ public class MemberJSONParser {
             String url = Service.Url + this.UpdateMemberMasterContactDetail;
 
             RequestQueue queue = Volley.newRequestQueue(context);
-            Log.e("url", " " + url);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(stringer.toString()), new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                     try {
-                        Log.e("json", " " + jsonObject.toString());
                         JSONObject jsonResponse = jsonObject.getJSONObject(UpdateMemberMasterContactDetail + "Result");
                         if (jsonResponse != null) {
                             objMemberRequestListener = (MemberRequestListener) fragment;
@@ -806,12 +683,10 @@ public class MemberJSONParser {
             String url = Service.Url + this.UpdateMemberMasterIsApproved;
 
             RequestQueue queue = Volley.newRequestQueue(context);
-            Log.e("url", " " + url);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(stringer.toString()), new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                     try {
-                        Log.e("json", " " + jsonObject.toString());
                         JSONObject jsonResponse = jsonObject.getJSONObject(UpdateMemberMasterIsApproved + "Result");
                         if (jsonResponse != null) {
                             objMemberRequestListener = (MemberRequestListener) context;
@@ -851,12 +726,10 @@ public class MemberJSONParser {
             String url = Service.Url + this.DeleteMemberMasterByMemberMasterId + "/" + memberMasterId + "/" + String.valueOf(isDelete) + "/" + Globals.memberMasterId;
 
             RequestQueue queue = Volley.newRequestQueue(context);
-            Log.e("url", " " + url);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, new JSONObject(), new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                     try {
-                        Log.e("json", " " + jsonObject.toString());
                         JSONObject jsonResponse = jsonObject.getJSONObject(DeleteMemberMasterByMemberMasterId + "Result");
                         if (jsonResponse != null) {
                             objMemberRequestListener = (MemberRequestListener) context;
@@ -896,12 +769,10 @@ public class MemberJSONParser {
             String url = Service.Url + this.UpdateMemberMasterAdmin + "/" + memberMasterId + "/" + memberType + "/" + Globals.memberMasterId;
 
             RequestQueue queue = Volley.newRequestQueue(context);
-            Log.e("url", " " + url);
             final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, new JSONObject(), new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                     try {
-                        Log.e("json", " " + jsonObject.toString());
                         JSONObject jsonResponse = jsonObject.getJSONObject(UpdateMemberMasterAdmin + "Result");
                         if (jsonResponse != null) {
                             objMemberRequestListener = (MemberRequestListener) context;
@@ -941,12 +812,10 @@ public class MemberJSONParser {
             String url = Service.Url + this.UpdateMemberMasterPassword + "/" + memberMasterId + "/" + password + "/" + confirmPassword;
 
             RequestQueue queue = Volley.newRequestQueue(context);
-            Log.e("url", " " + url);
             final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, new JSONObject(), new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                     try {
-                        Log.e("json", " " + jsonObject.toString());
                         JSONObject jsonResponse = jsonObject.getJSONObject(UpdateMemberMasterPassword + "Result");
                         if (jsonResponse != null) {
                             objMemberRequestListener = (MemberRequestListener) fragment;
@@ -986,12 +855,10 @@ public class MemberJSONParser {
             String url = Service.Url + this.UpdateMemberMasterLogOut + "/" + memberMasterId;
 
             RequestQueue queue = Volley.newRequestQueue(context);
-            Log.e("url", " " + url);
             final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, new JSONObject(), new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                     try {
-                        Log.e("json", " " + jsonObject.toString());
                         JSONObject jsonResponse = jsonObject.getJSONObject(UpdateMemberMasterLogOut + "Result");
                         if (jsonResponse != null) {
                             objMemberRequestListener = (MemberRequestListener) context;
@@ -1062,34 +929,16 @@ public class MemberJSONParser {
                 stringer.endArray();
             }
             stringer.endObject();
-//
-//            stringer.key("memberRelativesTran");
-//            stringer.object();
-//            if (objMemberMaster.getIsMarried()) {
-//
-//                stringer.key("linktoMemberMasterId").value(objMemberRelativesTran.getlinktoMemberMasterId());
-//                stringer.key("RelativeName").value(objMemberRelativesTran.getRelativeName());
-//                stringer.key("ImageName").value(objMemberRelativesTran.getImageName());
-//                stringer.key("Gender").value(objMemberRelativesTran.getGender());
-//                dt = sdfControlDateFormat.parse(objMemberRelativesTran.getBirthDate());
-//                stringer.key("BirthDate").value(sdfDateFormat.format(dt));
-//                stringer.key("Relation").value(objMemberRelativesTran.getRelation());
-//                stringer.key("ImageNameBytes").value(objMemberRelativesTran.getImageNameBytes());
-//            }
-//            stringer.endObject();
 
             stringer.endObject();
 
             String url = Service.Url + this.UpdateMemberMasterPersonalDetail;
 
             RequestQueue queue = Volley.newRequestQueue(context);
-            Log.e("url", " " + url);
-            Log.e("json", " " + stringer);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(stringer.toString()), new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                     try {
-                        Log.e("json", " " + jsonObject.toString());
                         JSONObject jsonResponse = jsonObject.getJSONObject(UpdateMemberMasterPersonalDetail + "Result");
                         if (jsonResponse != null) {
                             objMemberRequestListener = (MemberRequestListener) fragment;
@@ -1131,13 +980,11 @@ public class MemberJSONParser {
         String url;
         try {
             url = Service.Url + this.SelectMemberByMemberMasterId + "/" + memberMasterId;
-            Log.e("url", " " + url);
             final RequestQueue queue = Volley.newRequestQueue(context);
             final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, new JSONObject(), new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                     try {
-                        Log.e("json", " " + jsonObject.toString());
                         if (jsonObject != null) {
                             JSONObject jsonResponse = jsonObject.getJSONObject(SelectMemberByMemberMasterId + "Result");
                             if (jsonResponse != null) {
@@ -1172,13 +1019,11 @@ public class MemberJSONParser {
             } else {
                 url = Service.Url + this.SelectMemberMaster + "/" + null + "/" + null + "/" + null;
             }
-            Log.e("url", " " + url);
             final RequestQueue queue = Volley.newRequestQueue(context);
             final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, new JSONObject(), new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                     try {
-                        Log.e("json", " " + jsonObject.toString());
                         if (jsonObject != null) {
                             JSONObject jsonResponse = jsonObject.getJSONObject(SelectMemberMaster + "Result");
                             if (jsonResponse != null) {
@@ -1212,13 +1057,11 @@ public class MemberJSONParser {
         String url;
         try {
             url = Service.Url + this.SelectAllMemberMasterPageWise + "/" + Globals.memberMasterId + "/" + currentPage + "/" + pagesize;
-            Log.e("url", " " + url);
             final RequestQueue queue = Volley.newRequestQueue(context);
             final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, new JSONObject(), new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                     try {
-                        Log.e("json", " " + jsonObject.toString());
                         if (jsonObject != null) {
                             JSONArray jsonArray = jsonObject.getJSONArray(SelectAllMemberMasterPageWise + "Result");
                             if (jsonArray != null) {
@@ -1249,14 +1092,11 @@ public class MemberJSONParser {
         String url;
         try {
             url = Service.Url + this.SelectAllMemberMasterFilterPageWise + "/" + Globals.memberMasterId + "/" + currentPage + "/" + memberName + "/" + Globals.UrlEncode(profession) + "/" + Globals.UrlEncode(qualification) + "/" + Globals.UrlEncode(bloodGroup);
-
-            Log.e("url", " " + url);
             final RequestQueue queue = Volley.newRequestQueue(context);
             final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, new JSONObject(), new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                     try {
-                        Log.e("json", " " + jsonObject.toString());
                         if (jsonObject != null) {
                             JSONArray jsonArray = jsonObject.getJSONArray(SelectAllMemberMasterFilterPageWise + "Result");
                             if (jsonArray != null) {
@@ -1287,14 +1127,11 @@ public class MemberJSONParser {
         String url;
         try {
             url = Service.Url + this.SelectAllNewMemberMasterPageWise + "/" + currentPage;
-
-            Log.e("url", " " + url);
             final RequestQueue queue = Volley.newRequestQueue(context);
             final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, new JSONObject(), new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                     try {
-                        Log.e("json", " " + jsonObject.toString());
                         if (jsonObject != null) {
                             JSONArray jsonArray = jsonObject.getJSONArray(SelectAllNewMemberMasterPageWise + "Result");
                             if (jsonArray != null) {
@@ -1322,197 +1159,6 @@ public class MemberJSONParser {
 
     }
 
-    public void SelectAllQualification(final Context context, final Fragment targetFragment) {
-        String url;
-        try {
-            url = Service.Url + this.SelectAllQualification;
-
-            Log.e("url", " " + url);
-            final RequestQueue queue = Volley.newRequestQueue(context);
-            final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, new JSONObject(), new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject jsonObject) {
-                    try {
-                        Log.e("json", " " + jsonObject.toString());
-                        if (jsonObject != null) {
-                            JSONArray jsonArray = jsonObject.getJSONArray(SelectAllQualification + "Result");
-                            if (jsonArray != null) {
-                                ArrayList<String> lstStrings = new ArrayList<>();
-                                try {
-                                    for (int i = 0; i < jsonArray.length(); i++) {
-                                        lstStrings.add(jsonArray.getString(i));
-                                    }
-                                } catch (Exception e) {
-                                    Log.e("exception", " " + e.getMessage());
-                                    e.printStackTrace();
-                                }
-                                if (targetFragment != null) {
-                                    objDetailRequestListener = (DetailRequestListener) targetFragment;
-                                } else {
-                                    objDetailRequestListener = (DetailRequestListener) context;
-                                }
-                                objDetailRequestListener.QualificationResponse(lstStrings);
-                            }
-                        }
-                    } catch (Exception e) {
-                        if (targetFragment != null) {
-                            objDetailRequestListener = (DetailRequestListener) targetFragment;
-                        } else {
-                            objDetailRequestListener = (DetailRequestListener) context;
-                        }
-                        objDetailRequestListener.QualificationResponse(null);
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError volleyError) {
-                    if (targetFragment != null) {
-                        objDetailRequestListener = (DetailRequestListener) targetFragment;
-                    } else {
-                        objDetailRequestListener = (DetailRequestListener) context;
-                    }
-                    objDetailRequestListener.QualificationResponse(null);
-                }
-            });
-            queue.add(jsonObjectRequest);
-        } catch (Exception e) {
-            if (targetFragment != null) {
-                objDetailRequestListener = (DetailRequestListener) targetFragment;
-            } else {
-                objDetailRequestListener = (DetailRequestListener) context;
-            }
-            objDetailRequestListener.QualificationResponse(null);
-        }
-
-    }
-
-    public void SelectAllStates(final Context context, final Fragment targetFragment) {
-        String url;
-        try {
-            url = Service.Url + this.SelectAllStates;
-
-            Log.e("url", " " + url);
-            final RequestQueue queue = Volley.newRequestQueue(context);
-            final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, new JSONObject(), new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject jsonObject) {
-                    try {
-                        Log.e("json", " " + jsonObject.toString());
-                        if (jsonObject != null) {
-                            JSONArray jsonArray = jsonObject.getJSONArray(SelectAllStates + "Result");
-                            if (jsonArray != null) {
-                                ArrayList<String> lstStrings = new ArrayList<>();
-                                try {
-                                    for (int i = 0; i < jsonArray.length(); i++) {
-                                        lstStrings.add(jsonArray.getString(i));
-                                    }
-                                } catch (Exception e) {
-                                    Log.e("exception", " " + e.getMessage());
-                                    e.printStackTrace();
-                                }
-                                if (targetFragment != null) {
-                                    objDetailRequestListener = (DetailRequestListener) targetFragment;
-                                } else {
-                                    objDetailRequestListener = (DetailRequestListener) context;
-                                }
-                                objDetailRequestListener.QualificationResponse(lstStrings);
-                            }
-                        }
-                    } catch (Exception e) {
-                        if (targetFragment != null) {
-                            objDetailRequestListener = (DetailRequestListener) targetFragment;
-                        } else {
-                            objDetailRequestListener = (DetailRequestListener) context;
-                        }
-                        objDetailRequestListener.QualificationResponse(null);
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError volleyError) {
-                    if (targetFragment != null) {
-                        objDetailRequestListener = (DetailRequestListener) targetFragment;
-                    } else {
-                        objDetailRequestListener = (DetailRequestListener) context;
-                    }
-                    objDetailRequestListener.QualificationResponse(null);
-                }
-            });
-            queue.add(jsonObjectRequest);
-        } catch (Exception e) {
-            if (targetFragment != null) {
-                objDetailRequestListener = (DetailRequestListener) targetFragment;
-            } else {
-                objDetailRequestListener = (DetailRequestListener) context;
-            }
-            objDetailRequestListener.QualificationResponse(null);
-        }
-
-    }
-
-    public void SelectAllProfession(final Context context, final Fragment targetFragment) {
-        String url;
-        try {
-            url = Service.Url + this.SelectAllProfession;
-
-            Log.e("url", " " + url);
-            final RequestQueue queue = Volley.newRequestQueue(context);
-            final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, new JSONObject(), new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject jsonObject) {
-                    try {
-                        Log.e("json", " " + jsonObject.toString());
-                        if (jsonObject != null) {
-                            JSONArray jsonArray = jsonObject.getJSONArray(SelectAllProfession + "Result");
-                            if (jsonArray != null) {
-                                ArrayList<String> lstStrings = new ArrayList<>();
-                                try {
-                                    for (int i = 0; i < jsonArray.length(); i++) {
-                                        lstStrings.add(jsonArray.getString(i));
-                                    }
-                                } catch (Exception e) {
-                                    Log.e("exception", " " + e.getMessage());
-                                    e.printStackTrace();
-                                }
-                                if (targetFragment != null) {
-                                    objDetailRequestListener = (DetailRequestListener) targetFragment;
-                                } else {
-                                    objDetailRequestListener = (DetailRequestListener) context;
-                                }
-                                objDetailRequestListener.ProfessionResponse(lstStrings);
-                            }
-                        }
-                    } catch (Exception e) {
-                        if (targetFragment != null) {
-                            objDetailRequestListener = (DetailRequestListener) targetFragment;
-                        } else {
-                            objDetailRequestListener = (DetailRequestListener) context;
-                        }
-                        objDetailRequestListener.ProfessionResponse(null);
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError volleyError) {
-                    if (targetFragment != null) {
-                        objDetailRequestListener = (DetailRequestListener) targetFragment;
-                    } else {
-                        objDetailRequestListener = (DetailRequestListener) context;
-                    }
-                    objDetailRequestListener.ProfessionResponse(null);
-                }
-            });
-            queue.add(jsonObjectRequest);
-        } catch (Exception e) {
-            if (targetFragment != null) {
-                objDetailRequestListener = (DetailRequestListener) targetFragment;
-            } else {
-                objDetailRequestListener = (DetailRequestListener) context;
-            }
-            objDetailRequestListener.ProfessionResponse(null);
-        }
-
-    }
     //endregion
 
     public void ForgotPasswordMemberMaster(final Context context, final Fragment fragment, String email) {
@@ -1520,12 +1166,10 @@ public class MemberJSONParser {
             String url = Service.Url + this.ForgotPasswordMemberMaster + "/" + Globals.UrlEncode(email);
 
             RequestQueue queue = Volley.newRequestQueue(context);
-            Log.e("url", " " + url);
             final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, new JSONObject(), new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                     try {
-                        Log.e("json", " " + jsonObject.toString());
                         JSONObject jsonResponse = jsonObject.getJSONObject(ForgotPasswordMemberMaster + "Result");
                         if (jsonResponse != null) {
                             objMemberRequestListener = (MemberRequestListener) fragment;
@@ -1570,9 +1214,4 @@ public class MemberJSONParser {
         void MemberListResponse(ArrayList<MemberMaster> alMemberMasters, MemberMaster objMemberMaster, String errorCode);
     }
 
-    public interface DetailRequestListener {
-        void QualificationResponse(ArrayList<String> lstStrings);
-
-        void ProfessionResponse(ArrayList<String> lstStrings);
-    }
 }

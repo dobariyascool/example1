@@ -18,7 +18,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Base64;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -35,11 +34,8 @@ import android.widget.Spinner;
 import com.arraybit.global.Globals;
 import com.arraybit.global.MarshMallowPermission;
 import com.arraybit.global.Service;
-import com.arraybit.global.SharePreferenceManage;
-import com.arraybit.modal.MemberMaster;
 import com.arraybit.modal.MemberMasterNew;
 import com.arraybit.modal.MemberRelativesTran;
-import com.arraybit.parser.MemberJSONParser;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.EditText;
 import com.rey.material.widget.TextView;
@@ -53,7 +49,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-public class RegistrationDetailActivity extends AppCompatActivity implements View.OnClickListener, MemberJSONParser.MemberRequestListener, MemberJSONParser.DetailRequestListener {
+public class RegistrationDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static String imagePhysicalNameBytes, imagePhysicalNameBytes1, imagePhysicalNameBytes2, imagePhysicalNameBytes3, imagePhysicalNameBytes4, imagePhysicalNameBytes5;
     int childCount = 0;
@@ -99,10 +95,8 @@ public class RegistrationDetailActivity extends AppCompatActivity implements Vie
             }
             getSupportActionBar().setTitle(getResources().getString(R.string.title_fragment_registration));
             //end
-//            Globals.SetToolBarBackground( RegistrationDetailActivity.this, app_bar, ContextCompat.getColor( RegistrationDetailActivity.this, R.color.colorPrimary), ContextCompat.getColor( RegistrationDetailActivity.this, android.R.color.white));
 
-            //EditText
-
+            //permission for higher version from 23
             marshMallowPermission = new MarshMallowPermission(RegistrationDetailActivity.this);
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (!marshMallowPermission.checkPermissionForCamera()) {
@@ -112,9 +106,10 @@ public class RegistrationDetailActivity extends AppCompatActivity implements Vie
                     marshMallowPermission.requestPermissionForExternalStorage();
                 }
             }
+
+            //layout
             actProfession = (AppCompatAutoCompleteTextView) findViewById(R.id.actProfession);
             actQualification = (AppCompatMultiAutoCompleteTextView) findViewById(R.id.actQualification);
-
             if (Service.CheckNet(RegistrationDetailActivity.this)) {
                 RequestProfessions();
                 RequestQualification();
@@ -170,7 +165,7 @@ public class RegistrationDetailActivity extends AppCompatActivity implements Vie
             llAdd3 = (LinearLayout) findViewById(R.id.llAdd3);
             llAdd4 = (LinearLayout) findViewById(R.id.llAdd4);
             checkBox = (CheckBox) findViewById(R.id.checkBox);
-            //end
+
 
             //Radiogroup
             rgMain = (RadioGroup) findViewById(R.id.rgMain);
@@ -179,7 +174,6 @@ public class RegistrationDetailActivity extends AppCompatActivity implements Vie
             rgMainChild3 = (RadioGroup) findViewById(R.id.rgMainChild3);
             rgMainChild4 = (RadioGroup) findViewById(R.id.rgMainChild4);
             rgMainChild5 = (RadioGroup) findViewById(R.id.rgMainChild5);
-            //
 
             //RadioButton
             rbMarried = (RadioButton) findViewById(R.id.rbMarried);
@@ -194,20 +188,9 @@ public class RegistrationDetailActivity extends AppCompatActivity implements Vie
             rbFemale3 = (RadioButton) findViewById(R.id.rbFemale3);
             rbFemale4 = (RadioButton) findViewById(R.id.rbFemale4);
             rbFemale5 = (RadioButton) findViewById(R.id.rbFemale5);
-            //end
 
             //button
             btnUpdateDetail = (Button) findViewById(R.id.btnUpdateDetail);
-            //end
-
-            //Spinner
-            //
-
-            //compound button
-            //end
-
-            //event
-
             ivAdd1 = (ImageView) findViewById(R.id.ivAdd1);
             ivAdd2 = (ImageView) findViewById(R.id.ivAdd2);
             ivAdd3 = (ImageView) findViewById(R.id.ivAdd3);
@@ -232,14 +215,12 @@ public class RegistrationDetailActivity extends AppCompatActivity implements Vie
             ivClose3.setOnClickListener(this);
             ivClose4.setOnClickListener(this);
             ivClose5.setOnClickListener(this);
-
             ivAdd1.setOnClickListener(this);
             ivAdd2.setOnClickListener(this);
             ivAdd3.setOnClickListener(this);
             ivAdd4.setOnClickListener(this);
             actProfession.setOnClickListener(this);
             actQualification.setOnClickListener(this);
-            //end
 
             ArrayList<String> bloodGroups = new ArrayList<>();
             bloodGroups.add("- SELECT -");
@@ -268,8 +249,6 @@ public class RegistrationDetailActivity extends AppCompatActivity implements Vie
                     }
                 }
             });
-
-//            actQualification.setOn
 
             actQualification.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -318,33 +297,14 @@ public class RegistrationDetailActivity extends AppCompatActivity implements Vie
                 }
             });
 
-//            if (Service.CheckNet( RegistrationDetailActivity.this)) {
-//                RequestProfessions();
-//                RequestQualification();
-//            }
-
-//            if ( RegistrationDetailActivity.this instanceof DetailActivity) {
             if (getIntent() != null) {
-//                Bundle bundle = getArguments();
-//                if (bundle != null) {
                 objMemberMaster = getIntent().getParcelableExtra("MemberMaster");
                 isUpdate = getIntent().getBooleanExtra("isUpdate", false);
-//                }
             }
-//            }
-
-//            if (isUpdate) {
-//                btnUpdateDetail.setText("Update");
-//            } else {
             btnUpdateDetail.setText("Next");
-//            }
 
             if (objMemberMaster != null) {
-//                if (isUpdate) {
-//                    SetData();
-//                } else {
                 checkBox.setChecked(true);
-//                }
             } else {
                 checkBox.setChecked(true);
             }
@@ -463,9 +423,6 @@ public class RegistrationDetailActivity extends AppCompatActivity implements Vie
                         if (childCount == 0) {
                             childCount = 1;
                         }
-//                        if (objMemberMaster != null) {
-//                            SetData();
-//                        } else {
                         llChildDetail1.setVisibility(View.VISIBLE);
                         llAdd1.setVisibility(View.VISIBLE);
                         if (!etChildName1.getText().toString().equals("")) {
@@ -491,7 +448,6 @@ public class RegistrationDetailActivity extends AppCompatActivity implements Vie
                             llChildDetail5.setVisibility(View.VISIBLE);
                             llAdd4.setVisibility(View.GONE);
                         }
-//                        }
                     }
                 }
             });
@@ -502,21 +458,10 @@ public class RegistrationDetailActivity extends AppCompatActivity implements Vie
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-//        if ( RegistrationDetailActivity.this instanceof RegistartionFragmentActivity) {
-//            if (item.getItemId() == android.R.id.home) {
-//                 RegistrationDetailActivity.this.finish();
-//            }
-//        } else {
         if (item.getItemId() == android.R.id.home) {
             finish();
         }
-//        }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -539,7 +484,7 @@ public class RegistrationDetailActivity extends AppCompatActivity implements Vie
                 return;
             }
             if (Service.CheckNet(RegistrationDetailActivity.this)) {
-//                new SignUpLoadingTask().execute();
+                //pesonal data collect and go on next page
                 UpdateDetailRequest();
             } else {
                 Globals.ShowSnackBar(v, getResources().getString(R.string.MsgCheckConnection), RegistrationDetailActivity.this, 1000);
@@ -547,27 +492,27 @@ public class RegistrationDetailActivity extends AppCompatActivity implements Vie
         } else if (v.getId() == R.id.ivSpouseImage) {
             ivTemparory = ivSpouseImage;
             Globals.HideKeyBoard(this, v);
-            SelectImageProfile(this, 100, 101);
+            SelectImageProfile(this, 101);
         } else if (v.getId() == R.id.ivChildImage1) {
             ivTemparory = ivChildImage1;
             Globals.HideKeyBoard(this, v);
-            SelectImageProfile(this, 100, 101);
+            SelectImageProfile(this, 101);
         } else if (v.getId() == R.id.ivChildImage2) {
             ivTemparory = ivChildImage2;
             Globals.HideKeyBoard(this, v);
-            SelectImageProfile(this, 100, 101);
+            SelectImageProfile(this, 101);
         } else if (v.getId() == R.id.ivChildImage3) {
             ivTemparory = ivChildImage3;
             Globals.HideKeyBoard(this, v);
-            SelectImageProfile(this, 100, 101);
+            SelectImageProfile(this, 101);
         } else if (v.getId() == R.id.ivChildImage4) {
             ivTemparory = ivChildImage4;
             Globals.HideKeyBoard(this, v);
-            SelectImageProfile(this, 100, 101);
+            SelectImageProfile(this, 101);
         } else if (v.getId() == R.id.ivChildImage5) {
             ivTemparory = ivChildImage5;
             Globals.HideKeyBoard(this, v);
-            SelectImageProfile(this, 100, 101);
+            SelectImageProfile(this, 101);
         } else if (v.getId() == R.id.etAnniversaryDate) {
             Globals.ShowDatePickerDialog(etAnniversaryDate, RegistrationDetailActivity.this, false);
         } else if (v.getId() == R.id.etSpouseDOB) {
@@ -666,42 +611,7 @@ public class RegistrationDetailActivity extends AppCompatActivity implements Vie
         }
     }
 
-    @Override
-    public void MemberResponse(String errorCode, MemberMaster objMemberMaster) {
-        progressDialog.dismiss();
-        if (errorCode.equals("0")) {
-            finish();
-        } else {
-            Globals.ShowSnackBar(llPersonal, getResources().getString(R.string.MsgServerNotResponding), RegistrationDetailActivity.this, 1000);
-        }
-    }
-
-    @Override
-    public void MemberUpdate(String errorCode, MemberMaster objMemberMaster) {
-
-    }
-
-    @Override
-    public void QualificationResponse(ArrayList<String> lstStrings) {
-        if (lstStrings != null && lstStrings.size() > 0) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(RegistrationDetailActivity.this, R.layout.row_spinner, lstStrings);
-            alString = lstStrings;
-            alStringFilter = new ArrayList<>();
-            actQualification.setAdapter(adapter);
-            actQualification.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-        }
-    }
-
-    @Override
-    public void ProfessionResponse(ArrayList<String> lstStrings) {
-        if (lstStrings != null && lstStrings.size() > 0) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(RegistrationDetailActivity.this, R.layout.row_spinner, lstStrings);
-            actProfession.setAdapter(adapter);
-        }
-    }
-
-    // region Private Methods
-
+    //date picker on click of edittext
     public void EditTextOnClick(View v) {
         if (v.getId() == R.id.etAnniversaryDate) {
             Globals.ShowDatePickerDialog(etAnniversaryDate, RegistrationDetailActivity.this, false);
@@ -720,359 +630,9 @@ public class RegistrationDetailActivity extends AppCompatActivity implements Vie
         }
     }
 
-    private void UpdateDetailRequest() {
-        try {
-            MemberMasterNew objMemberMaster = new MemberMasterNew();
-            MemberRelativesTran objMemberRelativesTran = new MemberRelativesTran();
-            objMemberMaster = this.objMemberMaster;
-            objMemberMaster.setProfession(actProfession.getText().toString());
-//            if (actQualification.getText().toString().substring(actQualification.getText().toString().length() - 1).equals(",")) {
-//                objMemberMaster.setQualification(actQualification.getText().toString().substring(0, actQualification.getText().toString().length() - 2));
-//            } else {
-//                objMemberMaster.setQualification(actQualification.getText().toString());
-//            }
-
-            if (actQualification.getText().subSequence(actQualification.length() - 1, actQualification.length()).toString().equals(",")) {
-                objMemberMaster.setQualification(actQualification.getText().toString().substring(0, actQualification.length() - 1));
-            } else if (actQualification.getText().subSequence(actQualification.length() - 1, actQualification.length()).toString().equals(" ")) {
-                if (actQualification.getText().subSequence(actQualification.length() - 2, actQualification.length() - 1).toString().equals(",")) {
-                    objMemberMaster.setQualification(actQualification.getText().toString().substring(0, actQualification.length() - 2));
-                } else {
-                    objMemberMaster.setQualification(actQualification.getText().toString().substring(0, actQualification.length() - 1));
-                }
-            } else {
-                objMemberMaster.setQualification(actQualification.getText().toString());
-            }
-
-            if (spinnerBloodGroup.getSelectedItemPosition() > 0) {
-                objMemberMaster.setBloodGroup(spinnerBloodGroup.getSelectedItem().toString());
-            }
-            if (rbMarried.isChecked()) {
-                objMemberMaster.setIsMarried(true);
-                if (!etAnniversaryDate.getText().toString().isEmpty()) {
-                    objMemberMaster.setAnniversaryDate(etAnniversaryDate.getText().toString());
-                }
-                objMemberRelativesTran.setlinktoMemberMasterId(Globals.memberMasterId);
-//                if (this.objMemberMaster != null && this.objMemberMaster.getLstMemberRelativeTran() != null && this.objMemberMaster.getLstMemberRelativeTran().size() > 0) {
-//                    objMemberRelativesTran.setMemberRelativesTranId(this.objMemberMaster.getLstMemberRelativeTran().get(0).getMemberRelativesTranId());
-//                }
-                objMemberRelativesTran.setRelativeName(etSpouseName.getText().toString());
-                if (!etSpouseDOB.getText().toString().isEmpty()) {
-                    objMemberRelativesTran.setBirthDate(etSpouseDOB.getText().toString());
-                }
-                if (imageName != null && !imageName.equals("")) {
-//                strImageName = imageName.substring(0, imageName.lastIndexOf(".")) + "_" + simpleDateFormat.format(new Date()) + imageName.substring(imageName.lastIndexOf("."), imageName.length());
-                    strImageName = imageName;
-                    objMemberRelativesTran.setImageName(strImageName);
-//                    objMemberRelativesTran.setImageNameBytes(imagePhysicalNameBytes);
-                }
-                SharePreferenceManage objSharePreferenceManage = new SharePreferenceManage();
-                if (objMemberMaster.getGender().equals("Male")) {
-                    objMemberRelativesTran.setGender("Female");
-                    objMemberRelativesTran.setRelation("Wife");
-                } else if (objMemberMaster.getGender().equals("Female")) {
-                    objMemberRelativesTran.setGender("Male");
-                    objMemberRelativesTran.setRelation("Husbund");
-                }
-                objRelative0 = objMemberRelativesTran;
-
-                if (!checkBox.isChecked()) {
-                    if (llChildDetail1.getVisibility() == View.VISIBLE && etChildName1.getText().toString() != null && !etChildName1.getText().toString().trim().equals("")) {
-                        objMemberRelativesTran = new MemberRelativesTran();
-                        objMemberRelativesTran.setlinktoMemberMasterId(Globals.memberMasterId);
-                        objMemberRelativesTran.setRelativeName(etChildName1.getText().toString());
-                        if (!etChildDOB1.getText().toString().isEmpty()) {
-                            objMemberRelativesTran.setBirthDate(etChildDOB1.getText().toString());
-                        }
-                        if (imageName1 != null && !imageName1.equals("")) {
-//                strImageName = imageName.substring(0, imageName.lastIndexOf(".")) + "_" + simpleDateFormat.format(new Date()) + imageName.substring(imageName.lastIndexOf("."), imageName.length());
-                            strImageName = imageName1;
-                            objMemberRelativesTran.setImageName(strImageName);
-//                            objMemberRelativesTran.setImageNameBytes(imagePhysicalNameBytes1);
-                        }
-                        if (rbMale1.isChecked()) {
-                            objMemberRelativesTran.setGender(rbMale1.getText().toString());
-                            objMemberRelativesTran.setRelation("Son");
-                        }
-                        if (rbFemale1.isChecked()) {
-                            objMemberRelativesTran.setGender(rbFemale1.getText().toString());
-                            objMemberRelativesTran.setRelation("Daughter");
-                        }
-//                        lstMemberRelativesTren.add(objMemberRelativesTran);
-                        objRelative1 = objMemberRelativesTran;
-                    }
-
-                    if (llChildDetail2.getVisibility() == View.VISIBLE && etChildName2.getText().toString() != null && !etChildName2.getText().toString().trim().equals("")) {
-                        objMemberRelativesTran = new MemberRelativesTran();
-//                        if (this.objMemberMaster != null && this.objMemberMaster.getLstMemberRelativeTran() != null && this.objMemberMaster.getLstMemberRelativeTran().size() > 2) {
-//                            objMemberRelativesTran.setMemberRelativesTranId(this.objMemberMaster.getLstMemberRelativeTran().get(2).getMemberRelativesTranId());
-//                        }
-                        objMemberRelativesTran.setlinktoMemberMasterId(Globals.memberMasterId);
-                        objMemberRelativesTran.setRelativeName(etChildName2.getText().toString());
-                        if (!etChildDOB2.getText().toString().isEmpty()) {
-                            objMemberRelativesTran.setBirthDate(etChildDOB2.getText().toString());
-                        }
-                        if (imageName2 != null && !imageName2.equals("")) {
-//                strImageName = imageName.substring(0, imageName.lastIndexOf(".")) + "_" + simpleDateFormat.format(new Date()) + imageName.substring(imageName.lastIndexOf("."), imageName.length());
-                            strImageName = imageName2;
-                            objMemberRelativesTran.setImageName(strImageName);
-//                            objMemberRelativesTran.setImageNameBytes(imagePhysicalNameBytes2);
-                        }
-                        if (rbMale2.isChecked()) {
-                            objMemberRelativesTran.setGender(rbMale2.getText().toString());
-                            objMemberRelativesTran.setRelation("Son");
-                        }
-                        if (rbFemale2.isChecked()) {
-                            objMemberRelativesTran.setGender(rbFemale2.getText().toString());
-                            objMemberRelativesTran.setRelation("Daughter");
-                        }
-//                        lstMemberRelativesTren.add(objMemberRelativesTran);
-                        objRelative2 = objMemberRelativesTran;
-                    }
-
-                    if (llChildDetail3.getVisibility() == View.VISIBLE && etChildName3.getText().toString() != null && !etChildName3.getText().toString().trim().equals("")) {
-                        objMemberRelativesTran = new MemberRelativesTran();
-//                        if (this.objMemberMaster != null && this.objMemberMaster.getLstMemberRelativeTran() != null && this.objMemberMaster.getLstMemberRelativeTran().size() > 3) {
-//                            objMemberRelativesTran.setMemberRelativesTranId(this.objMemberMaster.getLstMemberRelativeTran().get(3).getMemberRelativesTranId());
-//                        }
-                        objMemberRelativesTran.setlinktoMemberMasterId(Globals.memberMasterId);
-                        objMemberRelativesTran.setRelativeName(etChildName3.getText().toString());
-                        if (!etChildDOB3.getText().toString().isEmpty()) {
-                            objMemberRelativesTran.setBirthDate(etChildDOB3.getText().toString());
-                        }
-                        if (imageName3 != null && !imageName3.equals("")) {
-//                strImageName = imageName.substring(0, imageName.lastIndexOf(".")) + "_" + simpleDateFormat.format(new Date()) + imageName.substring(imageName.lastIndexOf("."), imageName.length());
-                            strImageName = imageName3;
-                            objMemberRelativesTran.setImageName(strImageName);
-//                            objMemberRelativesTran.setImageNameBytes(imagePhysicalNameBytes3);
-                        }
-                        if (rbMale3.isChecked()) {
-                            objMemberRelativesTran.setGender(rbMale3.getText().toString());
-                            objMemberRelativesTran.setRelation("Son");
-                        }
-                        if (rbFemale3.isChecked()) {
-                            objMemberRelativesTran.setGender(rbFemale3.getText().toString());
-                            objMemberRelativesTran.setRelation("Daughter");
-                        }
-//                        lstMemberRelativesTren.add(objMemberRelativesTran);
-                        objRelative3 = objMemberRelativesTran;
-                    }
-
-                    if (llChildDetail4.getVisibility() == View.VISIBLE && etChildName4.getText().toString() != null && !etChildName4.getText().toString().trim().equals("")) {
-                        objMemberRelativesTran = new MemberRelativesTran();
-//                        if (this.objMemberMaster != null && this.objMemberMaster.getLstMemberRelativeTran() != null && this.objMemberMaster.getLstMemberRelativeTran().size() > 4) {
-//                            objMemberRelativesTran.setMemberRelativesTranId(this.objMemberMaster.getLstMemberRelativeTran().get(4).getMemberRelativesTranId());
-//                        }
-                        objMemberRelativesTran.setlinktoMemberMasterId(Globals.memberMasterId);
-                        objMemberRelativesTran.setRelativeName(etChildName4.getText().toString());
-                        if (!etChildDOB4.getText().toString().isEmpty()) {
-                            objMemberRelativesTran.setBirthDate(etChildDOB4.getText().toString());
-                        }
-                        if (imageName4 != null && !imageName4.equals("")) {
-//                strImageName = imageName.substring(0, imageName.lastIndexOf(".")) + "_" + simpleDateFormat.format(new Date()) + imageName.substring(imageName.lastIndexOf("."), imageName.length());
-                            strImageName = imageName4;
-                            objMemberRelativesTran.setImageName(strImageName);
-//                            objMemberRelativesTran.setImageNameBytes(imagePhysicalNameBytes4);
-                        }
-                        if (rbMale4.isChecked()) {
-                            objMemberRelativesTran.setGender(rbMale4.getText().toString());
-                            objMemberRelativesTran.setRelation("Son");
-                        }
-                        if (rbFemale4.isChecked()) {
-                            objMemberRelativesTran.setGender(rbFemale4.getText().toString());
-                            objMemberRelativesTran.setRelation("Daughter");
-                        }
-//                        lstMemberRelativesTren.add(objMemberRelativesTran);
-                        objRelative4 = objMemberRelativesTran;
-                    }
-                    if (llChildDetail5.getVisibility() == View.VISIBLE && etChildName5.getText().toString() != null && !etChildName5.getText().toString().trim().equals("")) {
-                        objMemberRelativesTran = new MemberRelativesTran();
-//                        if (this.objMemberMaster != null && this.objMemberMaster.getLstMemberRelativeTran() != null && this.objMemberMaster.getLstMemberRelativeTran().size() > 5) {
-//                            objMemberRelativesTran.setMemberRelativesTranId(this.objMemberMaster.getLstMemberRelativeTran().get(5).getMemberRelativesTranId());
-//                        }
-                        objMemberRelativesTran.setlinktoMemberMasterId(Globals.memberMasterId);
-                        objMemberRelativesTran.setRelativeName(etChildName5.getText().toString());
-                        if (!etChildDOB5.getText().toString().isEmpty()) {
-                            objMemberRelativesTran.setBirthDate(etChildDOB5.getText().toString());
-                        }
-                        if (imageName5 != null && !imageName5.equals("")) {
-//                strImageName = imageName.substring(0, imageName.lastIndexOf(".")) + "_" + simpleDateFormat.format(new Date()) + imageName.substring(imageName.lastIndexOf("."), imageName.length());
-                            strImageName = imageName5;
-                            objMemberRelativesTran.setImageName(strImageName);
-//                            objMemberRelativesTran.setImageNameBytes(imagePhysicalNameBytes5);
-                        }
-                        if (rbMale5.isChecked()) {
-                            objMemberRelativesTran.setGender(rbMale5.getText().toString());
-                            objMemberRelativesTran.setRelation("Son");
-                        }
-                        if (rbFemale5.isChecked()) {
-                            objMemberRelativesTran.setGender(rbFemale5.getText().toString());
-                            objMemberRelativesTran.setRelation("Daughter");
-                        }
-//                        lstMemberRelativesTren.add(objMemberRelativesTran);
-                        objRelative5 = objMemberRelativesTran;
-                    }
-//                    objMemberMaster.setLstMemberRelativeTran(lstMemberRelativesTren);
-                }
-            } else {
-                objMemberMaster.setIsMarried(false);
-            }
-
-            Intent intent = new Intent(RegistrationDetailActivity.this, RegistrationContactActivity.class);
-            if (rbMarried.isChecked()) {
-                if (objRelative0 != null) {
-                    intent.putExtra("MemberRelative0", objRelative0);
-                }
-                if (!checkBox.isChecked()) {
-                    if (objRelative1 != null) {
-                        intent.putExtra("MemberRelative1", objRelative1);
-                    }
-                    if (objRelative2 != null) {
-                        intent.putExtra("MemberRelative2", objRelative2);
-                    }
-                    if (objRelative3 != null) {
-                        intent.putExtra("MemberRelative3", objRelative3);
-                    }
-                    if (objRelative4 != null) {
-                        intent.putExtra("MemberRelative4", objRelative4);
-                    }
-                    if (objRelative5 != null) {
-                        intent.putExtra("MemberRelative5", objRelative5);
-                    }
-
-                }
-            }
-
-            intent.putExtra("MemberMaster", objMemberMaster);
-            startActivity(intent);
-//            finish();
-
-//                RegistrationContactFragment objRegistrationContactFragment = new RegistrationContactFragment();
-//                Bundle bundle = new Bundle();
-//                bundle.putParcelable("MemberMaster", objMemberMaster);
-//                objRegistrationContactFragment.setArguments(bundle);
-//                FragmentTransaction fragmentTransaction =  RegistrationDetailActivity.this.getSupportFragmentManager().beginTransaction();
-//                fragmentTransaction.setCustomAnimations(R.anim.right_in, R.anim.left_out, 0, R.anim.right_exit);
-//                fragmentTransaction.replace(R.id.llPersonal, objRegistrationContactFragment, "ContactDetail");
-//                fragmentTransaction.addToBackStack("ContactDetail");
-//                fragmentTransaction.commit();
-//                RegistrationDetailFragment.onNextClick objOnNextClick =(RegistrationDetailFragment.onNextClick) ((SignInActivity) RegistrationDetailActivity.this);
-//                objOnNextClick.OnNextClick(objMemberMaster);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void RequestProfessions() {
-//        MemberJSONParser objMemeberJSONParser = new MemberJSONParser();
-//        objMemeberJSONParser.SelectAllProfession(RegistrationDetailActivity.this, null);
-        ArrayList<String> lstStrings = new ArrayList<>();
-
-        try {
-            JSONObject jsonObject = Service.HttpGetService(Service.Url + "SelectAllProfession");
-            if (jsonObject != null) {
-                JSONArray jsonArray = jsonObject.getJSONArray("SelectAllProfessionResult");
-                if (jsonArray != null) {
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        lstStrings.add(jsonArray.getString(i));
-                    }
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(RegistrationDetailActivity.this, R.layout.row_spinner, lstStrings);
-                    actProfession.setAdapter(adapter);
-                }
-            }
-        } catch (Exception e) {
-
-        }
-    }
-
-    private void RequestQualification() {
-//        MemberJSONParser objMemeberJSONParser = new MemberJSONParser();
-//        objMemeberJSONParser.SelectAllQualification(RegistrationDetailActivity.this, null);
-        ArrayList<String> lstStrings = new ArrayList<>();
-
-        try {
-            JSONObject jsonObject = Service.HttpGetService(Service.Url + "SelectAllQualification");
-            if (jsonObject != null) {
-                JSONArray jsonArray = jsonObject.getJSONArray("SelectAllQualificationResult");
-                if (jsonArray != null) {
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        lstStrings.add(jsonArray.getString(i));
-                    }
-                    if (lstStrings != null && lstStrings.size() > 0) {
-                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(RegistrationDetailActivity.this, R.layout.row_spinner, lstStrings);
-                        alString = lstStrings;
-                        alStringFilter = new ArrayList<>();
-                        actQualification.setAdapter(adapter);
-                        actQualification.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-                    }
-                }
-            }
-        } catch (Exception e) {
-            // Log exception
-
-        }
-    }
-
+    //set image
     public void SelectImage(int requestCode, Intent data) {
-        if (requestCode == 100) {
-//            strImageName = "CameraImage_" + simpleDateFormat.format(new Date()) + imageName.substring(imageName.lastIndexOf("."), imageName.length()) + ".jpg";
-//            File file = new File(android.os.Environment.getExternalStorageDirectory(), strImageName);
-//            picturePath = file.getAbsolutePath();
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-//            imageName = "Member_" + Globals.memberMasterId + ".jpg" ;
-            long millis = System.currentTimeMillis();
-            if (ivTemparory == ivSpouseImage) {
-//                String extension = MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                if (extension != null) {
-//                    imageName =  String.valueOf(millis)+ "_0." + MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                } else {
-                imageName = String.valueOf(millis) + "_0.jpg";
-//                }
-            } else if (ivTemparory == ivChildImage1) {
-//                String extension = MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                if (extension != null) {
-//                    imageName1 =  String.valueOf(millis)+ "_1." + MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                } else {
-                imageName1 = String.valueOf(millis) + "_1.jpg";
-//                }
-            } else if (ivTemparory == ivChildImage2) {
-//                String extension = MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                if (extension != null) {
-//                    imageName2 = String.valueOf(millis) + "_2." + MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                } else {
-                imageName2 = String.valueOf(millis) + "_2.jpg";
-//                }
-            } else if (ivTemparory == ivChildImage3) {
-//                String extension = MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                if (extension != null) {
-//                    imageName3 =String.valueOf(millis) + "_3." + MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                } else {
-                imageName3 = String.valueOf(millis) + "_3.jpg";
-//                }
-            } else if (ivTemparory == ivChildImage4) {
-//                String extension = MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                if (extension != null) {
-//                    imageName4 = String.valueOf(millis) + "_4." + MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                } else {
-                imageName4 = String.valueOf(millis) + "_4.jpg";
-//                }
-            } else if (ivTemparory == ivChildImage5) {
-//                String extension = MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                if (extension != null) {
-//                    imageName5 = String.valueOf(millis)+ "_5." + MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                } else {
-                imageName5 = String.valueOf(millis) + "_5.jpg";
-//                }
-            }
-            ivTemparory.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            ivTemparory.setImageBitmap(bitmap);
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 110, bos);
-            byte[] byteData = bos.toByteArray();
-            imagePhysicalNameBytes = Base64.encodeToString(byteData, Base64.DEFAULT);
-            return;
-        } else if (requestCode == 101 && data != null && data.getData() != null) {
+        if (requestCode == 101 && data != null && data.getData() != null) {
             Uri selectedImage = data.getData();
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
@@ -1084,47 +644,17 @@ public class RegistrationDetailActivity extends AppCompatActivity implements Vie
             File file = new File(picturePath);
             long millis = System.currentTimeMillis();
             if (ivTemparory == ivSpouseImage) {
-//                String extension = MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                if (extension != null) {
-//                    imageName =  String.valueOf(millis)+ "_0." + MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                } else {
                 imageName = String.valueOf(millis) + "_0.jpg";
-//                }
             } else if (ivTemparory == ivChildImage1) {
-//                String extension = MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                if (extension != null) {
-//                    imageName1 =  String.valueOf(millis)+ "_1." + MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                } else {
                 imageName1 = String.valueOf(millis) + "_1.jpg";
-//                }
             } else if (ivTemparory == ivChildImage2) {
-//                String extension = MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                if (extension != null) {
-//                    imageName2 = String.valueOf(millis) + "_2." + MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                } else {
                 imageName2 = String.valueOf(millis) + "_2.jpg";
-//                }
             } else if (ivTemparory == ivChildImage3) {
-//                String extension = MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                if (extension != null) {
-//                    imageName3 =String.valueOf(millis) + "_3." + MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                } else {
                 imageName3 = String.valueOf(millis) + "_3.jpg";
-//                }
             } else if (ivTemparory == ivChildImage4) {
-//                String extension = MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                if (extension != null) {
-//                    imageName4 = String.valueOf(millis) + "_4." + MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                } else {
                 imageName4 = String.valueOf(millis) + "_4.jpg";
-//                }
             } else if (ivTemparory == ivChildImage5) {
-//                String extension = MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                if (extension != null) {
-//                    imageName5 = String.valueOf(millis)+ "_5." + MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                } else {
                 imageName5 = String.valueOf(millis) + "_5.jpg";
-//                }
             }
             cursor.close();
         }
@@ -1158,185 +688,244 @@ public class RegistrationDetailActivity extends AppCompatActivity implements Vie
         }
     }
 
-//    private void SetData() {
-//
-//        if (isUpdate) {
-//            if (objMemberMaster.getLstMemberRelativeTran() != null && objMemberMaster.getLstMemberRelativeTran().size() > 1) {
-//                checkBox.setChecked(false);
-//                llChildDetail1.setVisibility(View.VISIBLE);
-//                if (objMemberMaster.getLstMemberRelativeTran().size() > 2) {
-//                    llChildDetail2.setVisibility(View.VISIBLE);
-//                    if (objMemberMaster.getLstMemberRelativeTran().size() > 3) {
-//                        llChildDetail3.setVisibility(View.VISIBLE);
-//                        if (objMemberMaster.getLstMemberRelativeTran().size() > 4) {
-//                            llChildDetail4.setVisibility(View.VISIBLE);
-//                            if (objMemberMaster.getLstMemberRelativeTran().size() > 5) {
-//                                llChildDetail5.setVisibility(View.VISIBLE);
-//                            } else {
-//                                llAdd4.setVisibility(View.VISIBLE);
-//                            }
-//                        } else {
-//                            llAdd3.setVisibility(View.VISIBLE);
-//                        }
-//                    } else {
-//                        llAdd2.setVisibility(View.VISIBLE);
-//                    }
-//                } else {
-//                    llAdd1.setVisibility(View.VISIBLE);
-//                }
-//            } else {
-//                checkBox.setChecked(true);
-//            }
-////            llChildDetail1.setVisibility(View.VISIBLE);
-////            llChildDetail2.setVisibility(View.VISIBLE);
-//            txtChildDetail.setVisibility(View.VISIBLE);
-//            checkBox.setVisibility(View.VISIBLE);
-//        } else {
-//            llChildDetail1.setVisibility(View.GONE);
-//            llChildDetail2.setVisibility(View.GONE);
-//            llChildDetail3.setVisibility(View.GONE);
-//            llChildDetail4.setVisibility(View.GONE);
-//            llChildDetail5.setVisibility(View.GONE);
-//            llAdd1.setVisibility(View.GONE);
-//            llAdd2.setVisibility(View.GONE);
-//            llAdd3.setVisibility(View.GONE);
-//            llAdd4.setVisibility(View.GONE);
-//            txtChildDetail.setVisibility(View.GONE);
-//            checkBox.setVisibility(View.GONE);
-//        }
-//
-//        actProfession.setText(objMemberMaster.getProfession());
-//        actQualification.setText(objMemberMaster.getQualification());
-//        for (int i = 0; i < Globals.BloodGroup.values().length; i++) {
-//            if (Globals.BloodGroup.getBlood(i).equals(objMemberMaster.getBloodGroup())) {
-//                spinnerBloodGroup.setSelection(i + 1);
-//            }
-//        }
-//
-//        if (objMemberMaster.getAnniversaryDate() != null) {
-//            rbMarried.setChecked(true);
-//            rbUnmarried.setChecked(false);
-//            etAnniversaryDate.setText(objMemberMaster.getAnniversaryDate());
-//            if (objMemberMaster.getLstMemberRelativeTran() != null) {
-//                etSpouseName.setText(objMemberMaster.getLstMemberRelativeTran().get(0).getRelativeName());
-//                etSpouseDOB.setText(objMemberMaster.getLstMemberRelativeTran().get(0).getBirthDate());
-//                if (objMemberMaster.getLstMemberRelativeTran().get(0).getImageName() != null) {
-//                    Glide.with(RegistrationDetailActivity.this).load(objMemberMaster.getLstMemberRelativeTran().get(0).getImageName()).asBitmap()
-//                            .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivSpouseImage);
-//                }
-//                if (ivSpouseImage.getDrawable() == null) {
-////                    ivProfile1.setVisibility(View.GONE);
-////                    ivProfile.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-//                    ivSpouseImage.setImageResource(R.drawable.no_image);
-//                }
-//                if (objMemberMaster.getLstMemberRelativeTran() != null && objMemberMaster.getLstMemberRelativeTran().size() > 1) {
-//                    childCount = objMemberMaster.getLstMemberRelativeTran().size() - 1;
-//                    checkBox.setChecked(false);
-//                    etChildName1.setText(objMemberMaster.getLstMemberRelativeTran().get(1).getRelativeName());
-//                    etChildDOB1.setText(objMemberMaster.getLstMemberRelativeTran().get(1).getBirthDate());
-//                    if (objMemberMaster.getLstMemberRelativeTran().get(1).getImageName() != null) {
-//                        Glide.with(RegistrationDetailActivity.this).load(objMemberMaster.getLstMemberRelativeTran().get(1).getImageName()).asBitmap()
-//                                .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivChildImage1);
-//                    }
-//
-//                    if (objMemberMaster.getLstMemberRelativeTran().get(1).getGender().equals("Male")) {
-//                        rbMale1.setChecked(true);
-//                    }
-//                    if (objMemberMaster.getLstMemberRelativeTran().get(1).getGender().equals("Female")) {
-//                        rbFemale1.setChecked(true);
-//                    }
-//
-//                    if (objMemberMaster.getLstMemberRelativeTran().size() > 2) {
-//                        etChildName2.setText(objMemberMaster.getLstMemberRelativeTran().get(2).getRelativeName());
-//                        etChildDOB2.setText(objMemberMaster.getLstMemberRelativeTran().get(2).getBirthDate());
-//                        if (objMemberMaster.getLstMemberRelativeTran().get(2).getImageName() != null) {
-//                            Glide.with(RegistrationDetailActivity.this).load(objMemberMaster.getLstMemberRelativeTran().get(2).getImageName()).asBitmap()
-//                                    .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivChildImage2);
-//                        }
-//                        if (objMemberMaster.getLstMemberRelativeTran().get(2).getGender().equals("Male")) {
-//                            rbMale2.setChecked(true);
-//                        }
-//                        if (objMemberMaster.getLstMemberRelativeTran().get(2).getGender().equals("Female")) {
-//                            rbFemale2.setChecked(true);
-//                        }
-//
-//                        if (objMemberMaster.getLstMemberRelativeTran().size() > 3) {
-//                            etChildName3.setText(objMemberMaster.getLstMemberRelativeTran().get(3).getRelativeName());
-//                            etChildDOB3.setText(objMemberMaster.getLstMemberRelativeTran().get(3).getBirthDate());
-//                            if (objMemberMaster.getLstMemberRelativeTran().get(3).getImageName() != null) {
-//                                Glide.with(RegistrationDetailActivity.this).load(objMemberMaster.getLstMemberRelativeTran().get(3).getImageName()).asBitmap()
-//                                        .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivChildImage3);
-//                            }
-//                            if (objMemberMaster.getLstMemberRelativeTran().get(3).getGender().equals("Male")) {
-//                                rbMale3.setChecked(true);
-//                            }
-//                            if (objMemberMaster.getLstMemberRelativeTran().get(3).getGender().equals("Female")) {
-//                                rbFemale3.setChecked(true);
-//                            }
-//
-//                            if (objMemberMaster.getLstMemberRelativeTran().size() > 4) {
-//                                etChildName4.setText(objMemberMaster.getLstMemberRelativeTran().get(4).getRelativeName());
-//                                etChildDOB4.setText(objMemberMaster.getLstMemberRelativeTran().get(4).getBirthDate());
-//                                if (objMemberMaster.getLstMemberRelativeTran().get(4).getImageName() != null) {
-//                                    Glide.with(RegistrationDetailActivity.this).load(objMemberMaster.getLstMemberRelativeTran().get(4).getImageName()).asBitmap()
-//                                            .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivChildImage4);
-//                                }
-//                                if (objMemberMaster.getLstMemberRelativeTran().get(4).getGender().equals("Male")) {
-//                                    rbMale4.setChecked(true);
-//                                }
-//                                if (objMemberMaster.getLstMemberRelativeTran().get(4).getGender().equals("Female")) {
-//                                    rbFemale4.setChecked(true);
-//                                }
-//
-//                                if (objMemberMaster.getLstMemberRelativeTran().size() > 5) {
-//                                    etChildName5.setText(objMemberMaster.getLstMemberRelativeTran().get(5).getRelativeName());
-//                                    etChildDOB5.setText(objMemberMaster.getLstMemberRelativeTran().get(5).getBirthDate());
-//                                    if (objMemberMaster.getLstMemberRelativeTran().get(5).getImageName() != null) {
-//                                        Glide.with(RegistrationDetailActivity.this).load(objMemberMaster.getLstMemberRelativeTran().get(5).getImageName()).asBitmap()
-//                                                .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivChildImage5);
-//                                    }
-//                                    if (objMemberMaster.getLstMemberRelativeTran().get(5).getGender().equals("Male")) {
-//                                        rbMale5.setChecked(true);
-//                                    }
-//                                    if (objMemberMaster.getLstMemberRelativeTran().get(5).getGender().equals("Female")) {
-//                                        rbFemale5.setChecked(true);
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                } else {
-//                    checkBox.setChecked(true);
-//                }
-//            }
-//            rbMarried.setChecked(true);
-//            rbUnmarried.setChecked(false);
-//        } else {
-//            rbMarried.setChecked(false);
-//            rbUnmarried.setChecked(true);
-//            etAnniversaryDate.setVisibility(View.GONE);
-//            etSpouseName.setVisibility(View.GONE);
-//            etSpouseDOB.setVisibility(View.GONE);
-//            txtAnniversaryDate.setVisibility(View.GONE);
-//            txtSpouseName.setVisibility(View.GONE);
-//            txtSpouseDOB.setVisibility(View.GONE);
-//            txtSpouseDetail.setVisibility(View.GONE);
-//            ivSpouseImage.setVisibility(View.GONE);
-//            txtChildDetail.setVisibility(View.GONE);
-//            checkBox.setVisibility(View.GONE);
-//            llChildDetail1.setVisibility(View.GONE);
-//            llChildDetail2.setVisibility(View.GONE);
-//            llChildDetail3.setVisibility(View.GONE);
-//            llChildDetail4.setVisibility(View.GONE);
-//            llChildDetail5.setVisibility(View.GONE);
-//            llAdd1.setVisibility(View.GONE);
-//            llAdd2.setVisibility(View.GONE);
-//            llAdd3.setVisibility(View.GONE);
-//            llAdd4.setVisibility(View.GONE);
-//        }
-//
-//    }
+    // region Private Methods
 
+    private void UpdateDetailRequest() {
+        try {
+            MemberMasterNew objMemberMaster = new MemberMasterNew();
+            MemberRelativesTran objMemberRelativesTran = new MemberRelativesTran();
+            objMemberMaster = this.objMemberMaster;
+            objMemberMaster.setProfession(actProfession.getText().toString());
+
+            if (actQualification.getText().subSequence(actQualification.length() - 1, actQualification.length()).toString().equals(",")) {
+                objMemberMaster.setQualification(actQualification.getText().toString().substring(0, actQualification.length() - 1));
+            } else if (actQualification.getText().subSequence(actQualification.length() - 1, actQualification.length()).toString().equals(" ")) {
+                if (actQualification.getText().subSequence(actQualification.length() - 2, actQualification.length() - 1).toString().equals(",")) {
+                    objMemberMaster.setQualification(actQualification.getText().toString().substring(0, actQualification.length() - 2));
+                } else {
+                    objMemberMaster.setQualification(actQualification.getText().toString().substring(0, actQualification.length() - 1));
+                }
+            } else {
+                objMemberMaster.setQualification(actQualification.getText().toString());
+            }
+
+            if (spinnerBloodGroup.getSelectedItemPosition() > 0) {
+                objMemberMaster.setBloodGroup(spinnerBloodGroup.getSelectedItem().toString());
+            }
+            if (rbMarried.isChecked()) {
+                objMemberMaster.setIsMarried(true);
+                if (!etAnniversaryDate.getText().toString().isEmpty()) {
+                    objMemberMaster.setAnniversaryDate(etAnniversaryDate.getText().toString());
+                }
+                objMemberRelativesTran.setlinktoMemberMasterId(Globals.memberMasterId);
+                objMemberRelativesTran.setRelativeName(etSpouseName.getText().toString());
+                if (!etSpouseDOB.getText().toString().isEmpty()) {
+                    objMemberRelativesTran.setBirthDate(etSpouseDOB.getText().toString());
+                }
+                if (imageName != null && !imageName.equals("")) {
+                    strImageName = imageName;
+                    objMemberRelativesTran.setImageName(strImageName);
+                }
+                if (objMemberMaster.getGender().equals("Male")) {
+                    objMemberRelativesTran.setGender("Female");
+                    objMemberRelativesTran.setRelation("Wife");
+                } else if (objMemberMaster.getGender().equals("Female")) {
+                    objMemberRelativesTran.setGender("Male");
+                    objMemberRelativesTran.setRelation("Husbund");
+                }
+                objRelative0 = objMemberRelativesTran;
+
+                if (!checkBox.isChecked()) {
+                    if (llChildDetail1.getVisibility() == View.VISIBLE && etChildName1.getText().toString() != null && !etChildName1.getText().toString().trim().equals("")) {
+                        objMemberRelativesTran = new MemberRelativesTran();
+                        objMemberRelativesTran.setlinktoMemberMasterId(Globals.memberMasterId);
+                        objMemberRelativesTran.setRelativeName(etChildName1.getText().toString());
+                        if (!etChildDOB1.getText().toString().isEmpty()) {
+                            objMemberRelativesTran.setBirthDate(etChildDOB1.getText().toString());
+                        }
+                        if (imageName1 != null && !imageName1.equals("")) {
+                            strImageName = imageName1;
+                            objMemberRelativesTran.setImageName(strImageName);
+                        }
+                        if (rbMale1.isChecked()) {
+                            objMemberRelativesTran.setGender(rbMale1.getText().toString());
+                            objMemberRelativesTran.setRelation("Son");
+                        }
+                        if (rbFemale1.isChecked()) {
+                            objMemberRelativesTran.setGender(rbFemale1.getText().toString());
+                            objMemberRelativesTran.setRelation("Daughter");
+                        }
+                        objRelative1 = objMemberRelativesTran;
+                    }
+
+                    if (llChildDetail2.getVisibility() == View.VISIBLE && etChildName2.getText().toString() != null && !etChildName2.getText().toString().trim().equals("")) {
+                        objMemberRelativesTran = new MemberRelativesTran();
+                        objMemberRelativesTran.setlinktoMemberMasterId(Globals.memberMasterId);
+                        objMemberRelativesTran.setRelativeName(etChildName2.getText().toString());
+                        if (!etChildDOB2.getText().toString().isEmpty()) {
+                            objMemberRelativesTran.setBirthDate(etChildDOB2.getText().toString());
+                        }
+                        if (imageName2 != null && !imageName2.equals("")) {
+                            strImageName = imageName2;
+                            objMemberRelativesTran.setImageName(strImageName);
+                        }
+                        if (rbMale2.isChecked()) {
+                            objMemberRelativesTran.setGender(rbMale2.getText().toString());
+                            objMemberRelativesTran.setRelation("Son");
+                        }
+                        if (rbFemale2.isChecked()) {
+                            objMemberRelativesTran.setGender(rbFemale2.getText().toString());
+                            objMemberRelativesTran.setRelation("Daughter");
+                        }
+                        objRelative2 = objMemberRelativesTran;
+                    }
+
+                    if (llChildDetail3.getVisibility() == View.VISIBLE && etChildName3.getText().toString() != null && !etChildName3.getText().toString().trim().equals("")) {
+                        objMemberRelativesTran = new MemberRelativesTran();
+                        objMemberRelativesTran.setlinktoMemberMasterId(Globals.memberMasterId);
+                        objMemberRelativesTran.setRelativeName(etChildName3.getText().toString());
+                        if (!etChildDOB3.getText().toString().isEmpty()) {
+                            objMemberRelativesTran.setBirthDate(etChildDOB3.getText().toString());
+                        }
+                        if (imageName3 != null && !imageName3.equals("")) {
+                            strImageName = imageName3;
+                            objMemberRelativesTran.setImageName(strImageName);
+                        }
+                        if (rbMale3.isChecked()) {
+                            objMemberRelativesTran.setGender(rbMale3.getText().toString());
+                            objMemberRelativesTran.setRelation("Son");
+                        }
+                        if (rbFemale3.isChecked()) {
+                            objMemberRelativesTran.setGender(rbFemale3.getText().toString());
+                            objMemberRelativesTran.setRelation("Daughter");
+                        }
+                        objRelative3 = objMemberRelativesTran;
+                    }
+
+                    if (llChildDetail4.getVisibility() == View.VISIBLE && etChildName4.getText().toString() != null && !etChildName4.getText().toString().trim().equals("")) {
+                        objMemberRelativesTran = new MemberRelativesTran();
+                        objMemberRelativesTran.setlinktoMemberMasterId(Globals.memberMasterId);
+                        objMemberRelativesTran.setRelativeName(etChildName4.getText().toString());
+                        if (!etChildDOB4.getText().toString().isEmpty()) {
+                            objMemberRelativesTran.setBirthDate(etChildDOB4.getText().toString());
+                        }
+                        if (imageName4 != null && !imageName4.equals("")) {
+                            strImageName = imageName4;
+                            objMemberRelativesTran.setImageName(strImageName);
+                        }
+                        if (rbMale4.isChecked()) {
+                            objMemberRelativesTran.setGender(rbMale4.getText().toString());
+                            objMemberRelativesTran.setRelation("Son");
+                        }
+                        if (rbFemale4.isChecked()) {
+                            objMemberRelativesTran.setGender(rbFemale4.getText().toString());
+                            objMemberRelativesTran.setRelation("Daughter");
+                        }
+                        objRelative4 = objMemberRelativesTran;
+                    }
+                    if (llChildDetail5.getVisibility() == View.VISIBLE && etChildName5.getText().toString() != null && !etChildName5.getText().toString().trim().equals("")) {
+                        objMemberRelativesTran = new MemberRelativesTran();
+                        objMemberRelativesTran.setlinktoMemberMasterId(Globals.memberMasterId);
+                        objMemberRelativesTran.setRelativeName(etChildName5.getText().toString());
+                        if (!etChildDOB5.getText().toString().isEmpty()) {
+                            objMemberRelativesTran.setBirthDate(etChildDOB5.getText().toString());
+                        }
+                        if (imageName5 != null && !imageName5.equals("")) {
+                            strImageName = imageName5;
+                            objMemberRelativesTran.setImageName(strImageName);
+                        }
+                        if (rbMale5.isChecked()) {
+                            objMemberRelativesTran.setGender(rbMale5.getText().toString());
+                            objMemberRelativesTran.setRelation("Son");
+                        }
+                        if (rbFemale5.isChecked()) {
+                            objMemberRelativesTran.setGender(rbFemale5.getText().toString());
+                            objMemberRelativesTran.setRelation("Daughter");
+                        }
+                        objRelative5 = objMemberRelativesTran;
+                    }
+                }
+            } else {
+                objMemberMaster.setIsMarried(false);
+            }
+
+            //redirect to Contact detail
+            Intent intent = new Intent(RegistrationDetailActivity.this, RegistrationContactActivity.class);
+            if (rbMarried.isChecked()) {
+                if (objRelative0 != null) {
+                    intent.putExtra("MemberRelative0", objRelative0);
+                }
+                if (!checkBox.isChecked()) {
+                    if (objRelative1 != null) {
+                        intent.putExtra("MemberRelative1", objRelative1);
+                    }
+                    if (objRelative2 != null) {
+                        intent.putExtra("MemberRelative2", objRelative2);
+                    }
+                    if (objRelative3 != null) {
+                        intent.putExtra("MemberRelative3", objRelative3);
+                    }
+                    if (objRelative4 != null) {
+                        intent.putExtra("MemberRelative4", objRelative4);
+                    }
+                    if (objRelative5 != null) {
+                        intent.putExtra("MemberRelative5", objRelative5);
+                    }
+
+                }
+            }
+
+            intent.putExtra("MemberMaster", objMemberMaster);
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void RequestProfessions() {
+        ArrayList<String> lstStrings = new ArrayList<>();
+        try {
+            JSONObject jsonObject = Service.HttpGetService(Service.Url + "SelectAllProfession");
+            if (jsonObject != null) {
+                JSONArray jsonArray = jsonObject.getJSONArray("SelectAllProfessionResult");
+                if (jsonArray != null) {
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        lstStrings.add(jsonArray.getString(i));
+                    }
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(RegistrationDetailActivity.this, R.layout.row_spinner, lstStrings);
+                    actProfession.setAdapter(adapter);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void RequestQualification() {
+        ArrayList<String> lstStrings = new ArrayList<>();
+        try {
+            JSONObject jsonObject = Service.HttpGetService(Service.Url + "SelectAllQualification");
+            if (jsonObject != null) {
+                JSONArray jsonArray = jsonObject.getJSONArray("SelectAllQualificationResult");
+                if (jsonArray != null) {
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        lstStrings.add(jsonArray.getString(i));
+                    }
+                    if (lstStrings != null && lstStrings.size() > 0) {
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(RegistrationDetailActivity.this, R.layout.row_spinner, lstStrings);
+                        alString = lstStrings;
+                        alStringFilter = new ArrayList<>();
+                        actQualification.setAdapter(adapter);
+                        actQualification.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //convert image in small size
     private Bitmap decodeFile(File f) {
         try {
             // Decode image size
@@ -1363,8 +952,8 @@ public class RegistrationDetailActivity extends AppCompatActivity implements Vie
         return null;
     }
 
-    private void SelectImageProfile(final Context context, final int requestCodeCamera, final int requestCodeGallery) {
-//        final CharSequence[] items = {"Take Photo", "Choose from Gallery", "Remove Image"};
+    //select image from gallary or remove in image view
+    private void SelectImageProfile(final Context context, final int requestCodeGallery) {
         final CharSequence[] items = {"Choose from Gallery", "Remove Image"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialog);
@@ -1372,13 +961,7 @@ public class RegistrationDetailActivity extends AppCompatActivity implements Vie
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (items[item].equals("Take Photo")) {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File f = new File(android.os.Environment
-                            .getExternalStorageDirectory(), "temp.jpg");
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-                    startActivityForResult(intent, requestCodeCamera);
-                } else if (items[item].equals("Choose from Gallery")) {
+                if (items[item].equals("Choose from Gallery")) {
                     Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
                     startActivityForResult(Intent.createChooser(intent, "Select File"), requestCodeGallery);
@@ -1411,6 +994,7 @@ public class RegistrationDetailActivity extends AppCompatActivity implements Vie
         builder.show();
     }
 
+    //set list in Qaulification
     private void UpdateArrayListAdapter(String name) {
         int isRemove = -1;
         String str;
@@ -1468,6 +1052,7 @@ public class RegistrationDetailActivity extends AppCompatActivity implements Vie
             actQualification.setAdapter(adapter);
         }
     }
+    //end
 
     private boolean ValidateControls() {
         boolean IsValid = true;
@@ -1548,11 +1133,6 @@ public class RegistrationDetailActivity extends AppCompatActivity implements Vie
         }
         return IsValid;
     }
-
-    interface UpdateResponseListener {
-        void UpdateResponse();
-    }
-
 
     //endregion
 }

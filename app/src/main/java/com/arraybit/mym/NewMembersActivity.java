@@ -135,9 +135,8 @@ public class NewMembersActivity extends AppCompatActivity implements MemberJSONP
                     }
                     isStart = data.getBooleanExtra("isStart", false);
                     isApproved = data.getBooleanExtra("isApproved", false);
-                    if(isStart)
-                    {
-                        ShowSnackBarWithAction(position,objMemberMaster);
+                    if (isStart) {
+                        ShowSnackBarWithAction(position, objMemberMaster);
                     }
                 }
             }
@@ -184,12 +183,11 @@ public class NewMembersActivity extends AppCompatActivity implements MemberJSONP
 
     @Override
     public void ConfirmResponse() {
-        if(isApproved) {
+        if (isApproved) {
             RequestIsApproved(objMemberMaster, isApproved);
-        }else
-        {
+        } else {
             adapter.MemberDataRemoved(position);
-            ShowSnackBarWithAction(position,objMemberMaster);
+            ShowSnackBarWithAction(position, objMemberMaster);
         }
     }
 
@@ -198,11 +196,11 @@ public class NewMembersActivity extends AppCompatActivity implements MemberJSONP
         this.position = position;
         this.objMemberMaster = objMemberMaster;
         this.isApproved = isApproved;
-        ConfirmDialog confirmDialog ;
-        if(isApproved) {
-            confirmDialog = new ConfirmDialog(true, "Approve "+objMemberMaster.getMemberName()+" ?");
-        }else {
-            confirmDialog = new ConfirmDialog(true, "Decline "+objMemberMaster.getMemberName()+" ?");
+        ConfirmDialog confirmDialog;
+        if (isApproved) {
+            confirmDialog = new ConfirmDialog(true, "Approve " + objMemberMaster.getMemberName() + " ?");
+        } else {
+            confirmDialog = new ConfirmDialog(true, "Decline " + objMemberMaster.getMemberName() + " ?");
         }
         confirmDialog.show(getSupportFragmentManager(), "");
     }
@@ -216,13 +214,15 @@ public class NewMembersActivity extends AppCompatActivity implements MemberJSONP
     public void MemberUpdate(String errorCode, MemberMaster objMemberMaster) {
         progressDialog.dismiss();
         if (errorCode.equals("0")) {
-            if(isApproved) {
+            if (isApproved) {
                 adapter.MemberDataRemoved(position);
             }
         } else {
             Globals.ShowSnackBar(rvContactList, getResources().getString(R.string.MsgServerNotResponding), NewMembersActivity.this, 1000);
         }
     }
+
+    //region Private Methods
 
     private void RequestMemberMaster() {
         if (progressDialog.isAdded()) {
@@ -234,7 +234,7 @@ public class NewMembersActivity extends AppCompatActivity implements MemberJSONP
     }
 
     private void ShowSnackBarWithAction(final int position, final MemberMaster objMemberMaster) {
-        if (position == 0 && position == alMemberList.size()-1) {
+        if (position == 0 && position == alMemberList.size() - 1) {
             isSnackShow = true;
             duration = 3000;
         } else {
@@ -297,7 +297,7 @@ public class NewMembersActivity extends AppCompatActivity implements MemberJSONP
         if (alMemberList == null) {
             if (CurrentPage == 1) {
                 rvContactList.setVisibility(View.GONE);
-                Globals.SetErrorLayout(errorLayout, true,"There is no member request", rvContactList, 0);
+                Globals.SetErrorLayout(errorLayout, true, "There is no member request", rvContactList, 0);
             }
         } else if (alMemberList.size() == 0) {
             if (CurrentPage == 1) {
@@ -319,4 +319,5 @@ public class NewMembersActivity extends AppCompatActivity implements MemberJSONP
         }
     }
 
+    //endregion
 }

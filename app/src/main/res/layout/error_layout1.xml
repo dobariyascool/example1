@@ -34,6 +34,5 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/control_TextNormal"
         android:visibility="gone"/>
-    <!--android:text="@string/cifPlaceOrder"-->
 
 </LinearLayout>

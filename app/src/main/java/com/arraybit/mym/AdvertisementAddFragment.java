@@ -1,15 +1,12 @@
 package com.arraybit.mym;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -18,10 +15,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
-import android.text.Selection;
 import android.text.TextWatcher;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -48,16 +43,7 @@ import com.rey.material.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class AdvertisementAddFragment extends Fragment implements View.OnClickListener, AdvertiseJSONParser.AdvertiseAddListener {
 
     final int PIC_CROP = 1;
@@ -67,11 +53,9 @@ public class AdvertisementAddFragment extends Fragment implements View.OnClickLi
     Button btnAddNotification;
     LinearLayout llAdvertiseAdd, llAdvertiseText;
     RelativeLayout rladdImage, rlAdImage;
-    String imagePhysicalNameBytes, imageName, strImageName, picturePath = "", src;
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss.SSS", Locale.US);
+    String imagePhysicalNameBytes, imageName, strImageName, picturePath = "";
     ProgressDialog progressDialog = new ProgressDialog();
     BroadCastListener broadCastListener;
-    Context context;
     RadioGroup rgMain;
     RadioButton rbText, rbImage;
     boolean isUpdate = false, isRemove = false;
@@ -106,6 +90,8 @@ public class AdvertisementAddFragment extends Fragment implements View.OnClickLi
             isUpdate = bundle.getBoolean("isUpdate", false);
             objAdvertiseMaster = bundle.getParcelable("AdvertiseMaster");
         }
+
+        //layout
         etMessage = (EditText) view.findViewById(R.id.etMessage);
         etWebSiteLink = (EditText) view.findViewById(R.id.etWebSiteLink);
         txtImage = (TextView) view.findViewById(R.id.txtImage);
@@ -115,18 +101,10 @@ public class AdvertisementAddFragment extends Fragment implements View.OnClickLi
         rladdImage = (RelativeLayout) view.findViewById(R.id.rladdImage);
         rlAdImage = (RelativeLayout) view.findViewById(R.id.rlAdImage);
         btnAddNotification = (Button) view.findViewById(R.id.btnAddNotification);
-        //end
-
-        //Radiogroup
         rgMain = (RadioGroup) view.findViewById(R.id.rgMain);
-        //
-
-        //RadioButton
         rbText = (RadioButton) view.findViewById(R.id.rbText);
         rbImage = (RadioButton) view.findViewById(R.id.rbImage);
-        //end
 
-        //button
         btnAddNotification.setOnClickListener(this);
         ivImage.setOnClickListener(this);
 
@@ -172,6 +150,7 @@ public class AdvertisementAddFragment extends Fragment implements View.OnClickLi
             }
         });
 
+        //if update the advertisement
         if (isUpdate && objAdvertiseMaster != null) {
             toolbar.setTitle(getActivity().getResources().getString(R.string.advertisement_update_title));
             btnAddNotification.setText("Update");
@@ -218,14 +197,6 @@ public class AdvertisementAddFragment extends Fragment implements View.OnClickLi
         } else if (v.getId() == R.id.ivImage) {
             Globals.HideKeyBoard(getActivity(), v);
             SelectImageAd(getActivity(), 101);
-//            Globals.SelectImage(getActivity(), 100, 101);
-//        }else if (v.getId() == R.id.ivCancleImage) {
-//            Globals.HideKeyBoard(getActivity(), v);
-////            Globals.SelectImage(getActivity(), this, 100, 101);
-//            ivImage.setImageBitmap(null);
-//            txtImageName.setText("Image Name");
-//            rladdImage.setVisibility(View.VISIBLE);
-////            rlCancleImage.setVisibility(View.GONE);
         }
     }
 
@@ -240,14 +211,6 @@ public class AdvertisementAddFragment extends Fragment implements View.OnClickLi
     }
 
     public void SelectImage(int requestCode, Intent data) {
-//        if (requestCode == 100) {
-//            strImageName = String.valueOf(System.currentTimeMillis()) +"_"+Globals.memberMasterId + ".jpg";
-//            File file = new File(android.os.Environment.getExternalStorageDirectory(), strImageName);
-//            picturePath = file.getAbsolutePath();
-//            File f1 = new File(picturePath);
-//            Uri contentUri = Uri.fromFile(f1);
-//            performCrop(contentUri);
-//        } else
         if (requestCode == 101 && data != null && data.getData() != null) {
             Uri selectedImage = data.getData();
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
@@ -269,10 +232,8 @@ public class AdvertisementAddFragment extends Fragment implements View.OnClickLi
                 Bitmap selectedBitmap = extras.getParcelable("data");
 
                 rladdImage.setVisibility(View.GONE);
-//                ivImage.setVisibility(View.VISIBLE);
                 long millis = System.currentTimeMillis();
                 imageName = "Ad_" + String.valueOf(millis) + ".jpg";
-                Log.e("image", " " + imageName);
                 ivImage.setImageBitmap(selectedBitmap);
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 selectedBitmap.compress(Bitmap.CompressFormat.JPEG, 50, bos);
@@ -285,11 +246,7 @@ public class AdvertisementAddFragment extends Fragment implements View.OnClickLi
 
     public void AddAdvertise() {
         if (Service.CheckNet(getActivity())) {
-//            if (isUpdate) {
-//                UpdateAdvertiseRequest();
-//            } else {
-                AddAdvertiseRequest();
-//            }
+            AddAdvertiseRequest();
         } else {
             Globals.ShowSnackBar(llAdvertiseAdd, getResources().getString(R.string.MsgCheckConnection), getActivity(), 1000);
         }
@@ -311,21 +268,10 @@ public class AdvertisementAddFragment extends Fragment implements View.OnClickLi
                 objAdvertiseMaster.setAdvertisementType("Text");
             } else if (rbImage.isChecked()) {
                 if (imageName != null && !imageName.equals("")) {
-//                strImageName = imageName.substring(0, imageName.lastIndexOf(".")) + "_" + simpleDateFormat.format(new Date()) + imageName.substring(imageName.lastIndexOf("."), imageName.length());
                     strImageName = imageName;
                     objAdvertiseMaster.setAdvertiseImageName(strImageName);
                     objAdvertiseMaster.setAdvertiseImageNameBytes(imagePhysicalNameBytes);
                 }
-//                if (objAdvertiseMaster.getAdvertiseImageName() == null && !isRemove && bitmap != null) {
-//                    if (this.objAdvertiseMaster != null && this.objAdvertiseMaster.getAdvertiseImageName() != null ) {
-//                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-//                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
-//                        byte[] bytedata = bos.toByteArray();
-//                        objAdvertiseMaster.setAdvertiseImageNameBytes(Base64.encodeToString(bytedata, Base64.DEFAULT));
-//                        long millis = System.currentTimeMillis();
-//                        objAdvertiseMaster.setAdvertiseImageName("Ad_" + String.valueOf(millis) + ".jpg");
-//                    }
-//                }
                 objAdvertiseMaster.setAdvertisementType("Image");
             }
             objAdvertiseJSONParser.InsertAdvertiseMaster(objAdvertiseMaster, getActivity(), this);
@@ -349,7 +295,6 @@ public class AdvertisementAddFragment extends Fragment implements View.OnClickLi
                 objAdvertiseMaster.setAdvertisementType("Text");
             } else if (rbImage.isChecked()) {
                 if (imageName != null && !imageName.equals("")) {
-//                strImageName = imageName.substring(0, imageName.lastIndexOf(".")) + "_" + simpleDateFormat.format(new Date()) + imageName.substring(imageName.lastIndexOf("."), imageName.length());
                     strImageName = imageName;
                     objAdvertiseMaster.setAdvertiseImageName(strImageName);
                     objAdvertiseMaster.setAdvertiseImageNameBytes(imagePhysicalNameBytes);
@@ -452,9 +397,10 @@ public class AdvertisementAddFragment extends Fragment implements View.OnClickLi
                 if (objAdvertiseMaster.getAdvertiseImageName() != null && !objAdvertiseMaster.getAdvertiseImageName().equals("")) {
                     Glide.with(getActivity()).load(objAdvertiseMaster.getAdvertiseImageName()).asBitmap()
                             .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivImage);
-                    src = objAdvertiseMaster.getAdvertiseImageName();
                     rladdImage.setVisibility(View.GONE);
-                    new LoadImage().execute();
+
+                    //load image in bitmap
+                    bitmap = Globals.getBitmapFromURL(objAdvertiseMaster.getAdvertiseImageName());
                 } else {
                     ivImage.setImageDrawable(null);
                     rladdImage.setVisibility(View.VISIBLE);
@@ -472,39 +418,9 @@ public class AdvertisementAddFragment extends Fragment implements View.OnClickLi
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 if (items[item].equals("Choose from Gallery")) {
-
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
                     ((Activity) context).startActivityForResult(Intent.createChooser(intent, "Select File"), requestCodeGallery);
-//                    try {
-//                        Intent pickImageIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                        File mediaStorageDir = new File(
-//                                Environment.getExternalStorageDirectory()
-//                                        + File.separator
-//                                        + getString(R.string.directory_name_corp_chat)
-//                                        + File.separator
-//                                        + getString(R.string.directory_name_images));
-//
-//                        if (!mediaStorageDir.exists()) {
-//                            mediaStorageDir.mkdirs();
-//                        }
-//
-//                        pickImageIntent.setType("image/*");
-//                        pickImageIntent.putExtra("crop", "true");
-//                        pickImageIntent.putExtra("outputX", 900);
-//                        pickImageIntent.putExtra("outputY", 120);
-//                        pickImageIntent.putExtra("aspectX", 7.5);
-//                        pickImageIntent.putExtra("aspectY", 1);
-//                        pickImageIntent.putExtra("scale", true);
-//                        File mediaFile = File.createTempFile(
-//                                "Ad_" + String.valueOf(System.currentTimeMillis()), ".jpg", mediaStorageDir);
-//                        pickImageIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mediaFile));
-//                        pickImageIntent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-//                        ((Activity) context).startActivityForResult(pickImageIntent, PIC_CROP);
-//                    }catch(Exception e)
-//                    {
-//                        e.printStackTrace();
-//                    }
                 } else if (items[item].equals("Remove Image")) {
                     isRemove = true;
                     ivImage.setImageDrawable(null);
@@ -518,26 +434,6 @@ public class AdvertisementAddFragment extends Fragment implements View.OnClickLi
 
     public interface BroadCastListener {
         void BroadCastOnclick();
-    }
-
-    private class LoadImage extends AsyncTask {
-
-
-        @Override
-        protected Object doInBackground(Object[] params) {
-            try {
-                URL url = new URL(src);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setDoInput(true);
-                connection.connect();
-                InputStream input = connection.getInputStream();
-                bitmap = BitmapFactory.decodeStream(input);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
     }
     //endregion
 

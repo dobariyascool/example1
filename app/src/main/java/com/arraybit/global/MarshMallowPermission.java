@@ -18,7 +18,7 @@ public class MarshMallowPermission {
         this.activity = activity;
     }
 
-    public boolean checkPermissionForRecord(){
+    public boolean checkPermissionForWriteContacts(){
         int result = ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_CONTACTS);
         if (result == PackageManager.PERMISSION_GRANTED){
             return true;
@@ -45,7 +45,7 @@ public class MarshMallowPermission {
         }
     }
 
-    public void requestPermissionForRecord(){
+    public void requestPermissionForWriteContacts(){
         if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.WRITE_CONTACTS)){
             Toast.makeText(activity, "Microphone permission needed for recording. Please allow in App Settings for additional functionality.", Toast.LENGTH_LONG).show();
         } else {

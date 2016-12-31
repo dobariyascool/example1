@@ -21,10 +21,6 @@ import com.rey.material.widget.Button;
 import com.rey.material.widget.EditText;
 import com.rey.material.widget.TextView;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ForgotPasswordFragment extends Fragment implements MemberJSONParser.MemberRequestListener {
 
     EditText etEmail;
@@ -54,16 +50,12 @@ public class ForgotPasswordFragment extends Fragment implements MemberJSONParser
 
         setHasOptionsMenu(true);
 
-        //edittext
+        //layout
         etEmail = (EditText) view.findViewById(R.id.etEmail);
         txtWrong = (TextView) view.findViewById(R.id.txtWrong);
-
-        //end
-
-        //button
         btnVerification = (Button) view.findViewById(R.id.btnVerification);
         flForgotPasswrod = (FrameLayout) view.findViewById(R.id.flForgotPasswrod);
-        //end
+
 
         btnVerification.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,15 +94,14 @@ public class ForgotPasswordFragment extends Fragment implements MemberJSONParser
     @Override
     public void MemberUpdate(String errorCode, MemberMaster objMemberMaster) {
         progressDialog.dismiss();
-        if (errorCode.equals("0")) {
+        if (errorCode.equals("0")) {   //if mail sent successfully
             txtWrong.setVisibility(View.GONE);
             Toast.makeText(getActivity(), "Mail Sent on " + etEmail.getText().toString(), Toast.LENGTH_LONG).show();
             getActivity().getSupportFragmentManager().popBackStack();
-        }else if (errorCode.equals("-2")) {
-//            Globals.ShowSnackBar(flForgotPasswrod, "The email address " + etEmail.getText().toString() + " is not registered. Please try again.", getActivity(), Snackbar.LENGTH_SHORT);
+        } else if (errorCode.equals("-2")) { //if mail is not registered
             txtWrong.setVisibility(View.VISIBLE);
             txtWrong.setText("The email address " + etEmail.getText().toString() + " is not registered. Please try again.");
-        } else {
+        } else { //if mail can't send
             txtWrong.setVisibility(View.GONE);
             Toast.makeText(getActivity(), "Mail not send. Please try again after sometime.", Toast.LENGTH_LONG).show();
             getActivity().getSupportFragmentManager().popBackStack();
@@ -130,14 +121,12 @@ public class ForgotPasswordFragment extends Fragment implements MemberJSONParser
 
     private boolean ValidateControls() {
         boolean IsValid = true;
-
         if (!Globals.IsValidEmail(etEmail.getText().toString())) {
             IsValid = false;
             etEmail.setError("Enter Valid Email Address");
         } else {
             etEmail.setError(null);
         }
-
         return IsValid;
     }
 

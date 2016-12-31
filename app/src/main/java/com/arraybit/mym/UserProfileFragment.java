@@ -33,7 +33,6 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
     Button btnUpdate;
     ProgressDialog progressDialog;
     View view;
-    UpdateResponseListener objUpdateResponseListener;
     SharePreferenceManage objSharePreferenceManage = new SharePreferenceManage();
     MemberMaster objMemberMaster;
     LinearLayout myprofile;
@@ -62,6 +61,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         Bundle bundle = getArguments();
         objMemberMaster = bundle.getParcelable("memberMaster");
 
+        //layout
         myprofile = (LinearLayout) view.findViewById(R.id.myprofile);
 
         etFirstName = (EditText) view.findViewById(R.id.etFirstNameUser);
@@ -71,53 +71,22 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         etBirthDate = (EditText) view.findViewById(R.id.etDateOfBirthUser);
         etBirthDate.setInputType(InputType.TYPE_NULL);
 
-        etMobile.setSelection(etMobile.getText().toString().length());
-        etMobile1.setSelection(etMobile1.getText().toString().length());
-
         rbMale = (RadioButton) view.findViewById(R.id.rbMaleUser);
         rbFemale = (RadioButton) view.findViewById(R.id.rbFemaleUser);
 
         btnUpdate = (Button) view.findViewById(R.id.btnUpdate);
 
+        etMobile.setSelection(etMobile.getText().toString().length());
+        etMobile1.setSelection(etMobile1.getText().toString().length());
+
         btnUpdate.setOnClickListener(this);
         etBirthDate.setOnClickListener(this);
         setHasOptionsMenu(true);
 
-        if (objMemberMaster != null) {
-            app_bar.setTitle(objMemberMaster.getMemberName());
-            if (objMemberMaster.getMemberName() != null && !objMemberMaster.getMemberName().equals("")) {
-                String str = objMemberMaster.getMemberName();
-                String[] splited = str.split("\\s+");
-                etFirstName.setText(splited[0]);
-                if (splited.length > 1) {
-                    etLastName.setText(splited[1]);
-                }
-            }
-            if (objMemberMaster.getPhone1() != null && !objMemberMaster.getPhone1().equals("")) {
-                etMobile.setText(etMobile.getText().toString() + objMemberMaster.getPhone1());
-            }
-            if (objMemberMaster.getPhone2() != null && !objMemberMaster.getPhone2().equals("")) {
-                etMobile1.setText(etMobile1.getText().toString() + objMemberMaster.getPhone2());
-            }
-            if (objMemberMaster.getBirthDate() != null && !objMemberMaster.getBirthDate().equals("")) {
-                etBirthDate.setText(objMemberMaster.getBirthDate());
-            }
-            if (objMemberMaster.getGender() != null && !objMemberMaster.getGender().equals("")) {
-                if (objMemberMaster.getGender().equals("Male")) {
-                    rbMale.setChecked(true);
-                    rbFemale.setChecked(false);
-                } else if (objMemberMaster.getGender().equals("Female")) {
-                    rbMale.setChecked(false);
-                    rbFemale.setChecked(true);
-                }
-            }
-        }
-
         etMobile.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus)
-                {
+                if (hasFocus) {
                     etMobile.setSelection(etMobile.getText().toString().length());
                 }
             }
@@ -126,8 +95,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         etMobile1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus)
-                {
+                if (hasFocus) {
                     etMobile1.setSelection(etMobile1.getText().toString().length());
                 }
             }
@@ -162,9 +130,10 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
 
         etMobile.addTextChangedListener(new TextWatcher() {
             String mobile;
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                 mobile= etMobile.getText().toString();
+                mobile = etMobile.getText().toString();
             }
 
             @Override
@@ -178,7 +147,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(!s.toString().startsWith("+91",0)){
+                if (!s.toString().startsWith("+91", 0)) {
                     etMobile.setText(mobile);
                     Selection.setSelection(etMobile.getText(), 4);
                 }
@@ -187,9 +156,10 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
 
         etMobile1.addTextChangedListener(new TextWatcher() {
             String mobile;
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                mobile= etMobile1.getText().toString();
+                mobile = etMobile1.getText().toString();
             }
 
             @Override
@@ -202,7 +172,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(!s.toString().startsWith("+91",0)){
+                if (!s.toString().startsWith("+91", 0)) {
                     etMobile1.setText(mobile);
                     Selection.setSelection(etMobile1.getText(), 4);
                 }
@@ -218,6 +188,37 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
             }
         });
 
+        //set data in fields
+        if (objMemberMaster != null) {
+            app_bar.setTitle(objMemberMaster.getMemberName());
+            if (objMemberMaster.getMemberName() != null && !objMemberMaster.getMemberName().equals("")) {
+                String str = objMemberMaster.getMemberName();
+                String[] splited = str.split("\\s+");
+                etFirstName.setText(splited[0]);
+                if (splited.length > 1) {
+                    etLastName.setText(splited[1]);
+                }
+            }
+            if (objMemberMaster.getPhone1() != null && !objMemberMaster.getPhone1().equals("")) {
+                etMobile.setText(etMobile.getText().toString() + objMemberMaster.getPhone1());
+            }
+            if (objMemberMaster.getPhone2() != null && !objMemberMaster.getPhone2().equals("")) {
+                etMobile1.setText(etMobile1.getText().toString() + objMemberMaster.getPhone2());
+            }
+            if (objMemberMaster.getBirthDate() != null && !objMemberMaster.getBirthDate().equals("")) {
+                etBirthDate.setText(objMemberMaster.getBirthDate());
+            }
+            if (objMemberMaster.getGender() != null && !objMemberMaster.getGender().equals("")) {
+                if (objMemberMaster.getGender().equals("Male")) {
+                    rbMale.setChecked(true);
+                    rbFemale.setChecked(false);
+                } else if (objMemberMaster.getGender().equals("Female")) {
+                    rbMale.setChecked(false);
+                    rbFemale.setChecked(true);
+                }
+            }
+        }
+
         return view;
     }
 
@@ -226,16 +227,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         switch (item.getItemId()) {
             case android.R.id.home:
                 Globals.HideKeyBoard(getActivity(), getView());
-//                getActivity().onBackPressed();
-                if (getActivity() instanceof DetailActivity) {
-                    objUpdateResponseListener = (UpdateResponseListener) getActivity();
-                    if (objUpdateResponseListener != null) {
-                        objUpdateResponseListener.UpdateResponse();
-                    }
-                } else {
-                    getActivity().getSupportFragmentManager().popBackStack();
-//                    getActivity().onBackPressed();
-                }
+                getActivity().getSupportFragmentManager().popBackStack();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -297,12 +289,6 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
             objMemberMaster.setMemberName(etFirstName.getText().toString().trim() + " " + etLastName.getText().toString().trim());
             objMemberMaster.setPhone1(etMobile.getText().toString().substring(4));
             objMemberMaster.setPhone2(etMobile1.getText().toString().substring(4));
-//            if (imageName != null && !imageName.equals("")) {
-////                strImageName = imageName.substring(0, imageName.lastIndexOf(".")) + "_" + simpleDateFormat.format(new Date()) + imageName.substring(imageName.lastIndexOf("."), imageName.length());
-//                strImageName = imageName;
-//                objMemberMaster.setImageName(strImageName);
-//                objMemberMaster.setImageNameBytes(imagePhysicalNameBytes);
-//            }
             if (rbMale.isChecked()) {
                 objMemberMaster.setGender(rbMale.getText().toString());
             }
@@ -360,13 +346,10 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
                 objSharePreferenceManage.CreatePreference("LoginPreference", "Birthdate", etBirthDate.getText().toString().trim(), getActivity());
                 ClearControls();
                 if (getActivity() instanceof DetailActivity) {
-                    objUpdateResponseListener = (UpdateResponseListener) getActivity();
+                    UpdateResponseListener objUpdateResponseListener = (UpdateResponseListener) getActivity();
                     if (objUpdateResponseListener != null) {
                         objUpdateResponseListener.UpdateResponse();
                     }
-                } else {
-                    getActivity().getSupportFragmentManager().popBackStack();
-//                    getActivity().onBackPressed();
                 }
                 break;
         }

@@ -1,6 +1,5 @@
 package com.arraybit.mym;
 
-
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,16 +16,12 @@ import android.widget.ToggleButton;
 import com.arraybit.global.Globals;
 import com.arraybit.global.Service;
 import com.arraybit.global.SharePreferenceManage;
-//import com.arraybit.parser.UserJSONParser;
 import com.arraybit.modal.MemberMaster;
 import com.arraybit.parser.MemberJSONParser;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.EditText;
 
-
-@SuppressWarnings("ConstantConditions")
-public class ChangePasswordFragment extends Fragment implements MemberJSONParser.MemberRequestListener{
-
+public class ChangePasswordFragment extends Fragment implements MemberJSONParser.MemberRequestListener {
 
     EditText etOldPassword, etNewPassword, etConfirmPassword;
     Button btnChangePassword;
@@ -38,7 +33,6 @@ public class ChangePasswordFragment extends Fragment implements MemberJSONParser
     public ChangePasswordFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,21 +51,15 @@ public class ChangePasswordFragment extends Fragment implements MemberJSONParser
 
         setHasOptionsMenu(true);
 
-        //edittext
+        //layout
         etOldPassword = (EditText) view.findViewById(R.id.etOldPassword);
         etNewPassword = (EditText) view.findViewById(R.id.etNewPassword);
         etConfirmPassword = (EditText) view.findViewById(R.id.etConfirmPassword);
-        //end
-
-        //button
         btnChangePassword = (Button) view.findViewById(R.id.btnChangePassword);
-        //end
-
-        //togglebutton
         tbPasswordShowOld = (ToggleButton) view.findViewById(R.id.tbPasswordShowOld);
         tbPasswordShowNew = (ToggleButton) view.findViewById(R.id.tbPasswordShowNew);
         tbPasswordShowConfirm = (ToggleButton) view.findViewById(R.id.tbPasswordShowConfirm);
-        //end
+
 
         btnChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,11 +110,21 @@ public class ChangePasswordFragment extends Fragment implements MemberJSONParser
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void MemberResponse(String errorCode, MemberMaster objMemberMaster) {
+
+    }
+
+    @Override
+    public void MemberUpdate(String errorCode, MemberMaster objMemberMaster) {
+        progressDialog.dismiss();
+        SetError(errorCode);
+    }
+
     //region Private Method
     private void UpdateUserPasswordRequest() {
         progressDialog = new ProgressDialog();
         progressDialog.show(getActivity().getSupportFragmentManager(), "");
-
         try {
             MemberJSONParser objMemberJSONParser = new MemberJSONParser();
             objMemberJSONParser.UpdateMemberMasterPassword(getActivity(), ChangePasswordFragment.this, Globals.memberMasterId,
@@ -218,17 +216,6 @@ public class ChangePasswordFragment extends Fragment implements MemberJSONParser
         etOldPassword.setText("");
         etConfirmPassword.setText("");
         etNewPassword.setText("");
-    }
-
-    @Override
-    public void MemberResponse(String errorCode, MemberMaster objMemberMaster) {
-
-    }
-
-    @Override
-    public void MemberUpdate(String errorCode, MemberMaster objMemberMaster) {
-        progressDialog.dismiss();
-        SetError(errorCode);
     }
 
     //endregion

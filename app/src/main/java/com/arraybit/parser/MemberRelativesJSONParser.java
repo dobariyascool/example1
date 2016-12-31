@@ -15,9 +15,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-/// <summary>
-/// JSONParser for MemberRelativesTran
-/// </summary>
 public class MemberRelativesJSONParser {
 
     SimpleDateFormat sdfControlDateFormat = new SimpleDateFormat(Globals.DateFormat, Locale.US);

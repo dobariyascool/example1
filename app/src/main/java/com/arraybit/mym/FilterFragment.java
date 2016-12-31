@@ -1,6 +1,5 @@
 package com.arraybit.mym;
 
-
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,12 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.MultiAutoCompleteTextView;
 import android.widget.Spinner;
 
 import com.arraybit.global.Globals;
 import com.arraybit.global.Service;
-import com.arraybit.parser.MemberJSONParser;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.EditText;
 
@@ -27,11 +24,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
-public class FilterFragment extends Fragment implements View.OnClickListener, MemberJSONParser.DetailRequestListener {
+public class FilterFragment extends Fragment implements View.OnClickListener {
 
     public static boolean isFilter = false;
     Spinner spinnerBloodGroup;
@@ -63,6 +56,7 @@ public class FilterFragment extends Fragment implements View.OnClickListener, Me
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Filter");
             setHasOptionsMenu(true);
 
+            //layout
             spinnerBloodGroup = (Spinner) view.findViewById(R.id.spinnerBloodGroup);
             etName = (EditText) view.findViewById(R.id.etName);
             actDesignation = (AppCompatAutoCompleteTextView) view.findViewById(R.id.actDesignation);
@@ -104,7 +98,6 @@ public class FilterFragment extends Fragment implements View.OnClickListener, Me
                 }
             }
 
-
             actDesignation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
@@ -135,11 +128,8 @@ public class FilterFragment extends Fragment implements View.OnClickListener, Me
             Globals.HideKeyBoard(getActivity(), getView());
             if (getActivity().getSupportFragmentManager().getBackStackEntryCount() != 0) {
                 if (getActivity().getSupportFragmentManager().getBackStackEntryAt(getActivity().getSupportFragmentManager().getBackStackEntryCount() - 1).getName() != null && getActivity().getSupportFragmentManager().getBackStackEntryAt(getActivity().getSupportFragmentManager().getBackStackEntryCount() - 1).getName().equals("Filter")) {
-//                    getActivity().getSupportFragmentManager().popBackStack();
-                    getActivity().onBackPressed();
+                    getActivity().getSupportFragmentManager().popBackStack();
                 }
-//            } else {
-//                getActivity().finish();
             }
         }
         return super.onOptionsItemSelected(item);
@@ -147,7 +137,6 @@ public class FilterFragment extends Fragment implements View.OnClickListener, Me
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
-//        menu.findItem(R.id.action_search).setVisible(false);
         menu.findItem(R.id.memberRequest).setVisible(false);
         menu.findItem(R.id.notification).setVisible(false);
         menu.findItem(R.id.memberFilter).setVisible(false);
@@ -161,14 +150,10 @@ public class FilterFragment extends Fragment implements View.OnClickListener, Me
         } else if (v.getId() == R.id.actQualification) {
             actQualification.showDropDown();
         } else if (v.getId() == R.id.btnClear) {
-//            isFilter = false;
             actQualification.setText("");
             actDesignation.setText("");
             etName.setText("");
             spinnerBloodGroup.setSelection(0);
-
-//            objSelectFilterListerner = (SelectFilterListerner) getActivity();
-//            objSelectFilterListerner.SelectFilter(null, null, null, null, false);
         } else if (v.getId() == R.id.btnfilter) {
             if (getActivity() instanceof SelectFilterListerner) {
                 objSelectFilterListerner = (SelectFilterListerner) getActivity();
@@ -191,35 +176,15 @@ public class FilterFragment extends Fragment implements View.OnClickListener, Me
                 if (name != null || designation != null || qualification != null || bloodGroup != null) {
                     isFilter = true;
                     objSelectFilterListerner.SelectFilter(name, designation, qualification, bloodGroup, false);
-                }else {
+                } else {
                     objSelectFilterListerner.SelectFilter(name, designation, qualification, bloodGroup, true);
                 }
-
             }
         }
     }
 
-    @Override
-    public void QualificationResponse(ArrayList<String> lstStrings) {
-        if (lstStrings != null && lstStrings.size() > 0) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.row_spinner, lstStrings);
-            actQualification.setAdapter(adapter);
-        }
-    }
-
-    @Override
-    public void ProfessionResponse(ArrayList<String> lstStrings) {
-        if (lstStrings != null && lstStrings.size() > 0) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.row_spinner, lstStrings);
-            actDesignation.setAdapter(adapter);
-        }
-    }
-
     private void RequestProfessions() {
-//        MemberJSONParser objMemeberJSONParser = new MemberJSONParser();
-//        objMemeberJSONParser.SelectAllProfession(getActivity(), this);
         ArrayList<String> lstStrings = new ArrayList<>();
-
         try {
             JSONObject jsonObject = Service.HttpGetService(Service.Url + "SelectAllProfession");
             if (jsonObject != null) {
@@ -233,15 +198,12 @@ public class FilterFragment extends Fragment implements View.OnClickListener, Me
                 }
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 
     private void RequestQualification() {
-//        MemberJSONParser objMemeberJSONParser = new MemberJSONParser();
-//        objMemeberJSONParser.SelectAllQualification(getActivity(), this);
         ArrayList<String> lstStrings = new ArrayList<>();
-
         try {
             JSONObject jsonObject = Service.HttpGetService(Service.Url + "SelectAllQualification");
             if (jsonObject != null) {
@@ -252,16 +214,12 @@ public class FilterFragment extends Fragment implements View.OnClickListener, Me
                     }
                     if (lstStrings != null && lstStrings.size() > 0) {
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.row_spinner, lstStrings);
-//                        alString = lstStrings;
-//                        alStringFilter = new ArrayList<>();
                         actQualification.setAdapter(adapter);
-//                        actQualification.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
                     }
                 }
             }
         } catch (Exception e) {
-            // Log exception
-
+            e.printStackTrace();
         }
     }
 

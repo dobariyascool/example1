@@ -101,7 +101,7 @@
                         android:textColor="@android:color/black"
                         android:textColorHint="@color/secondary_text"
                         android:textSize="14sp"
-                        tools:ignore="Deprecated"></android.support.v7.widget.AppCompatMultiAutoCompleteTextView>
+                        tools:ignore="Deprecated"/>
 
                 </LinearLayout>
 
@@ -1014,8 +1014,6 @@
             style="@style/Button"
             android:layout_width="match_parent"
             android:layout_height="@dimen/button_Height"
-            android:layout_alignBottom="@+id/llPersonal"
-            android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
             android:layout_marginTop="@dimen/control_SpecingSmall"
             android:text="Next" />

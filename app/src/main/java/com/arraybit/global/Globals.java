@@ -3,24 +3,15 @@ package com.arraybit.global;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.ContentProviderOperation;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.provider.ContactsContract;
-import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -28,7 +19,6 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.arraybit.modal.MemberMaster;
 import com.arraybit.mym.R;
@@ -40,16 +30,11 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-/**
- * Created by Avani on 08/11/2016.
- */
 
 public class Globals {
 
@@ -58,7 +43,7 @@ public class Globals {
     public static boolean isAdmin = false;
     public static int startPage = 0;
     public static String memberType = "";
-    static int y, M, d, H, m;
+    static int y, M, d;
 
     public static void HideKeyBoard(Context context, View view) {
         InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
@@ -75,7 +60,7 @@ public class Globals {
             Bitmap myBitmap = BitmapFactory.decodeStream(input);
             return myBitmap;
         } catch (Exception e) {
-            // Log exception
+            e.printStackTrace();
             return null;
         }
     }
@@ -126,17 +111,6 @@ public class Globals {
         snackbar.show();
     }
 
-    public static void SetToolBarBackground(final Context context, final Toolbar app_bar, final int backgroundColor, final int tintColor) {
-        try {
-            app_bar.setBackground(new ColorDrawable(backgroundColor));
-            Drawable drawable = app_bar.getOverflowIcon();
-            DrawableCompat.setTint(drawable.mutate(), tintColor);
-            app_bar.setOverflowIcon(drawable);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public static boolean IsValidEmail(String email) {
         String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
         Pattern pattern = Pattern.compile(EMAIL_PATTERN);
@@ -181,91 +155,8 @@ public class Globals {
         animatorTranslateY.start();
     }
 
-    public static void SelectImage(final Context context, final int requestCodeCamera, final int requestCodeGallery) {
-        final CharSequence[] items = {"Take Photo", "Choose from Gallery", "Remove Image"};
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialog);
-        builder.setTitle("ADD PHOTO");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (items[item].equals("Take Photo")) {
-//                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                    File f = new File(android.os.Environment
-//                            .getExternalStorageDirectory(), "temp.jpg");
-//                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-//                    ((Activity) context).startActivityForResult(intent, requestCodeCamera);
-                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        MarshMallowPermission marshMallowPermission = new MarshMallowPermission((Activity) context);
-                        if (marshMallowPermission.checkPermissionForExternalStorage()) {
-//                            try {
-//                                mediaStorageDir = new File(
-//                                        Environment.getExternalStorageDirectory()
-//                                                + File.separator
-//                                                + getString(R.string.directory_name_corp_chat)
-//                                                + File.separator
-//                                                + getString(R.string.directory_name_images));
-//
-//                                if (!mediaStorageDir.exists()) {
-//                                    mediaStorageDir.mkdirs();
-//                                }
-//                                File mediaFile = File.createTempFile(
-//                                        "Ad_" + String.valueOf(System.currentTimeMillis()), ".jpg", mediaStorageDir);
-//                                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-////                                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-////                                File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
-//                                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mediaFile));
-//                                intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-//                                ((Activity) context).startActivityForResult(intent, requestCodeCamera);
-//                            } catch (Exception e) {
-//                                e.printStackTrace();
-//                            }
-                            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            ((Activity) context).startActivityForResult(cameraIntent, requestCodeCamera);
-                        }
-                    } else {
-//                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                        try {
-//                            mediaStorageDir = new File(
-//                                    Environment.getExternalStorageDirectory()
-//                                            + File.separator
-//                                            + getString(R.string.directory_name_corp_chat)
-//                                            + File.separator
-//                                            + getString(R.string.directory_name_images));
-//
-//                            if (!mediaStorageDir.exists()) {
-//                                mediaStorageDir.mkdirs();
-//                            }
-//                            File mediaFile = File.createTempFile(
-//                                    "Ad_" + String.valueOf(System.currentTimeMillis()), ".jpg", mediaStorageDir);
-//
-//                            Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-//                            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mediaFile));
-//                            intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-////                        File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
-////                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-//                            ((Activity) context).startActivityForResult(intent, requestCodeCamera);
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-                        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        ((Activity) context).startActivityForResult(cameraIntent, requestCodeCamera);
-                    }
-                } else if (items[item].equals("Choose from Gallery")) {
-                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    intent.setType("image/*");
-                    ((Activity) context).startActivityForResult(Intent.createChooser(intent, "Select File"), requestCodeGallery);
-                } else if (items[item].equals("Remove Image")) {
-                    dialog.dismiss();
-                }
-            }
-        });
-        builder.show();
-    }
-
     public static void ShowDatePickerDialog(final EditText txtView, Context context, final boolean IsPreventPreviousDateRequest) {
         final Calendar c = Calendar.getInstance();
-
         if (!txtView.getText().toString().equals("")) {
             SimpleDateFormat sdfControl = new SimpleDateFormat(DateFormat, Locale.US);
             try {
@@ -273,10 +164,8 @@ public class Globals {
                 c.setTime(dt);
             } catch (ParseException ignored) {
                 ignored.printStackTrace();
-                Log.e("dateexception", " " + ignored.getMessage());
             }
         }
-
         y = c.get(Calendar.YEAR);
         M = c.get(Calendar.MONTH);
         d = c.get(Calendar.DAY_OF_MONTH);
@@ -326,89 +215,6 @@ public class Globals {
     }
 
     public static void ContactSave(Activity context, MemberMaster objMemberMaster) {
-//        ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
-//
-//        ops.add(ContentProviderOperation.newInsert(
-//                ContactsContract.RawContacts.CONTENT_URI)
-//                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
-//                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
-//                .build()
-//        );
-//
-//        //------------------------------------------------------ Names
-//        if (objMemberMaster.getMemberName() != null && !objMemberMaster.getMemberName().equals("")) {
-//            ops.add(ContentProviderOperation.newInsert(
-//                    ContactsContract.Data.CONTENT_URI)
-//                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-//                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
-//                    .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, objMemberMaster.getMemberName()).build()
-//            );
-//        }
-//
-//        //------------------------------------------------------ Mobile Number
-//        if (objMemberMaster.getPhone1() != null && !objMemberMaster.getPhone1().equals("")) {
-//            ops.add(ContentProviderOperation.
-//                    newInsert(ContactsContract.Data.CONTENT_URI)
-//                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-//                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-//                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, "+91" + objMemberMaster.getPhone1())
-//                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
-//                    .build()
-//            );
-//        }
-//        if (objMemberMaster.getPhone2() != null && !objMemberMaster.getPhone2().equals("")) {
-//            ops.add(ContentProviderOperation.
-//                    newInsert(ContactsContract.Data.CONTENT_URI)
-//                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-//                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-//                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, "+91" + objMemberMaster.getPhone2())
-//                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
-//                    .build()
-//            );
-//        }
-//
-//        //------------------------------------------------------ Home Numbers
-//        if (objMemberMaster.getHomePhone() != null && !objMemberMaster.getHomePhone().equals("")) {
-//            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-//                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-//                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-//                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, "+91" + objMemberMaster.getHomePhone())
-//                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_HOME)
-//                    .build());
-//        }
-//
-//        //------------------------------------------------------ Work Numbers
-//        if (objMemberMaster.getOfficePhone() != null && !objMemberMaster.getOfficePhone().equals("")) {
-//            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-//                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-//                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
-//                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, "+91" + objMemberMaster.getOfficePhone())
-//                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_WORK)
-//                    .build());
-//        }
-//
-//        //------------------------------------------------------ Email
-//        if (objMemberMaster.getEmail() != null && !objMemberMaster.getEmail().equals("")) {
-//            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-//                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-//                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
-//                    .withValue(ContactsContract.CommonDataKinds.Email.DATA, objMemberMaster.getEmail())
-//                    .withValue(ContactsContract.CommonDataKinds.Email.TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK)
-//                    .build());
-//        }
-//
-        //------------------------------------------------------ Organization
-//        if(objMemberMaster.getProfession()!=null && !objMemberMaster.getProfession().equals(""))
-//        {
-//            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
-//                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
-//                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE)
-////                        .withValue(ContactsContract.CommonDataKinds.Organization.COMPANY, company)
-////                        .withValue(ContactsContract.CommonDataKinds.Organization.TYPE, ContactsContract.CommonDataKinds.Organization.TYPE_WORK)
-//                    .withValue(ContactsContract.CommonDataKinds.Organization.TITLE, objMemberMaster.getProfession())
-//                    .withValue(ContactsContract.CommonDataKinds.Organization.TYPE, ContactsContract.CommonDataKinds.Organization.TYPE_WORK)
-//                    .build());
-//        }
         try {
             Intent contactIntent = new Intent(ContactsContract.Intents.Insert.ACTION);
             contactIntent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
@@ -417,30 +223,26 @@ public class Globals {
                 contactIntent.putExtra(ContactsContract.Intents.Insert.NAME, objMemberMaster.getMemberName());
             }
             if (objMemberMaster.getPhone1() != null && !objMemberMaster.getPhone1().equals("")) {
-                contactIntent.putExtra(ContactsContract.Intents.Insert.PHONE,"+91"+ objMemberMaster.getPhone1());
+                contactIntent.putExtra(ContactsContract.Intents.Insert.PHONE, "+91" + objMemberMaster.getPhone1());
             }
             if (objMemberMaster.getHomePhone() != null && !objMemberMaster.getPhone2().equals("")) {
-                contactIntent.putExtra(ContactsContract.Intents.Insert.SECONDARY_PHONE,"+91"+ objMemberMaster.getPhone2());
+                contactIntent.putExtra(ContactsContract.Intents.Insert.SECONDARY_PHONE, "+91" + objMemberMaster.getPhone2());
                 contactIntent.putExtra(ContactsContract.Intents.Insert.SECONDARY_PHONE_TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_HOME);
             }
             if (objMemberMaster.getOfficePhone() != null && !objMemberMaster.getOfficePhone().equals("")) {
-                contactIntent.putExtra(ContactsContract.Intents.Insert.TERTIARY_PHONE,"+91"+ objMemberMaster.getOfficePhone());
+                contactIntent.putExtra(ContactsContract.Intents.Insert.TERTIARY_PHONE, "+91" + objMemberMaster.getOfficePhone());
                 contactIntent.putExtra(ContactsContract.Intents.Insert.TERTIARY_PHONE_TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_WORK);
             }
             if (objMemberMaster.getEmail() != null && !objMemberMaster.getEmail().equals("")) {
                 contactIntent.putExtra(ContactsContract.Intents.Insert.EMAIL, objMemberMaster.getEmail());
                 contactIntent.putExtra(ContactsContract.Intents.Insert.EMAIL_TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK);
             }
-           context.startActivityForResult(contactIntent, 1);
-//            context.getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
-//            context.getContentResolver().applyBatch(ContactsContract., ops);
-//            Log.e("contact saved", " ");
-//            Toast.makeText(context, "Contact saved successfully.", Toast.LENGTH_SHORT).show();
+            context.startActivityForResult(contactIntent, 1);
         } catch (Exception e) {
             e.printStackTrace();
-            //  Toast.makeText(myContext, "Exception: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+
     //region Enum
 
     public enum MemberType {

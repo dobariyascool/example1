@@ -1,6 +1,5 @@
 package com.arraybit.mym;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -30,7 +29,6 @@ import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
 
-
 public class NotificationListFragment extends Fragment implements NotificationJSONParser.NotificationRequestListener, NotificationAdapter.OnClickListener, NotificationTranJSONParser.NotificationInsertListener {
 
     RecyclerView rvNotification;
@@ -58,7 +56,7 @@ public class NotificationListFragment extends Fragment implements NotificationJS
             }
             setHasOptionsMenu(true);
 
-
+            //layout
             rvNotification = (RecyclerView) view.findViewById(R.id.rvNotification);
             linearLayoutManager = new LinearLayoutManager(getActivity());
             errorLayout = (LinearLayout) view.findViewById(R.id.errorLayout);
@@ -140,7 +138,6 @@ public class NotificationListFragment extends Fragment implements NotificationJS
 
     @Override
     public void OnRemoveClick(NotificationMaster objNotificationMaster, int position) {
-//        adapter.NotificationDataRemove(position);
         this.position = position;
         InsertNotification(objNotificationMaster);
     }

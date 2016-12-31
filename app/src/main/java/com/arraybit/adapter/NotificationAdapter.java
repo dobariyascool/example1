@@ -8,10 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.arraybit.mym.R;
 import com.arraybit.global.Globals;
 import com.arraybit.modal.NotificationMaster;
-import com.bumptech.glide.Glide;
+import com.arraybit.mym.R;
 import com.rey.material.widget.TextView;
 
 import java.util.ArrayList;
@@ -52,13 +51,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             holder.txtNotificationText.setText(objNotificationMaster.getNotificationText());
         }
 
-//        if (objNotificationMaster.getNotificationImageName() != null && !objNotificationMaster.getNotificationImageName().equals("")) {
-//            holder.ivNotificationImage.setVisibility(View.VISIBLE);
-//            Glide.with(context).load(objNotificationMaster.getNotificationImageName()).asBitmap().into(holder.ivNotificationImage);
-//        } else {
-//            holder.ivNotificationImage.setVisibility(View.GONE);
-//        }
-
         //holder animation
         if (isItemAnimate) {
             if (position > previousPosition) {
@@ -93,7 +85,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
         TextView txtNotificationTitle, txtNotificationTime, txtNotificationText;
         CardView cvItem;
-        ImageView ivClear , ivNotificationImage;
+        ImageView ivClear;
 
         public NotificationViewHolder(View itemView) {
             super(itemView);
@@ -102,15 +94,12 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             txtNotificationTime = (TextView) itemView.findViewById(R.id.txtNotificationTime);
             txtNotificationText = (TextView) itemView.findViewById(R.id.txtNotificationText);
             ivClear = (ImageView) itemView.findViewById(R.id.ivClear);
-//            ivNotificationImage = (ImageView) itemView.findViewById(R.id.ivNotificationImage);
             cvItem = (CardView) itemView.findViewById(R.id.cvItem);
 
             ivClear.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     objOnClickListener.OnRemoveClick(alNotificationMaster.get(getAdapterPosition()), getAdapterPosition());
-//                    alNotificationMaster.remove(getAdapterPosition());
-//                    notifyItemRemoved(getAdapterPosition());
                 }
             });
         }

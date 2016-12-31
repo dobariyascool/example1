@@ -1,9 +1,7 @@
 package com.arraybit.parser;
 
-
 import android.content.Context;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -28,12 +26,9 @@ import java.util.Locale;
 
 public class NotificationJSONParser {
     public String InsertNotificationMaster = "InsertNotificationMaster";
-    public String UpdateNotificationMaster = "UpdateNotificationMaster";
-    public String DeleteNotificationMaster = "DeleteNotificationMaster";
-    public String SelectNotificationMaster = "SelectNotificationMaster";
     public String SelectAllNotificationMaster = "SelectAllNotificationMasterPageWise";
 
-    public  String DateFormat = "dd/MM/yyyy HH:mm";
+    public String DateFormat = "dd/MM/yyyy HH:mm";
     SimpleDateFormat sdfControlDateFormat = new SimpleDateFormat(DateFormat, Locale.US);
     Date dt = null;
     SimpleDateFormat sdfDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
@@ -51,7 +46,7 @@ public class NotificationJSONParser {
                 if (jsonObject.getString("NotificationImageName") != null && !jsonObject.getString("NotificationImageName").equals("") && !jsonObject.getString("NotificationImageName").equals("null")) {
                     objNotificationMaster.setNotificationImageName(jsonObject.getString("NotificationImageName"));
                 }
-                if(jsonObject.getString("NotificationDateTime") != null && !jsonObject.getString("NotificationDateTime").equals("") && !jsonObject.getString("NotificationDateTime").equals("null")) {
+                if (jsonObject.getString("NotificationDateTime") != null && !jsonObject.getString("NotificationDateTime").equals("") && !jsonObject.getString("NotificationDateTime").equals("null")) {
                     dt = sdfDateTimeFormat.parse(jsonObject.getString("NotificationDateTime"));
                     objNotificationMaster.setNotificationDateTime(sdfControlDateFormat.format(dt));
                 }
@@ -110,7 +105,6 @@ public class NotificationJSONParser {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                     try {
-                        Log.e("jsonObject", " " + jsonObject);
                         JSONObject jsonResponse = jsonObject.getJSONObject(InsertNotificationMaster + "Result");
                         if (jsonResponse != null) {
                             objNotificationAddListener = (NotificationAddListener) targetFragment;
@@ -142,14 +136,12 @@ public class NotificationJSONParser {
     }
 
     public void SelectAllNotificationMasterPageWise(String currentPage, Context context, final Fragment targetFragment) {
-        String url = Service.Url + this.SelectAllNotificationMaster + "/" + currentPage +"/"+ Globals.memberMasterId ;
-        Log.e("url", " " + url);
+        String url = Service.Url + this.SelectAllNotificationMaster + "/" + currentPage + "/" + Globals.memberMasterId;
         RequestQueue queue = Volley.newRequestQueue(context);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, new JSONObject(), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 try {
-                    Log.e("json", " " + jsonObject);
                     JSONArray jsonArray = jsonObject.getJSONArray(SelectAllNotificationMaster + "Result");
                     if (jsonArray != null) {
                         ArrayList<NotificationMaster> notificationMasters = SetListPropertiesFromJSONArray(jsonArray);

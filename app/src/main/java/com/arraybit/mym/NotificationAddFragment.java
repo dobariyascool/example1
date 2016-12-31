@@ -27,7 +27,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -36,7 +35,6 @@ import android.widget.Toast;
 import com.arraybit.global.Globals;
 import com.arraybit.global.MarshMallowPermission;
 import com.arraybit.global.Service;
-import com.arraybit.global.SharePreferenceManage;
 import com.arraybit.modal.NotificationMaster;
 import com.arraybit.parser.NotificationJSONParser;
 import com.rey.material.widget.Button;
@@ -44,14 +42,7 @@ import com.rey.material.widget.EditText;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class NotificationAddFragment extends Fragment implements View.OnClickListener, NotificationJSONParser.NotificationAddListener {
 
     final int PIC_CROP = 1;
@@ -61,11 +52,9 @@ public class NotificationAddFragment extends Fragment implements View.OnClickLis
     LinearLayout llNotificationAdd;
     RelativeLayout rladdImage;
     String imagePhysicalNameBytes, imageName, strImageName;
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss.SSS", Locale.US);
     ProgressDialog progressDialog = new ProgressDialog();
-    int notificationMasterId, customerType;
+    int notificationMasterId;
     BroadCastListener broadCastListener;
-    Context context;
     String picturePath = "";
 
     public NotificationAddFragment() {
@@ -89,6 +78,8 @@ public class NotificationAddFragment extends Fragment implements View.OnClickLis
             }
         }
         setHasOptionsMenu(true);
+
+        //layout
         etTitle = (EditText) view.findViewById(R.id.etTitle);
         etMessage = (EditText) view.findViewById(R.id.etMessage);
         ivImage = (ImageView) view.findViewById(R.id.ivImage);
@@ -172,15 +163,7 @@ public class NotificationAddFragment extends Fragment implements View.OnClickLis
             }
         } else if (v.getId() == R.id.ivImage) {
             Globals.HideKeyBoard(getActivity(), v);
-            SelectImageNotification(getActivity(),101);
-//            Globals.SelectImage(getActivity(), 100, 101);
-//        }else if (v.getId() == R.id.ivCancleImage) {
-//            Globals.HideKeyBoard(getActivity(), v);
-////            Globals.SelectImage(getActivity(), this, 100, 101);
-//            ivImage.setImageBitmap(null);
-//            txtImageName.setText("Image Name");
-//            rladdImage.setVisibility(View.VISIBLE);
-////            rlCancleImage.setVisibility(View.GONE);
+            SelectImageNotification(getActivity(), 101);
         }
     }
 
@@ -192,6 +175,8 @@ public class NotificationAddFragment extends Fragment implements View.OnClickLis
             getActivity().getSupportFragmentManager().popBackStack();
             if (notificationMaster != null) {
                 notificationMasterId = notificationMaster.getNotificationMasterId();
+
+                //send notification to all
                 new NotificationSendTask().execute();
             }
         } else {
@@ -208,14 +193,6 @@ public class NotificationAddFragment extends Fragment implements View.OnClickLis
     }
 
     public void SelectImage(int requestCode, Intent data) {
-//        if (requestCode == 100) {
-//            strImageName = String.valueOf(System.currentTimeMillis()) +"_"+Globals.memberMasterId + ".jpg";
-//            File file = new File(android.os.Environment.getExternalStorageDirectory(), strImageName);
-//            picturePath = file.getAbsolutePath();
-//            File f1 = new File(picturePath);
-//            Uri contentUri = Uri.fromFile(f1);
-//            performCrop(contentUri);
-//        } else
         if (requestCode == 101 && data != null && data.getData() != null) {
             Uri selectedImage = data.getData();
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
@@ -237,10 +214,8 @@ public class NotificationAddFragment extends Fragment implements View.OnClickLis
                 Bitmap selectedBitmap = extras.getParcelable("data");
 
                 rladdImage.setVisibility(View.GONE);
-//                ivImage.setVisibility(View.VISIBLE);
                 long millis = System.currentTimeMillis();
-                imageName = "Notification_"+String.valueOf(millis) + ".jpg";
-//                imageName = "Notification_"+String.valueOf(millis) + ".jpg" + MimeTypeMap.getFileExtensionFromUrl(picturePath);
+                imageName = "Notification_" + String.valueOf(millis) + ".jpg";
                 ivImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 ivImage.setImageBitmap(selectedBitmap);
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -253,9 +228,9 @@ public class NotificationAddFragment extends Fragment implements View.OnClickLis
     }
 
     //region Private Methods and Interface
+
     private void AddNotificationRequest() {
         progressDialog.show(getActivity().getSupportFragmentManager(), "");
-
         try {
             NotificationJSONParser objNotificationJSONParser = new NotificationJSONParser();
             NotificationMaster objNotificationMaster = new NotificationMaster();
@@ -265,7 +240,6 @@ public class NotificationAddFragment extends Fragment implements View.OnClickLis
             objNotificationMaster.setlinktoMemberMasterIdCreatedBy(Globals.memberMasterId);
 
             if (imageName != null && !imageName.equals("")) {
-//                strImageName = imageName.substring(0, imageName.lastIndexOf(".")) + "_" + simpleDateFormat.format(new Date()) + imageName.substring(imageName.lastIndexOf("."), imageName.length());
                 strImageName = imageName;
                 objNotificationMaster.setNotificationImageName(strImageName);
                 objNotificationMaster.setNotificationImageNameBytes(imagePhysicalNameBytes);
@@ -278,7 +252,6 @@ public class NotificationAddFragment extends Fragment implements View.OnClickLis
 
     private boolean ValidateControls() {
         boolean IsValid;
-
         if (etTitle.getText().toString().equals("") && etTitle.getText().toString().equals("")) {
             etTitle.setError("Enter Title");
             etMessage.setError("Enter Message");
@@ -296,7 +269,6 @@ public class NotificationAddFragment extends Fragment implements View.OnClickLis
             etTitle.clearError();
             IsValid = true;
         }
-
         return IsValid;
     }
 
@@ -364,9 +336,7 @@ public class NotificationAddFragment extends Fragment implements View.OnClickLis
             Service.HttpGetService(Service.Url + this.SendNotificationsToAll + "/" + notificationMasterId);
             return null;
         }
-
     }
-
     //endregion
 
 }

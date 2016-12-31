@@ -2,7 +2,6 @@ package com.arraybit.parser;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -26,9 +25,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-/// <summary>
-/// JSONParser for AdvertiseMaster
-/// </summary>
 public class AdvertiseJSONParser {
     public String InsertAdvertiseMaster = "InsertAdvertiseMaster";
     public String UpdateAdvertiseMasterDisable = "UpdateAdvertiseMasterDisable";
@@ -41,21 +37,22 @@ public class AdvertiseJSONParser {
     AdvretiseRequestListener objAdvretiseRequestListener;
     AdvertiseAddListener objAdvertiseAddListener;
     AdvertiseUpdateListener objAdvertiseUpdateListener;
-    private String SelectAllAdvertiseMasterPageWise = "SelectAllAdvertiseMasterPageWise";
     String url = "";
-    RequestQueue queue ;
+    RequestQueue queue;
     JsonObjectRequest jsonObjectRequest;
     JSONArray jsonArray;
+    private String SelectAllAdvertiseMasterPageWise = "SelectAllAdvertiseMasterPageWise";
+
     private AdvertiseMaster SetClassPropertiesFromJSONObject(JSONObject jsonObject) {
         AdvertiseMaster objAdvertiseMaster = null;
         try {
             if (jsonObject != null) {
                 objAdvertiseMaster = new AdvertiseMaster();
                 objAdvertiseMaster.setAdvertiseMasterId(jsonObject.getInt("AdvertiseMasterId"));
-                if (jsonObject.getString("AdvertiseText") != null && !jsonObject.getString("AdvertiseText").equals("")&& !jsonObject.getString("AdvertiseText").equals("null")) {
+                if (jsonObject.getString("AdvertiseText") != null && !jsonObject.getString("AdvertiseText").equals("") && !jsonObject.getString("AdvertiseText").equals("null")) {
                     objAdvertiseMaster.setAdvertiseText(jsonObject.getString("AdvertiseText"));
                 }
-                if (jsonObject.getString("AdvertiseImageName") != null && !jsonObject.getString("AdvertiseImageName").equals("")&& !jsonObject.getString("AdvertiseImageName").equals("null")) {
+                if (jsonObject.getString("AdvertiseImageName") != null && !jsonObject.getString("AdvertiseImageName").equals("") && !jsonObject.getString("AdvertiseImageName").equals("null")) {
                     objAdvertiseMaster.setAdvertiseImageName(jsonObject.getString("AdvertiseImageName"));
                 }
                 objAdvertiseMaster.setWebsiteURL(jsonObject.getString("WebsiteURL"));
@@ -84,10 +81,10 @@ public class AdvertiseJSONParser {
             for (int i = 0; i < jsonArray.length(); i++) {
                 objAdvertiseMaster = new AdvertiseMaster();
                 objAdvertiseMaster.setAdvertiseMasterId(jsonArray.getJSONObject(i).getInt("AdvertiseMasterId"));
-                if (jsonArray.getJSONObject(i).getString("AdvertiseText") != null && !jsonArray.getJSONObject(i).getString("AdvertiseText").equals("")&& !jsonArray.getJSONObject(i).getString("AdvertiseText").equals("null")) {
+                if (jsonArray.getJSONObject(i).getString("AdvertiseText") != null && !jsonArray.getJSONObject(i).getString("AdvertiseText").equals("") && !jsonArray.getJSONObject(i).getString("AdvertiseText").equals("null")) {
                     objAdvertiseMaster.setAdvertiseText(jsonArray.getJSONObject(i).getString("AdvertiseText"));
                 }
-                if (jsonArray.getJSONObject(i).getString("AdvertiseImageName") != null && !jsonArray.getJSONObject(i).getString("AdvertiseImageName").equals("")&& !jsonArray.getJSONObject(i).getString("AdvertiseImageName").equals("null")) {
+                if (jsonArray.getJSONObject(i).getString("AdvertiseImageName") != null && !jsonArray.getJSONObject(i).getString("AdvertiseImageName").equals("") && !jsonArray.getJSONObject(i).getString("AdvertiseImageName").equals("null")) {
                     objAdvertiseMaster.setAdvertiseImageName(jsonArray.getJSONObject(i).getString("AdvertiseImageName"));
                 }
                 objAdvertiseMaster.setWebsiteURL(jsonArray.getJSONObject(i).getString("WebsiteURL"));
@@ -131,17 +128,14 @@ public class AdvertiseJSONParser {
             stringer.endObject();
 
             stringer.endObject();
-            Log.e("json", " " + stringer.toString());
 
             String url = Service.Url + this.InsertAdvertiseMaster;
 
             RequestQueue queue = Volley.newRequestQueue(context);
-            Log.e("url", " " + url);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(stringer.toString()), new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                     try {
-                        Log.e("jsonObject", " " + jsonObject);
                         JSONObject jsonResponse = jsonObject.getJSONObject(InsertAdvertiseMaster + "Result");
                         if (jsonResponse != null) {
                             objAdvertiseAddListener = (AdvertiseAddListener) targetFragment;
@@ -191,17 +185,14 @@ public class AdvertiseJSONParser {
             stringer.endObject();
 
             stringer.endObject();
-            Log.e("json", " " + stringer.toString());
 
             String url = Service.Url + this.UpdateAdvertiseMaster;
 
             RequestQueue queue = Volley.newRequestQueue(context);
-            Log.e("url", " " + url);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(stringer.toString()), new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                     try {
-                        Log.e("jsonObject", " " + jsonObject);
                         JSONObject jsonResponse = jsonObject.getJSONObject(UpdateAdvertiseMaster + "Result");
                         if (jsonResponse != null) {
                             objAdvertiseAddListener = (AdvertiseAddListener) targetFragment;
@@ -248,17 +239,14 @@ public class AdvertiseJSONParser {
 
             stringer.endObject();
 
-            Log.e("json", " " + stringer.toString());
 
             String url = Service.Url + this.UpdateAdvertiseMasterDisable;
 
             RequestQueue queue = Volley.newRequestQueue(context);
-            Log.e("url", " " + url);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(stringer.toString()), new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                     try {
-                        Log.e("jsonObject", " " + jsonObject);
                         JSONObject jsonResponse = jsonObject.getJSONObject(UpdateAdvertiseMasterDisable + "Result");
                         if (jsonResponse != null) {
                             objAdvertiseUpdateListener = (AdvertiseUpdateListener) targetFragment;
@@ -305,17 +293,14 @@ public class AdvertiseJSONParser {
 
             stringer.endObject();
 
-            Log.e("json", " " + stringer.toString());
 
             String url = Service.Url + this.UpdateAdvertiseMasterDelete;
 
             RequestQueue queue = Volley.newRequestQueue(context);
-            Log.e("url", " " + url);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(stringer.toString()), new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                     try {
-                        Log.e("jsonObject", " " + jsonObject);
                         JSONObject jsonResponse = jsonObject.getJSONObject(UpdateAdvertiseMasterDelete + "Result");
                         if (jsonResponse != null) {
                             objAdvertiseUpdateListener = (AdvertiseUpdateListener) targetFragment;
@@ -348,13 +333,11 @@ public class AdvertiseJSONParser {
 
     public void SelectAllAdvertiseMasterPageWise(String currentPage, String pageSize, final Context context, final Fragment targetFragment) {
         url = Service.Url + this.SelectAllAdvertiseMasterPageWise + "/" + currentPage + "/" + pageSize;
-        Log.e("url", " " + url);
         queue = Volley.newRequestQueue(context);
-         jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, new JSONObject(), new Response.Listener<JSONObject>() {
+        jsonObjectRequest = new JsonObjectRequest(com.android.volley.Request.Method.GET, url, new JSONObject(), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 try {
-                    Log.e("json", " " + jsonObject);
                     jsonArray = jsonObject.getJSONArray(SelectAllAdvertiseMasterPageWise + "Result");
                     if (jsonArray != null) {
                         if (targetFragment != null) {

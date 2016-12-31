@@ -60,7 +60,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-public class RegistrationDetailFragment extends Fragment implements View.OnClickListener, MemberJSONParser.MemberRequestListener, MemberJSONParser.DetailRequestListener {
+public class RegistrationDetailFragment extends Fragment implements View.OnClickListener, MemberJSONParser.MemberRequestListener {
 
 
     int childCount = 0;
@@ -88,9 +88,8 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
     String imagePhysicalNameBytes1, imageName1, imagePhysicalNameBytes2, imageName2;
     String imagePhysicalNameBytes3, imageName3, imagePhysicalNameBytes4, imageName4, imagePhysicalNameBytes5, imageName5;
     MemberMaster objMemberMaster;
-    boolean isUpdate = false, isDeleted;
+    boolean isDeleted;
     MarshMallowPermission marshMallowPermission;
-    UpdateResponseListener objUpdateResponseListener;
     boolean isRemoveS = false, isRemove1 = false, isRemove2 = false, isRemove3 = false, isRemove4 = false, isRemove5 = false;
     Bitmap bitmap, bitmap1, bitmap2, bitmap3, bitmap4, bitmap5;
     ArrayAdapter<String> adapter;
@@ -118,10 +117,8 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
             }
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.title_fragment_registration));
             //end
-//            Globals.SetToolBarBackground(getActivity(), app_bar, ContextCompat.getColor(getActivity(), R.color.colorPrimary), ContextCompat.getColor(getActivity(), android.R.color.white));
 
-            //EditText
-
+            //permission for higher version from 23
             marshMallowPermission = new MarshMallowPermission(getActivity());
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (!marshMallowPermission.checkPermissionForCamera()) {
@@ -131,21 +128,19 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
                     marshMallowPermission.requestPermissionForExternalStorage();
                 }
             }
+
+            //layout
             actProfession = (AppCompatAutoCompleteTextView) view.findViewById(R.id.actDesignation);
             actQualification = (AppCompatMultiAutoCompleteTextView) view.findViewById(R.id.actQualification);
-
-//            if (getArguments() != null) {
             Bundle bundle = getArguments();
             if (bundle != null) {
                 objMemberMaster = bundle.getParcelable("MemberMaster");
-                isUpdate = bundle.getBoolean("isUpdate", false);
             }
-//            }
-
             if (Service.CheckNet(getActivity())) {
                 RequestProfessions();
                 RequestQualification();
             }
+
             etAnniversaryDate = (EditText) view.findViewById(R.id.etAnniversaryDate);
             etSpouseName = (EditText) view.findViewById(R.id.etSpouseName);
             etSpouseDOB = (EditText) view.findViewById(R.id.etSpouseDOB);
@@ -195,7 +190,6 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
             llAdd3 = (LinearLayout) view.findViewById(R.id.llAdd3);
             llAdd4 = (LinearLayout) view.findViewById(R.id.llAdd4);
             checkBox = (CheckBox) view.findViewById(R.id.checkBox);
-            //end
 
             //Radiogroup
             rgMain = (RadioGroup) view.findViewById(R.id.rgMain);
@@ -204,7 +198,6 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
             rgMainChild3 = (RadioGroup) view.findViewById(R.id.rgMainChild3);
             rgMainChild4 = (RadioGroup) view.findViewById(R.id.rgMainChild4);
             rgMainChild5 = (RadioGroup) view.findViewById(R.id.rgMainChild5);
-            //
 
             //RadioButton
             rbMarried = (RadioButton) view.findViewById(R.id.rbMarried);
@@ -219,20 +212,8 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
             rbFemale3 = (RadioButton) view.findViewById(R.id.rbFemale3);
             rbFemale4 = (RadioButton) view.findViewById(R.id.rbFemale4);
             rbFemale5 = (RadioButton) view.findViewById(R.id.rbFemale5);
-            //end
 
-            //button
             btnUpdateDetail = (Button) view.findViewById(R.id.btnUpdateDetail);
-            //end
-
-            //Spinner
-            //
-
-            //compound button
-            //end
-
-            //event
-
             ivAdd1 = (ImageView) view.findViewById(R.id.ivAdd1);
             ivAdd2 = (ImageView) view.findViewById(R.id.ivAdd2);
             ivAdd3 = (ImageView) view.findViewById(R.id.ivAdd3);
@@ -264,7 +245,6 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
             ivAdd4.setOnClickListener(this);
             actProfession.setOnClickListener(this);
             actQualification.setOnClickListener(this);
-            //end
 
             ArrayList<String> bloodGroups = new ArrayList<>();
             bloodGroups.add("- SELECT -");
@@ -295,21 +275,6 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
             });
 
             setHasOptionsMenu(true);
-
-//            if (Service.CheckNet(getActivity())) {
-//                RequestProfessions();
-//                RequestQualification();
-//            }
-
-//            if (getActivity() instanceof DetailActivity) {
-
-//            }
-
-//            if (isUpdate) {
-            btnUpdateDetail.setText("Update");
-//            } else {
-//                btnUpdateDetail.setText("Next");
-//            }
 
             rgMain.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
@@ -346,8 +311,6 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
                         llAdd2.setVisibility(View.GONE);
                         llAdd3.setVisibility(View.GONE);
                         llAdd4.setVisibility(View.GONE);
-
-
                     }
                 }
             });
@@ -427,9 +390,6 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
                         if (childCount == 0) {
                             childCount = 1;
                         }
-//                        if (objMemberMaster != null) {
-//                            SetData();
-//                        } else {
                         llChildDetail1.setVisibility(View.VISIBLE);
                         llAdd1.setVisibility(View.VISIBLE);
                         if (!etChildName1.getText().toString().equals("")) {
@@ -455,8 +415,6 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
                             llChildDetail5.setVisibility(View.VISIBLE);
                             llAdd4.setVisibility(View.GONE);
                         }
-
-//                        }
                     }
                 }
             });
@@ -464,7 +422,6 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
             actQualification.setOnKeyListener(new View.OnKeyListener() {
                 @Override
                 public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                    actQualification.setSelection(actQualification.getText().toString().length());
                     if (keyCode == KeyEvent.KEYCODE_DEL) {
                         if (actQualification.getText().toString().isEmpty()) {
                             SetArrayListAdapter(alString);
@@ -486,16 +443,10 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
             });
 
             if (objMemberMaster != null) {
-//                if (isUpdate) {
                 SetData();
-//                } else {
-//                    checkBox.setChecked(true);
-//                }
             } else {
                 checkBox.setChecked(true);
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -504,11 +455,6 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-//        if (getActivity() instanceof RegistartionFragmentActivity) {
-//            if (item.getItemId() == android.R.id.home) {
-//                getActivity().finish();
-//            }
-//        } else {
         if (item.getItemId() == android.R.id.home) {
             if (getActivity().getSupportFragmentManager().getBackStackEntryCount() != 0) {
                 if (getActivity().getSupportFragmentManager().getBackStackEntryAt(getActivity().getSupportFragmentManager().getBackStackEntryCount() - 1).getName() != null && getActivity().getSupportFragmentManager().getBackStackEntryAt(getActivity().getSupportFragmentManager().getBackStackEntryCount() - 1).getName().equals("PersonalDetail")) {
@@ -519,7 +465,6 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
                 getActivity().finish();
             }
         }
-//        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -543,7 +488,6 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
                 return;
             }
             if (Service.CheckNet(getActivity())) {
-//                new SignUpLoadingTask().execute();
                 UpdateDetailRequest();
             } else {
                 Globals.ShowSnackBar(v, getResources().getString(R.string.MsgCheckConnection), getActivity(), 1000);
@@ -551,27 +495,27 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
         } else if (v.getId() == R.id.ivSpouseImage) {
             ivTemparory = v;
             Globals.HideKeyBoard(getActivity(), v);
-            SelectImageProfile(getActivity(), 100, 101);
+            SelectImageProfile(getActivity(), 101);
         } else if (v.getId() == R.id.ivChildImage1) {
             ivTemparory = v;
             Globals.HideKeyBoard(getActivity(), v);
-            SelectImageProfile(getActivity(), 100, 101);
+            SelectImageProfile(getActivity(), 101);
         } else if (v.getId() == R.id.ivChildImage2) {
             ivTemparory = v;
             Globals.HideKeyBoard(getActivity(), v);
-            SelectImageProfile(getActivity(), 100, 101);
+            SelectImageProfile(getActivity(), 101);
         } else if (v.getId() == R.id.ivChildImage3) {
             ivTemparory = v;
             Globals.HideKeyBoard(getActivity(), v);
-            SelectImageProfile(getActivity(), 100, 101);
+            SelectImageProfile(getActivity(), 101);
         } else if (v.getId() == R.id.ivChildImage4) {
             ivTemparory = v;
             Globals.HideKeyBoard(getActivity(), v);
-            SelectImageProfile(getActivity(), 100, 101);
+            SelectImageProfile(getActivity(), 101);
         } else if (v.getId() == R.id.ivChildImage5) {
             ivTemparory = v;
             Globals.HideKeyBoard(getActivity(), v);
-            SelectImageProfile(getActivity(), 100, 101);
+            SelectImageProfile(getActivity(), 101);
         } else if (v.getId() == R.id.etAnniversaryDate) {
             Globals.ShowDatePickerDialog(etAnniversaryDate, getActivity(), false);
         } else if (v.getId() == R.id.etSpouseDOB) {
@@ -606,7 +550,6 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
                     UpdateArrayListAdapter(null);
                     isDeleted = false;
                 }
-
             }
             actQualification.showDropDown();
         } else if (v.getId() == R.id.ivAdd1) {
@@ -675,30 +618,16 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
     public void MemberResponse(String errorCode, MemberMaster objMemberMaster) {
         progressDialog.dismiss();
         if (errorCode.equals("0")) {
-//            if (Globals.startPage == 1) {
-//                Globals.startPage = 2;
-//                SharePreferenceManage objSharePreferenceManage = new SharePreferenceManage();
-//                objSharePreferenceManage.CreatePreference("LoginPreference", "startPage", "2", getActivity());
-//                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-//                fragmentTransaction.setCustomAnimations(R.anim.right_in, R.anim.left_out, 0, R.anim.right_exit);
-//                fragmentTransaction.replace(android.R.id.content, new RegistrationContactFragment(), "ContactDetail");
-//                fragmentTransaction.addToBackStack("ContactDetail");
-//                fragmentTransaction.commit();
-//            } else {
             if (getActivity().getSupportFragmentManager().getBackStackEntryCount() != 0) {
                 if (getActivity().getSupportFragmentManager().getBackStackEntryAt(getActivity().getSupportFragmentManager().getBackStackEntryCount() - 1).getName() != null && getActivity().getSupportFragmentManager().getBackStackEntryAt(getActivity().getSupportFragmentManager().getBackStackEntryCount() - 1).getName().equals("PersonalDetail")) {
                     if (getActivity() instanceof DetailActivity) {
-                        objUpdateResponseListener = (RegistrationDetailFragment.UpdateResponseListener) getActivity();
+                        UpdateResponseListener objUpdateResponseListener = (UpdateResponseListener) getActivity();
                         if (objUpdateResponseListener != null) {
                             objUpdateResponseListener.UpdateResponse();
                         }
-                    } else {
-                        getActivity().getSupportFragmentManager().popBackStack();
-//                    getActivity().onBackPressed();
                     }
                 }
             }
-//            }
         } else {
             Globals.ShowSnackBar(getView(), getResources().getString(R.string.MsgServerNotResponding), getActivity(), 1000);
         }
@@ -709,108 +638,9 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
 
     }
 
-    @Override
-    public void QualificationResponse(final ArrayList<String> lstStrings) {
-        if (lstStrings != null && lstStrings.size() > 0) {
-//            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.row_spinner, lstStrings);
-            alString = lstStrings;
-            alStringFilter = new ArrayList<>();
-//            actQualification.setAdapter(adapter);
-            actQualification.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-            if (actQualification.getText().toString().isEmpty()) {
-                SetArrayListAdapter(alString);
-            } else {
-                if (isDeleted) {
-                    if (actQualification.getText().subSequence(actQualification.length() - 1, actQualification.length()).toString().equals(",")) {
-                        selectedValue = String.valueOf(actQualification.getText().subSequence(0, actQualification.length()) + " ").split(", ");
-                    } else if (actQualification.getText().subSequence(actQualification.length() - 1, actQualification.length()).toString().equals(" ")) {
-                        selectedValue = actQualification.getText().subSequence(0, actQualification.length()).toString().split(", ");
-                    } else {
-                        selectedValue = actQualification.getText().subSequence(0, actQualification.length()).toString().split(", ");
-                        actQualification.setText(actQualification.getText() + ", ");
-                    }
-                    if (selectedValue != null) {
-                        for (int i = 0; i <= selectedValue.length; i++) {
-                            UpdateArrayListAdapter(selectedValue[i]);
-                        }
-                    } else {
-                        UpdateArrayListAdapter(null);
-                    }
-                    isDeleted = false;
-                }
-
-            }
-
-        }
-    }
-
-    @Override
-    public void ProfessionResponse(ArrayList<String> lstStrings) {
-        if (lstStrings != null && lstStrings.size() > 0) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.row_spinner, lstStrings);
-            actProfession.setAdapter(adapter);
-        }
-    }
-
+    //set image
     public void SelectImage(int requestCode, Intent data) {
-        if (requestCode == 100) {
-//            strImageName = "CameraImage_" + simpleDateFormat.format(new Date()) + imageName.substring(imageName.lastIndexOf("."), imageName.length()) + ".jpg";
-//            File file = new File(android.os.Environment.getExternalStorageDirectory(), strImageName);
-//            picturePath = file.getAbsolutePath();
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-//            imageName = "Member_" + Globals.memberMasterId + ".jpg" ;
-            long millis = System.currentTimeMillis();
-            if (ivTemparory == ivSpouseImage) {
-//                String extension = MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                if (extension != null) {
-//                    imageName = String.valueOf(millis)+ "_0." + MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                } else {
-                imageName = String.valueOf(millis) + "_0.jpg";
-//                }
-            } else if (ivTemparory == ivChildImage1) {
-//                String extension = MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                if (extension != null) {
-//                    imageName1 =  String.valueOf(millis) + "_1." + MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                } else {
-                imageName1 = String.valueOf(millis) + "_1.jpg";
-//                }
-            } else if (ivTemparory == ivChildImage2) {
-//                String extension = MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                if (extension != null) {
-//                    imageName2 =  String.valueOf(millis)+ "_2." + MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                } else {
-                imageName2 = String.valueOf(millis) + "_2.jpg";
-//                }
-            } else if (ivTemparory == ivChildImage3) {
-//                String extension = MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                if (extension != null) {
-//                    imageName3 =  String.valueOf(millis) + "_3." + MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                } else {
-                imageName3 = String.valueOf(millis) + "_3.jpg";
-//                }
-            } else if (ivTemparory == ivChildImage4) {
-//                String extension = MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                if (extension != null) {
-//                    imageName4 =  String.valueOf(millis) + "_4." + MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                } else {
-                imageName4 = String.valueOf(millis) + "_4.jpg";
-//                }
-            } else if (ivTemparory == ivChildImage5) {
-//                String extension = MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                if (extension != null) {
-//                    imageName5 =  String.valueOf(millis) + "_5." + MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                } else {
-                imageName5 = String.valueOf(millis) + "_5.jpg";
-//                }
-            }
-//            ivTemparory.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//            ivTemparory.setImageBitmap(bitmap);
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 110, bos);
-            byte[] byteData = bos.toByteArray();
-            imagePhysicalNameBytes = Base64.encodeToString(byteData, Base64.DEFAULT);
-            return;
-        } else if (requestCode == 101 && data != null && data.getData() != null) {
+        if (requestCode == 101 && data != null && data.getData() != null) {
             Uri selectedImage = data.getData();
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
@@ -822,52 +652,22 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
             File file = new File(picturePath);
             long millis = System.currentTimeMillis();
             if (ivTemparory.getId() == ivSpouseImage.getId()) {
-//                String extension = MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                if (extension != null) {
-//                    imageName =  String.valueOf(millis) + "_0." + MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                } else {
                 imageName = String.valueOf(millis) + "_0.jpg";
-//                }
             }
             if (ivTemparory.getId() == ivChildImage1.getId()) {
-//                String extension = MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                if (extension != null) {
-//                    imageName1 =  String.valueOf(millis) + "_1." + MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                } else {
                 imageName1 = String.valueOf(millis) + "_1.jpg";
-//                }
             }
             if (ivTemparory.getId() == ivChildImage2.getId()) {
-//                String extension = MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                if (extension != null) {
-//                    imageName2 =  String.valueOf(millis) + "_2." + MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                } else {
                 imageName2 = String.valueOf(millis) + "_2.jpg";
-//                }
             }
             if (ivTemparory.getId() == ivChildImage3.getId()) {
-//                String extension = MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                if (extension != null) {
-//                    imageName3 =  String.valueOf(millis) + "_3." + MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                } else {
                 imageName3 = String.valueOf(millis) + "_3.jpg";
-//                }
             }
             if (ivTemparory.getId() == ivChildImage4.getId()) {
-//                String extension = MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                if (extension != null) {
-//                    imageName4 =  String.valueOf(millis) + "_4." + MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                } else {
                 imageName4 = String.valueOf(millis) + "_4.jpg";
-//                }
             }
             if (ivTemparory.getId() == ivChildImage5.getId()) {
-//                String extension = MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                if (extension != null) {
-//                    imageName5 =  String.valueOf(millis) + "_5." + MimeTypeMap.getFileExtensionFromUrl(picturePath);
-//                } else {
                 imageName5 = String.valueOf(millis) + "_5.jpg";
-//                }
             }
             cursor.close();
         }
@@ -917,8 +717,7 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
         }
     }
 
-    // region Private Methods
-
+    //date picker on click of edittext
     public void EditTextOnClick(View v) {
         if (v.getId() == R.id.etAnniversaryDate) {
             Globals.ShowDatePickerDialog(etAnniversaryDate, getActivity(), false);
@@ -937,6 +736,8 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
         }
     }
 
+    // region Private Methods
+
     private void UpdateDetailRequest() {
         progressDialog = new ProgressDialog();
         progressDialog.show(getActivity().getSupportFragmentManager(), "");
@@ -947,15 +748,6 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
             ArrayList<MemberRelativesTran> lstMemberRelativesTren = new ArrayList<>();
             objMemberMaster.setMemberMasterId(Globals.memberMasterId);
             objMemberMaster.setProfession(actProfession.getText().toString());
-
-//            if (actQualification.getText().toString().substring(actQualification.getText().toString().length() - 1).equals(",")) {
-//                objMemberMaster.setQualification(actQualification.getText().toString().substring(0, actQualification.getText().toString().length() - 2));
-////            }if(actQualification.getText().toString().substring(actQualification.getText().toString().length()-2).equals(","))
-////            {
-////                objMemberMaster.setQualification(actQualification.getText().toString().substring(0,actQualification.getText().toString().length()-3));
-//            } else {
-//                objMemberMaster.setQualification(actQualification.getText().toString());
-//            }
 
             if (actQualification.getText().subSequence(actQualification.length() - 1, actQualification.length()).toString().equals(",")) {
                 objMemberMaster.setQualification(actQualification.getText().toString().substring(0, actQualification.length() - 1));
@@ -968,7 +760,6 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
             } else {
                 objMemberMaster.setQualification(actQualification.getText().toString());
             }
-
 
             if (spinnerBloodGroup.getSelectedItemPosition() > 0) {
                 objMemberMaster.setBloodGroup(spinnerBloodGroup.getSelectedItem().toString());
@@ -987,7 +778,6 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
                     objMemberRelativesTran.setBirthDate(etSpouseDOB.getText().toString());
                 }
                 if (imageName != null && !imageName.equals("")) {
-//                strImageName = imageName.substring(0, imageName.lastIndexOf(".")) + "_" + simpleDateFormat.format(new Date()) + imageName.substring(imageName.lastIndexOf("."), imageName.length());
                     strImageName = imageName;
                     objMemberRelativesTran.setImageName(strImageName);
                     objMemberRelativesTran.setImageNameBytes(imagePhysicalNameBytes);
@@ -1003,7 +793,6 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
                     }
                 }
                 SharePreferenceManage objSharePreferenceManage = new SharePreferenceManage();
-//                if(isUpdate) {
                 if (objSharePreferenceManage.GetPreference("LoginPreference", "Gender", getActivity()) != null) {
                     if (objSharePreferenceManage.GetPreference("LoginPreference", "Gender", getActivity()).equals("Male")) {
                         objMemberRelativesTran.setGender("Female");
@@ -1013,17 +802,6 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
                         objMemberRelativesTran.setRelation("Husbund");
                     }
                 }
-//                }
-//                else
-//                {
-//                    if (objMemberMaster.getGender().equals("Male")) {
-//                        objMemberRelativesTran.setGender("Female");
-//                        objMemberRelativesTran.setRelation("Wife");
-//                    } else if (objMemberMaster.getGender().equals("Female")) {
-//                        objMemberRelativesTran.setGender("Male");
-//                        objMemberRelativesTran.setRelation("Husbund");
-//                    }
-//                }
 
                 lstMemberRelativesTren.add(objMemberRelativesTran);
 
@@ -1039,7 +817,6 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
                             objMemberRelativesTran.setBirthDate(etChildDOB1.getText().toString());
                         }
                         if (imageName1 != null && !imageName1.equals("")) {
-//                strImageName = imageName.substring(0, imageName.lastIndexOf(".")) + "_" + simpleDateFormat.format(new Date()) + imageName.substring(imageName.lastIndexOf("."), imageName.length());
                             strImageName = imageName1;
                             objMemberRelativesTran.setImageName(strImageName);
                             objMemberRelativesTran.setImageNameBytes(imagePhysicalNameBytes1);
@@ -1076,7 +853,6 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
                             objMemberRelativesTran.setBirthDate(etChildDOB2.getText().toString());
                         }
                         if (imageName2 != null && !imageName2.equals("")) {
-//                strImageName = imageName.substring(0, imageName.lastIndexOf(".")) + "_" + simpleDateFormat.format(new Date()) + imageName.substring(imageName.lastIndexOf("."), imageName.length());
                             strImageName = imageName2;
                             objMemberRelativesTran.setImageName(strImageName);
                             objMemberRelativesTran.setImageNameBytes(imagePhysicalNameBytes2);
@@ -1113,7 +889,6 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
                             objMemberRelativesTran.setBirthDate(etChildDOB3.getText().toString());
                         }
                         if (imageName3 != null && !imageName3.equals("")) {
-//                strImageName = imageName.substring(0, imageName.lastIndexOf(".")) + "_" + simpleDateFormat.format(new Date()) + imageName.substring(imageName.lastIndexOf("."), imageName.length());
                             strImageName = imageName3;
                             objMemberRelativesTran.setImageName(strImageName);
                             objMemberRelativesTran.setImageNameBytes(imagePhysicalNameBytes3);
@@ -1151,7 +926,6 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
                             objMemberRelativesTran.setBirthDate(etChildDOB4.getText().toString());
                         }
                         if (imageName4 != null && !imageName4.equals("")) {
-//                strImageName = imageName.substring(0, imageName.lastIndexOf(".")) + "_" + simpleDateFormat.format(new Date()) + imageName.substring(imageName.lastIndexOf("."), imageName.length());
                             strImageName = imageName4;
                             objMemberRelativesTran.setImageName(strImageName);
                             objMemberRelativesTran.setImageNameBytes(imagePhysicalNameBytes4);
@@ -1188,7 +962,6 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
                             objMemberRelativesTran.setBirthDate(etChildDOB5.getText().toString());
                         }
                         if (imageName5 != null && !imageName5.equals("")) {
-//                strImageName = imageName.substring(0, imageName.lastIndexOf(".")) + "_" + simpleDateFormat.format(new Date()) + imageName.substring(imageName.lastIndexOf("."), imageName.length());
                             strImageName = imageName5;
                             objMemberRelativesTran.setImageName(strImageName);
                             objMemberRelativesTran.setImageNameBytes(imagePhysicalNameBytes5);
@@ -1219,33 +992,16 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
             } else {
                 objMemberMaster.setIsMarried(false);
             }
-//            if (isUpdate) {
             objMemberMaster.setLstMemberRelativeTran(lstMemberRelativesTren);
 
             objMemberJSONParser.UpdateMemberMasterPersonalDetail(getActivity(), RegistrationDetailFragment.this, objMemberMaster);
-//            } else {
-////                RegistrationContactFragment objRegistrationContactFragment = new RegistrationContactFragment();
-////                Bundle bundle = new Bundle();
-////                bundle.putParcelable("MemberMaster", objMemberMaster);
-////                objRegistrationContactFragment.setArguments(bundle);
-////                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-////                fragmentTransaction.setCustomAnimations(R.anim.right_in, R.anim.left_out, 0, R.anim.right_exit);
-////                fragmentTransaction.replace(R.id.llPersonal, objRegistrationContactFragment, "ContactDetail");
-////                fragmentTransaction.addToBackStack("ContactDetail");
-////                fragmentTransaction.commit();
-//                onNextClick objOnNextClick =(onNextClick) ((SignInActivity)getActivity());
-//                objOnNextClick.OnNextClick(objMemberMaster);
-//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void RequestProfessions() {
-//        MemberJSONParser objMemeberJSONParser = new MemberJSONParser();
-//        objMemeberJSONParser.SelectAllProfession(getActivity(), this);
         ArrayList<String> lstStrings = new ArrayList<>();
-
         try {
             JSONObject jsonObject = Service.HttpGetService(Service.Url + "SelectAllProfession");
             if (jsonObject != null) {
@@ -1259,15 +1015,12 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
                 }
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 
     private void RequestQualification() {
-//        MemberJSONParser objMemeberJSONParser = new MemberJSONParser();
-//        objMemeberJSONParser.SelectAllQualification(getActivity(), this);
         ArrayList<String> lstStrings = new ArrayList<>();
-
         try {
             JSONObject jsonObject = Service.HttpGetService(Service.Url + "SelectAllQualification");
             if (jsonObject != null) {
@@ -1276,12 +1029,9 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
                     for (int i = 0; i < jsonArray.length(); i++) {
                         lstStrings.add(jsonArray.getString(i));
                     }
-
                     if (lstStrings != null && lstStrings.size() > 0) {
-//            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.row_spinner, lstStrings);
                         alString = lstStrings;
                         alStringFilter = new ArrayList<>();
-//            actQualification.setAdapter(adapter);
                         actQualification.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
                         if (actQualification.getText().toString().isEmpty()) {
                             SetArrayListAdapter(alString);
@@ -1304,21 +1054,16 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
                                 }
                                 isDeleted = false;
                             }
-
                         }
-
                     }
                 }
             }
         } catch (Exception e) {
-            // Log exception
-
+            e.printStackTrace();
         }
     }
 
     private void SetData() {
-
-//        if (isUpdate) {
         if (objMemberMaster.getLstMemberRelativeTran() != null && objMemberMaster.getLstMemberRelativeTran().size() > 1) {
             checkBox.setChecked(false);
             llChildDetail1.setVisibility(View.VISIBLE);
@@ -1345,23 +1090,8 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
         } else {
             checkBox.setChecked(true);
         }
-//            llChildDetail1.setVisibility(View.VISIBLE);
-//            llChildDetail2.setVisibility(View.VISIBLE);
         txtChildDetail.setVisibility(View.VISIBLE);
         checkBox.setVisibility(View.VISIBLE);
-//        } else {
-//            llChildDetail1.setVisibility(View.GONE);
-//            llChildDetail2.setVisibility(View.GONE);
-//            llChildDetail3.setVisibility(View.GONE);
-//            llChildDetail4.setVisibility(View.GONE);
-//            llChildDetail5.setVisibility(View.GONE);
-//            llAdd1.setVisibility(View.GONE);
-//            llAdd2.setVisibility(View.GONE);
-//            llAdd3.setVisibility(View.GONE);
-//            llAdd4.setVisibility(View.GONE);
-//            txtChildDetail.setVisibility(View.GONE);
-//            checkBox.setVisibility(View.GONE);
-//        }
 
         actProfession.setText(objMemberMaster.getProfession());
         actQualification.setText(objMemberMaster.getQualification());
@@ -1388,8 +1118,6 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
                     bitmap = Globals.getBitmapFromURL(objMemberMaster.getLstMemberRelativeTran().get(0).getImageName());
                 }
                 if (ivSpouseImage.getDrawable() == null) {
-//                    ivProfile1.setVisibility(View.GONE);
-//                    ivProfile.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
                     ivSpouseImage.setImageResource(R.drawable.no_image);
                 }
                 if (objMemberMaster.getLstMemberRelativeTran() != null && objMemberMaster.getLstMemberRelativeTran().size() > 1) {
@@ -1529,11 +1257,10 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
                 }
                 isDeleted = false;
             }
-
         }
-
     }
 
+    //convert image in small size
     private Bitmap decodeFile(File f) {
         try {
             // Decode image size
@@ -1560,8 +1287,8 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
         return null;
     }
 
-    private void SelectImageProfile(final Context context, final int requestCodeCamera, final int requestCodeGallery) {
-//        final CharSequence[] items = {"Take Photo", "Choose from Gallery", "Remove Image"};
+    //select image from gallary or remove in image view
+    private void SelectImageProfile(final Context context, final int requestCodeGallery) {
         final CharSequence[] items = {"Choose from Gallery", "Remove Image"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialog);
@@ -1569,13 +1296,7 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (items[item].equals("Take Photo")) {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File f = new File(android.os.Environment
-                            .getExternalStorageDirectory(), "temp.jpg");
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-                    ((Activity) context).startActivityForResult(intent, requestCodeCamera);
-                } else if (items[item].equals("Choose from Gallery")) {
+                if (items[item].equals("Choose from Gallery")) {
                     Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
                     ((Activity) context).startActivityForResult(Intent.createChooser(intent, "Select File"), requestCodeGallery);
@@ -1627,7 +1348,6 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
 
     private boolean ValidateControls() {
         boolean IsValid = true;
-
         if (actProfession.getText().toString().equals("")) {
             actProfession.setError("Enter profession");
             IsValid = false;
@@ -1705,6 +1425,7 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
         return IsValid;
     }
 
+    //set list in Qaulification
     private void UpdateArrayListAdapter(String name) {
         int isRemove = -1;
         String str;
@@ -1762,12 +1483,11 @@ public class RegistrationDetailFragment extends Fragment implements View.OnClick
             actQualification.setAdapter(adapter);
         }
     }
+    //end
 
     interface UpdateResponseListener {
         void UpdateResponse();
     }
-
-
     //endregion
 
 }

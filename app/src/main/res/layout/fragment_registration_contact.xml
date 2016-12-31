@@ -13,12 +13,6 @@
         android:id="@+id/app_bar"
         layout="@layout/app_bar_layout" />
 
-    <!--<LinearLayout-->
-    <!--android:id="@+id/rlContact"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:orientation="vertical">-->
-    <!---->
     <ScrollView
         android:id="@+id/svContactDetail"
         android:layout_width="match_parent"
@@ -58,22 +52,15 @@
 
             </com.rey.material.widget.EditText>
 
-            <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:orientation="horizontal">-->
-
-                <com.rey.material.widget.EditText
-                    android:id="@+id/etHomeNearby"
-                    style="@style/EditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Near by Area"
-                    android:imeOptions="actionNext"
-                    android:inputType="textCapSentences"
-                    app:et_supportMaxLines="1" />
-
-            <!--</LinearLayout>-->
+            <com.rey.material.widget.EditText
+                android:id="@+id/etHomeNearby"
+                style="@style/EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Near by Area"
+                android:imeOptions="actionNext"
+                android:inputType="textCapSentences"
+                app:et_supportMaxLines="1" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -96,8 +83,8 @@
                     android:id="@+id/etHomeCity"
                     style="@style/EditText"
                     android:layout_width="0dp"
-                    android:layout_marginStart="@dimen/control_SpecingTiny"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/control_SpecingTiny"
                     android:layout_weight="1"
                     android:hint="City"
                     android:imeOptions="actionNext"
@@ -113,28 +100,16 @@
                 android:layout_marginBottom="@dimen/control_SpecingSmall"
                 android:orientation="horizontal">
 
-                <!--<com.rey.material.widget.EditText-->
-                    <!--android:id="@+id/etHomeState"-->
-                    <!--style="@style/EditText"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginEnd="@dimen/control_SpecingTiny"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:hint="State"-->
-                    <!--android:imeOptions="actionNext"-->
-                    <!--android:inputType="textCapSentences"-->
-                    <!--app:et_supportMaxLines="1" />-->
-
                 <android.support.v7.widget.AppCompatAutoCompleteTextView
                     android:id="@+id/actHomeState"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/control_SpecingSmall"
+                    android:layout_marginEnd="@dimen/control_SpecingTiny"
                     android:layout_weight="1"
                     android:dropDownHeight="190dp"
                     android:dropDownListViewStyle="@style/DropDownListViewStyle"
                     android:hint="State"
-                    android:layout_marginEnd="@dimen/control_SpecingTiny"
-                    android:layout_marginBottom="@dimen/control_SpecingSmall"
                     android:imeOptions="actionNext"
                     android:inputType="textCapSentences"
                     android:singleLine="true"
@@ -148,27 +123,14 @@
                     style="@style/EditText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginStart="@dimen/control_SpecingTiny"
                     android:layout_weight="1"
-                    android:layout_gravity="center"
                     android:hint="Zipcode"
                     android:imeOptions="actionNext"
                     android:inputType="number"
                     android:maxLength="10"
                     app:et_supportMaxLines="1" />
-
-                <!--<com.rey.material.widget.EditText-->
-                <!--android:id="@+id/etHomeCountry"-->
-                <!--style="@style/EditText"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginStart="@dimen/control_SpecingTiny"-->
-                <!--android:layout_weight="1"-->
-                <!--android:hint="Country"-->
-                <!--android:imeOptions="actionNext"-->
-                <!--android:inputType="textCapSentences"-->
-                <!--android:visibility="gone"-->
-                <!--app:et_supportMaxLines="1" />-->
 
             </LinearLayout>
 
@@ -222,25 +184,16 @@
                 android:visibility="gone"
                 app:et_supportMaxLines="1" />
 
-            <!--<LinearLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:orientation="horizontal">-->
-
-
-
-                <com.rey.material.widget.EditText
-                    android:id="@+id/etOfficeArea"
-                    style="@style/EditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Area"
-                    android:imeOptions="actionNext"
-                    android:inputType="textCapSentences"
-                    android:visibility="gone"
-                    app:et_supportMaxLines="1" />
-
-            <!--</LinearLayout>-->
+            <com.rey.material.widget.EditText
+                android:id="@+id/etOfficeArea"
+                style="@style/EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Area"
+                android:imeOptions="actionNext"
+                android:inputType="textCapSentences"
+                android:visibility="gone"
+                app:et_supportMaxLines="1" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -277,70 +230,45 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_marginBottom="@dimen/control_SpecingSmall"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/control_SpecingSmall"
                 android:orientation="horizontal">
 
-                <!--<com.rey.material.widget.EditText-->
-                    <!--android:id="@+id/etOfficeState"-->
-                    <!--style="@style/EditText"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginEnd="@dimen/control_SpecingTiny"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:hint="State"-->
-                    <!--android:imeOptions="actionNext"-->
-                    <!--android:inputType="textCapSentences"-->
-                    <!--android:visibility="gone"-->
-                    <!--app:et_supportMaxLines="1" />-->
-
-            <android.support.v7.widget.AppCompatAutoCompleteTextView
-                android:id="@+id/actOfficeState"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:dropDownHeight="190dp"
-                android:dropDownListViewStyle="@style/DropDownListViewStyle"
-                android:hint="State"
-                android:imeOptions="actionNext"
-                android:inputType="textCapSentences"
-                android:layout_marginBottom="@dimen/control_SpecingSmall"
-                android:layout_marginEnd="@dimen/control_SpecingTiny"
-                android:singleLine="true"
-                android:visibility="gone"
-                android:textColor="@android:color/black"
-                android:textColorHint="@color/secondary_text"
-                android:textSize="14sp"
-                tools:ignore="Deprecated" />
+                <android.support.v7.widget.AppCompatAutoCompleteTextView
+                    android:id="@+id/actOfficeState"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/control_SpecingSmall"
+                    android:layout_marginEnd="@dimen/control_SpecingTiny"
+                    android:layout_weight="1"
+                    android:dropDownHeight="190dp"
+                    android:dropDownListViewStyle="@style/DropDownListViewStyle"
+                    android:hint="State"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapSentences"
+                    android:singleLine="true"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="@color/secondary_text"
+                    android:textSize="14sp"
+                    android:visibility="gone"
+                    tools:ignore="Deprecated" />
 
 
-            <com.rey.material.widget.EditText
-                android:id="@+id/etOfficeZipCode"
-                style="@style/EditText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/control_SpecingTiny"
-                android:layout_weight="1"
-                android:hint="Zipcode"
-                android:imeOptions="actionNext"
-                android:layout_gravity="center"
-                android:inputType="number"
-                android:maxLength="10"
-                android:visibility="gone"
-                app:et_supportMaxLines="1" />
+                <com.rey.material.widget.EditText
+                    android:id="@+id/etOfficeZipCode"
+                    style="@style/EditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/control_SpecingTiny"
+                    android:layout_weight="1"
+                    android:hint="Zipcode"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:visibility="gone"
+                    app:et_supportMaxLines="1" />
 
-                <!--<com.rey.material.widget.EditText-->
-                <!--android:id="@+id/etOfficeCountry"-->
-                <!--style="@style/EditText"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginStart="@dimen/control_SpecingTiny"-->
-                <!--android:layout_weight="1"-->
-                <!--android:hint="Country"-->
-                <!--android:imeOptions="actionNext"-->
-                <!--android:inputType="textCapSentences"-->
-                <!--android:visibility="gone"-->
-                <!--app:et_supportMaxLines="1" />-->
             </LinearLayout>
 
             <com.rey.material.widget.EditText
@@ -365,7 +293,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/button_Height"
         android:layout_marginTop="@dimen/control_SpecingSmall"
-        android:text="Finish" />
+        android:text="Update" />
 
-    <!--</LinearLayout>-->
 </LinearLayout>

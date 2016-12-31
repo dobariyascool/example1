@@ -8,9 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,11 +27,8 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.rey.material.widget.Button;
 import com.rey.material.widget.CompoundButton;
 
-import java.util.ArrayList;
+public class SignInActivity extends AppCompatActivity implements View.OnClickListener, MemberJSONParser.MemberRequestListener {
 
-public class SignInActivity extends AppCompatActivity implements View.OnClickListener, MemberJSONParser.MemberRequestListener{
-
-//    public static String token = "hjhjghj:guh-vgug_bhj:6576HJGjjhghjbj-";
     public static String token = "12";
     EditText etUserName, etPassword;
     CompoundButton cbSignUp, cbForgotPassword;
@@ -50,24 +45,27 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         try {
             if (Service.CheckNet(this)) {
                 FCMTokenGenerate();
             }
 
+            //Sign in layout
             etUserName = (EditText) findViewById(R.id.etUserName);
             etPassword = (EditText) findViewById(R.id.etPassword);
             cbSignUp = (CompoundButton) findViewById(R.id.cbSignUp);
-            cbForgotPassword= (CompoundButton) findViewById(R.id.cbForgotPassword);
+            cbForgotPassword = (CompoundButton) findViewById(R.id.cbForgotPassword);
             signInLayout = (LinearLayout) findViewById(R.id.signInLayout);
+            tbPasswordShow = (ToggleButton) findViewById(R.id.tbPasswordShow);
+            ibClear = (ImageView) findViewById(R.id.ibClear);
 
+            //No Internet layout
             internetLayout = (LinearLayout) findViewById(R.id.internetLayout);
             Button btnRetry = (Button) internetLayout.findViewById(R.id.btnRetry);
 
+            //Not approved user layout
             Button btnSignIn = (Button) findViewById(R.id.btnSignIn);
-            ibClear = (ImageView) findViewById(R.id.ibClear);
-            tbPasswordShow = (ToggleButton) findViewById(R.id.tbPasswordShow);
+
             btnSignIn.setOnClickListener(this);
             btnRetry.setOnClickListener(this);
 
@@ -85,7 +83,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                    etUserName.clearError();
                     ibClear.setVisibility(View.VISIBLE);
                     if (etUserName.getText().toString().equals("")) {
                         ibClear.setVisibility(View.GONE);
@@ -106,7 +103,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                    etPassword.clearError();
                     tbPasswordShow.setVisibility(View.VISIBLE);
                     if (etPassword.getText().toString().equals("")) {
                         tbPasswordShow.setVisibility(View.GONE);
@@ -119,16 +115,15 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 }
             });
 
+            //Check internet Connection
             if (Service.CheckNet(this)) {
                 internetLayout.setVisibility(View.GONE);
                 signInLayout.setVisibility(View.VISIBLE);
-                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
             } else {
                 internetLayout.setVisibility(View.VISIBLE);
                 Globals.SetErrorLayout(internetLayout, true, getResources().getString(R.string.MsgCheckConnection), null, R.drawable.wifi_off);
                 signInLayout.setVisibility(View.GONE);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -141,7 +136,9 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
             if (!ValidateControls()) {
                 Globals.ShowSnackBar(v, getResources().getString(R.string.MsgValidation), SignInActivity.this, 1000);
             } else {
+                //Check internet Connection
                 if (Service.CheckNet(this)) {
+                    //Login Request
                     LoginRequest();
                 } else {
                     Globals.ShowSnackBar(v, getResources().getString(R.string.MsgCheckConnection), this, 1000);
@@ -154,11 +151,6 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         } else if (v.getId() == R.id.cbSignUp) {
             etUserName.setError(null);
             etPassword.setError(null);
-//            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//            fragmentTransaction.setCustomAnimations(R.anim.right_in, R.anim.left_out, 0, R.anim.right_exit);
-//            fragmentTransaction.add(R.id.llSignin, new RegistrationFragment(), "Registration");
-//            fragmentTransaction.addToBackStack("Registration");
-//            fragmentTransaction.commit();
             Intent intent = new Intent(SignInActivity.this, RegistrationActivity.class);
             startActivity(intent);
         } else if (v.getId() == R.id.tbPasswordShow) {
@@ -168,14 +160,14 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
             }
         } else if (v.getId() == R.id.btnRetry) {
+            //Try for check internet
             if (Service.CheckNet(SignInActivity.this)) {
-//                CheckUserNamePassword();
                 FCMTokenGenerate();
                 internetLayout.setVisibility(View.GONE);
                 signInLayout.setVisibility(View.VISIBLE);
-                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
             }
-        }else if (v.getId() == R.id.cbForgotPassword) {
+        } else if (v.getId() == R.id.cbForgotPassword) {
+            //Forgot password
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.setCustomAnimations(R.anim.right_in, R.anim.left_out, 0, R.anim.right_exit);
             fragmentTransaction.add(android.R.id.content, new ForgotPasswordFragment(), "ForgotPassword");
@@ -185,54 +177,27 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        try {
-            if (resultCode == RESULT_OK) {
-                if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
-//                    if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
-                    if (getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName() != null && getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName().equals("Registration")) {
-                        RegistrationFragment registrationFragment = (RegistrationFragment) getSupportFragmentManager().findFragmentByTag("Registration");
-                        registrationFragment.SelectImage(requestCode, data);
-                    } else if (getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName() != null && getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName().equals("PersonalDetail")) {
-                        RegistrationDetailFragment registrationDetailFragment = (RegistrationDetailFragment) getSupportFragmentManager().findFragmentByTag("PersonalDetail");
-                        registrationDetailFragment.SelectImage(requestCode, data);
-                    }
-//                    }
-                }
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
     public void MemberResponse(String errorCode, MemberMaster objMemberMaster) {
         progressDialog.dismiss();
-//        if (isIntegrationLogin) {
         this.objMemberMaster = objMemberMaster;
+        // if Login successful
         if (objMemberMaster != null) {
-//            if (objMemberMaster.getProfession() != null) {
-//                if (objMemberMaster.getHomeNumberStreet() != null) {
-                    objSharePreferenceManage = new SharePreferenceManage();
-                    objSharePreferenceManage.CreatePreference("LoginPreference", "MemberMasterId", String.valueOf(objMemberMaster.getMemberMasterId()), this);
-                    objSharePreferenceManage.CreatePreference("LoginPreference", "MemberEmail", objMemberMaster.getEmail(), this);
-                    objSharePreferenceManage.CreatePreference("LoginPreference", "MemberName", objMemberMaster.getMemberName(), this);
-                    objSharePreferenceManage.CreatePreference("LoginPreference", "MemberPassword", objMemberMaster.getPassword(), this);
-                    objSharePreferenceManage.CreatePreference("LoginPreference", "MemberType", objMemberMaster.getMemberType(), this);
-                    objSharePreferenceManage.CreatePreference("LoginPreference", "IsApproved", String.valueOf(objMemberMaster.getIsApproved()), this);
-                    objSharePreferenceManage.CreatePreference("LoginPreference", "MemberImage", objMemberMaster.getImageName(), this);
-                    objSharePreferenceManage.CreatePreference("LoginPreference", "Gender", objMemberMaster.getGender(), this);
-//                } else {
-//                    Globals.startPage = 2;
-//                }
-//            } else {
-//                Globals.startPage = 1;
-//            }
+
+            //Set data to preference
+            objSharePreferenceManage = new SharePreferenceManage();
+            objSharePreferenceManage.CreatePreference("LoginPreference", "MemberMasterId", String.valueOf(objMemberMaster.getMemberMasterId()), this);
+            objSharePreferenceManage.CreatePreference("LoginPreference", "MemberEmail", objMemberMaster.getEmail(), this);
+            objSharePreferenceManage.CreatePreference("LoginPreference", "MemberName", objMemberMaster.getMemberName(), this);
+            objSharePreferenceManage.CreatePreference("LoginPreference", "MemberPassword", objMemberMaster.getPassword(), this);
+            objSharePreferenceManage.CreatePreference("LoginPreference", "MemberType", objMemberMaster.getMemberType(), this);
+            objSharePreferenceManage.CreatePreference("LoginPreference", "IsApproved", String.valueOf(objMemberMaster.getIsApproved()), this);
+            objSharePreferenceManage.CreatePreference("LoginPreference", "MemberImage", objMemberMaster.getImageName(), this);
+            objSharePreferenceManage.CreatePreference("LoginPreference", "Gender", objMemberMaster.getGender(), this);
             Globals.memberMasterId = objMemberMaster.getMemberMasterId();
             Globals.memberType = objMemberMaster.getMemberType();
             Globals.isAdmin = objMemberMaster.getMemberType().equals("Admin") ? true : false;
+
+            //Redirect to Home Activity
             Intent intent = new Intent(SignInActivity.this, HomeActivity.class);
             intent.putExtra("memberMaster", objMemberMaster);
             startActivity(intent);
@@ -252,20 +217,10 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
             if (getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName() != null
-                    && getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName().equals("Registration")) {
-                getSupportFragmentManager().popBackStack("Registration", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            } else if (getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName() != null
-                    && getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName().equals("PersonalDetail")) {
-                getSupportFragmentManager().popBackStack("PersonalDetail", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            }else if (getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName() != null
-                    && getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName().equals("ContactDetail")) {
-                getSupportFragmentManager().popBackStack("ContactDetail", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            }else if (getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName() != null
                     && getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName().equals("ForgotPassword")) {
                 getSupportFragmentManager().popBackStack("ForgotPassword", FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
-        }else
-        {
+        } else {
             finish();
         }
     }
@@ -280,34 +235,28 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
 
     private boolean ValidateControls() {
         boolean IsValid = true;
-
         if (etUserName.getText().toString().equals("") && etPassword.getText().toString().equals("")) {
             etUserName.setError("Enter " + getResources().getString(R.string.siEmail));
             etPassword.setError("Enter " + getResources().getString(R.string.siPassword));
             IsValid = false;
         } else if (etUserName.getText().toString().equals("") && !etPassword.getText().toString().equals("")) {
             etUserName.setError("Enter " + getResources().getString(R.string.siEmail));
-//            etPassword.clearError();
             IsValid = false;
         } else if (etPassword.getText().toString().equals("") && !etUserName.getText().toString().equals("")) {
             etPassword.setError("Enter " + getResources().getString(R.string.siPassword));
-//            etUserName.clearError();
             IsValid = false;
-            if(!Globals.IsValidEmail(etUserName.getText().toString())) {
+            if (!Globals.IsValidEmail(etUserName.getText().toString())) {
                 IsValid = false;
                 etUserName.setError("Enter Valid Email Address");
             }
-
         } else {
-//            etUserName.clearError();
-//            etPassword.clearError();
+            etUserName.setError(null);
+            etPassword.setError(null);
         }
-
         return IsValid;
     }
 
     private void FCMTokenGenerate() {
-
         //Checking play service is available or not
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
 
@@ -319,22 +268,14 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 Toast.makeText(getApplicationContext(), "Google Play Service is not install/enabled in this device!", Toast.LENGTH_LONG).show();
                 GooglePlayServicesUtil.showErrorNotification(resultCode, getApplicationContext());
 
-                //If play service is not supported
-                //Displaying an error message
             } else {
                 Toast.makeText(getApplicationContext(), "This device does not support for Google Play Service!", Toast.LENGTH_LONG).show();
             }
-
-            //If play service is available
         } else {
             FirebaseMessaging.getInstance().subscribeToTopic("news");
 
             token = FirebaseInstanceId.getInstance().getToken();
-            Log.e("token1"," "+token);
-
         }
-
     }
-
     //endregion
 }

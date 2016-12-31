@@ -10,7 +10,6 @@ import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.arraybit.global.Globals;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -23,11 +22,9 @@ import java.net.URL;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-    private static final String TAG = "MyFirebaseMsgService";
     String message, memberName;
     String title = "Mahavir Yuvak Mandal", notificationImage = "", type;
     int Id;
-    Bitmap largeBitmap = null;
     Bitmap bitmap = null;
 
     public static Bitmap getBitmap(String src) {
@@ -46,11 +43,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        //Displaying data in log
-        //It is optional
-
         try {
-
             if (remoteMessage.getData().size() > 0) {
 
                 if (remoteMessage.getData().containsKey("body")) {
@@ -80,88 +73,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 }
             }
         } catch (Exception e) {
-            Log.e("error", " " + e.getMessage());
             e.printStackTrace();
         } finally {
             sendNotification();
         }
     }
 
-    //This method is only generating push notification
-    //It is same as we did in earlier posts
-//    private void sendNotification(String messageBody) {
-//        try {
-//            JSONObject json = new JSONObject(messageBody);
-//            message = json.getString("message");
-//            tickerText = json.getString("tickerText");
-//            contentTitle = json.getString("contentTitle");
-//            notificaiontype = json.getInt("notificationType");
-//            if (notificaiontype == 0) {
-//                offeMasterId = json.getInt("Id");
-//            } else if (notificaiontype == 1) {
-//                ItemMasterId = json.getInt("Id");
-//            }
-//            String largeIconUrl = json.getString("largeIcon"); // the way you obtain this may differ
-//
-//            largeBitmap = Glide
-//                    .with(this)
-//                    .load(largeIconUrl)
-//                    .asBitmap()
-//                    .into(100, 100) // Width and height
-//                    .get();
-//
-//            Intent intent;
-//            int requestCode = 0;
-//            if (notificaiontype == 2) {
-//                intent = new Intent(this, OfferDetailActivity.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                intent.putExtra("OfferMasterId", offeMasterId);
-//            } else if (notificaiontype == 1) {
-//                intent = new Intent(this, DetailActivity.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                intent.putExtra("isBannerClick", true);
-//                intent.putExtra("ItemMasterId", ItemMasterId);
-//            } else {
-//                intent = new Intent(this, NotificationActivity.class);
-//                intent.putExtra("isStart", true);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            }
-//            PendingIntent pendingIntent = PendingIntent.getActivity(this, requestCode, intent, PendingIntent.FLAG_ONE_SHOT);
-//
-//            Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-////        Bitmap aBigBitmap=BitmapFactory.decodeResource(getResources(), R.drawable.default_image);
-//            NotificationCompat.Builder noBuilder = new NotificationCompat.Builder(this)
-//                    .setDefaults(Notification.DEFAULT_ALL)
-//                    .setContentTitle(contentTitle)
-//                    .setContentText(message)
-//                    .setTicker(tickerText)
-//                    .setAutoCancel(true)
-//                    .setSound(sound)
-//                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.app_logo_likeat))
-//                    .setVibrate(new long[]{100, 250, 100, 250})
-//                    .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(largeBitmap))
-//                    .setPriority(Notification.PRIORITY_MAX)
-//                    .setContentIntent(pendingIntent);
-//
-//            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//            notificationManager.notify(0, noBuilder.build()); //0 = ID of notification
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
     private void sendNotification() {
         try {
             Intent intent;
-//            if (type == Globals.BannerType.Offer.getValue()) {
             if (type.equals("Request")) {
                 intent = new Intent(getApplicationContext(), DetailActivity.class);
                 intent.putExtra("isStart", true);
                 intent.putExtra("memberMasterId", Id);
                 intent.putExtra("isNotification", true);
                 intent.putExtra("memberName", memberName);
-//            } else if (type == Globals.BannerType.Item.getValue()) {
             } else if (type.equals("Notification")) {
                 intent = new Intent(getApplicationContext(), NotificationActivity.class);
                 intent.putExtra("isStart", true);
@@ -178,7 +104,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             NotificationCompat.Builder notificationBuilder;
             if (bitmap != null) {
-                Log.e("message", " " + message);
                 Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 notificationBuilder = new NotificationCompat.Builder(this)
                         .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.mandal_logo))
@@ -193,7 +118,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .setPriority(Notification.PRIORITY_MAX)
                         .setContentIntent(pendingIntent);
             } else {
-                Log.e("message1", " " + message);
                 Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 notificationBuilder = new NotificationCompat.Builder(this)
                         .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.mandal_logo))
@@ -211,8 +135,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notificationManager.notify(0, notificationBuilder.build());
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e("error", " " + e.getMessage());
-
         }
     }
 }

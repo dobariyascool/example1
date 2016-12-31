@@ -23,7 +23,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
 import android.util.Base64;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,7 +54,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class DetailActivity extends AppCompatActivity implements View.OnClickListener, AdvertiseJSONParser.AdvretiseRequestListener,
-        MemberJSONParser.MemberRequestListener, UserProfileFragment.UpdateResponseListener, RegistrationDetailFragment.UpdateResponseListener, RegistrationContactFragment.UpdateResponseListener, ConfirmDialog.ConfirmationResponseListener {
+        MemberJSONParser.MemberRequestListener, UserProfileFragment.UpdateResponseListener, RegistrationContactFragment.UpdateResponseListener,
+        RegistrationDetailFragment.UpdateResponseListener, ConfirmDialog.ConfirmationResponseListener {
 
     public static boolean isNotification = false;
     public static boolean isDetail = false;
@@ -83,7 +83,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     AdvertiseMaster objAdvertiseMaster;
     AdvertiseJSONParser objAdvertiseJSONParser = new AdvertiseJSONParser();
     MarshMallowPermission marshMallowPermission = new MarshMallowPermission(DetailActivity.this);
-    private Uri fileUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,11 +200,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         llChildDetail5 = (LinearLayout) findViewById(R.id.llChildDetail5);
 
         fabEdit = (FloatingActionButton) findViewById(R.id.fabEdit);
-//        ibVisible.setImageResource(R.drawable.expand);
-//        ivContact.setImageResource(R.drawable.expand);
-//        ibVisible.setImageDrawable(getResources().getDrawable(R.drawable.edit_drawable));
-
-//        sharePreferenceManage = new SharePreferenceManage();
         ivAdvertise.setOnClickListener(this);
         txtAdvertise.setOnClickListener(this);
         ivCall.setOnClickListener(this);
@@ -221,29 +215,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         llContact.setOnClickListener(this);
         ivProfile.setOnClickListener(this);
         llPersonal.setOnClickListener(this);
-//        if (objMemberMaster != null) {
-//            if (isDetail || isNotification) {
-//                fabEdit.setVisibility(View.GONE);
-//                name = objMemberMaster.getMemberName();
-//                if (name != null && !name.equals("")) {
-//                    getSupportActionBar().setTitle(name);
-//                }
-//                SetAdvertise();
-//            } else if (!isDetail && !isNotification) {
-//                getSupportActionBar().setTitle("My Profile");
-//                fabEdit.setVisibility(View.VISIBLE);
-//                ivAdvertise.setVisibility(View.GONE);
-//                ivAddress.setVisibility(View.GONE);
-//                ivEmail.setVisibility(View.GONE);
-//                ivMessage.setVisibility(View.GONE);
-//                ivCall.setVisibility(View.GONE);
-//                ivProfile.setOnClickListener(this);
-////                SetUserName();
-//            }
-//            SetData();
-//        } else {
+
+        // member detail request by member master id
         RequestMemberByMemberMasterId();
-//        }
 
         if (!isDetail && !isNotification) {
             ibVisible.setImageResource(R.drawable.edit);
@@ -253,6 +227,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             ivProfile.setClickable(false);
         }
 
+        // hide fab button while scrolling the page
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
@@ -306,10 +281,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         if (item.getItemId() == android.R.id.home) {
             if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
                 if (isStart && isNotification) {
-//                    Intent intent = new Intent(DetailActivity.this, HomeActivity.class);
-//                    startActivity(intent);
-//                    finish();
-//                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
                     OnApprvedFromNotification();
                 } else {
                     setResult(RESULT_OK);
@@ -325,7 +296,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             isSave = true;
             ConfirmDialog confirmDialog = new ConfirmDialog(true, "Save to contacts?");
             confirmDialog.show(getSupportFragmentManager(), "");
-//           Globals.ContactSave(DetailActivity.this, objMemberMaster);
         } else if (item.getItemId() == R.id.cancle) {
             isApproved = false;
             ConfirmDialog confirmDialog = new ConfirmDialog(true, "Decline this member?");
@@ -353,18 +323,10 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                     Toast.makeText(DetailActivity.this, "Contact saved successfully.", Toast.LENGTH_SHORT).show();
                 }
                 if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
-//                    if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
-                    if (getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName() != null && getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName().equals("Registration")) {
-                        RegistrationFragment registrationFragment = (RegistrationFragment) getSupportFragmentManager().findFragmentByTag("Registration");
-                        registrationFragment.SelectImage(requestCode, data);
-                    } else if (getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName() != null && getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName().equals("PersonalDetail")) {
+                   if (getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName() != null && getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName().equals("PersonalDetail")) {
                         RegistrationDetailFragment registrationDetailFragment = (RegistrationDetailFragment) getSupportFragmentManager().findFragmentByTag("PersonalDetail");
                         registrationDetailFragment.SelectImage(requestCode, data);
-//                    } else if (getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName() != null && getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName().equals(getResources().getString(R.string.title_fragment_your_profile))) {
-//                        UserProfileFragment userProfileFragment = (UserProfileFragment) getSupportFragmentManager().findFragmentByTag(getResources().getString(R.string.title_fragment_your_profile));
-//                        userProfileFragment.SelectImage(requestCode, data);
                     }
-//                    }
                 } else {
                     SelectImage(requestCode, data);
                 }
@@ -389,7 +351,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 fragmentTransaction.commit();
             }
         } else if (v.getId() == R.id.ivProfile) {
-            SelectImageProfile(DetailActivity.this, 100, 101);
+            SelectImageProfile(DetailActivity.this, 101);
         } else if (v.getId() == R.id.ivCall) {
             Intent intent = new Intent(Intent.ACTION_DIAL);
             intent.setData(Uri.parse("tel:+91" + objMemberMaster.getPhone1()));
@@ -401,7 +363,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             startActivity(intent);
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
         } else if (v.getId() == R.id.ivAddress) {
-//            String str = txtAddress.getText().toString();
             String str = objMemberMaster.getHomeNearBy() + ", " + objMemberMaster.getHomeArea() + ", " + objMemberMaster.getHomeCity() + ", " + objMemberMaster.getHomeZipCode();
             Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + str);
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
@@ -524,18 +485,15 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
             if (getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName() != null
                     && getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName().equals(getResources().getString(R.string.title_fragment_your_profile))) {
-                RequestMemberByMemberMasterId();
                 getSupportFragmentManager().popBackStack(getResources().getString(R.string.title_fragment_your_profile), FragmentManager.POP_BACK_STACK_INCLUSIVE);
             } else if (getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName() != null
                     && getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName().equals(getResources().getString(R.string.title_fragment_change_password))) {
                 getSupportFragmentManager().popBackStack(getResources().getString(R.string.title_fragment_change_password), FragmentManager.POP_BACK_STACK_INCLUSIVE);
             } else if (getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName() != null
                     && getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName().equals("ContactDetail")) {
-                RequestMemberByMemberMasterId();
                 getSupportFragmentManager().popBackStack("ContactDetail", FragmentManager.POP_BACK_STACK_INCLUSIVE);
             } else if (getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName() != null
                     && getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName().equals("PersonalDetail")) {
-                RequestMemberByMemberMasterId();
                 getSupportFragmentManager().popBackStack("PersonalDetail", FragmentManager.POP_BACK_STACK_INCLUSIVE);
             } else if (getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName() != null
                     && getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName().equals("Advertisement")) {
@@ -543,10 +501,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             }
         } else {
             if (isStart && isNotification) {
-//                Intent intent = new Intent(DetailActivity.this, HomeActivity.class);
-//                startActivity(intent);
-//                finish();
-//                overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 OnApprvedFromNotification();
             } else {
                 setResult(RESULT_OK);
@@ -554,46 +508,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 overridePendingTransition(0, R.anim.right_exit);
             }
         }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.e("pause", " ");
-
-//        if (isDetail || isNotification) {
-//            try {
-//                isAdvertise = false;
-//                timer.wait();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-//        if (isDetail || isNotification) {
-//            try {
-//                isAdvertise = false;
-//                timer.wait();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.e("resume", " ");
-//        if (isDetail || isNotification) {
-//            if (!isAdvertise) {
-//                isAdvertise = true;
-//                timer.notify();
-//            }
-//        }
     }
 
     @Override
@@ -633,7 +547,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                     getSupportActionBar().setTitle(name);
                 }
             } else if (!isDetail && !isNotification) {
-//                getSupportActionBar().setTitle("My Profile");
                 fabEdit.setVisibility(View.VISIBLE);
                 ivAdvertise.setVisibility(View.GONE);
                 ivAddress.setVisibility(View.GONE);
@@ -643,8 +556,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 ivMessage1.setVisibility(View.GONE);
                 ivCall.setVisibility(View.GONE);
                 ivCall1.setVisibility(View.GONE);
-//                ivProfile.setOnClickListener(this);
-//                SetUserName();
             }
             SetData();
         }
@@ -656,9 +567,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         if (isNotification) {
             if (errorCode.equals("0")) {
                 if (isStart) {
-//                    Intent intent = new Intent(DetailActivity.this, HomeActivity.class);
-//                    startActivity(intent);
-//                    finish();
                     OnApprvedFromNotification();
                 } else {
                     Intent intent = new Intent();
@@ -709,26 +617,18 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 getSupportFragmentManager().popBackStack("PersonalDetail", FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
         }
-        Log.e("update:", " ");
-//        SetData();
     }
 
     @Override
     public void ConfirmResponse() {
         if (isSave) {
             isSave = false;
-
-
             Globals.ContactSave(DetailActivity.this, objMemberMaster);
         } else if (isApproved) {
             RequestIsApproved(objMemberMaster, isApproved);
         } else {
             if (isStart) {
-//                Intent intent = new Intent(DetailActivity.this, HomeActivity.class);
-//                startActivity(intent);
-//                finish();
                 RequestIsApproved(objMemberMaster, isApproved);
-
             } else {
                 Intent intent = new Intent();
                 intent.putExtra("position", position);
@@ -744,31 +644,12 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
     public void SelectImage(int requestCode, Intent data) {
         String picturePath = "";
-        if (requestCode == 100) {
-//            strImageName = "CameraImage_" + simpleDateFormat.format(new Date()) + imageName.substring(imageName.lastIndexOf("."), imageName.length()) + ".jpg";
-//            File file = new File(mediaStorageDir, strImageName);
-//            picturePath = file.getAbsolutePath();
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            long millis = System.currentTimeMillis();
-            imageName = String.valueOf(millis) + ".jpg";
-            ivProfile.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            ivProfile.setImageBitmap(bitmap);
-            ivProfile1.setVisibility(View.VISIBLE);
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 110, bos);
-            byte[] byteData = bos.toByteArray();
-            imagePhysicalNameBytes = Base64.encodeToString(byteData, Base64.DEFAULT);
-            UpdateUserProfileImageRequest();
-            return;
-
-        } else if (requestCode == 101 && data != null && data.getData() != null) {
+        if (requestCode == 101 && data != null && data.getData() != null) {
             Uri selectedImage = data.getData();
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
             Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
             cursor.moveToFirst();
-
-            Log.e("path", " " + filePathColumn[0]);
 
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             picturePath = cursor.getString(columnIndex);
@@ -799,7 +680,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 return;
             }
         }
-
     }
 
 
@@ -817,8 +697,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                     ivProfile.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     Glide.with(DetailActivity.this).load(objMemberMaster.getImageName()).asBitmap().diskCacheStrategy(DiskCacheStrategy.NONE)
                             .skipMemoryCache(true).into(ivProfile);
-//                ivProfile.setBackground(getResources().getDrawable(R.drawable.profile_gradient));
-//                app_bar.setBackgroundColor(getResources().getColor(R.color.card_enable));
                     ivProfile1.setVisibility(View.VISIBLE);
                 } else {
                     ivProfile1.setVisibility(View.GONE);
@@ -828,7 +706,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             } else {
                 if (objSharePreferenceManage.GetPreference("LoginPreference", "MemberImage", DetailActivity.this) != null &&
                         !objSharePreferenceManage.GetPreference("LoginPreference", "MemberImage", DetailActivity.this).equals("")) {
-                    Log.e("image", " " + objSharePreferenceManage.GetPreference("LoginPreference", "MemberImage", DetailActivity.this));
                     ivProfile.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     Glide.with(DetailActivity.this).load(objSharePreferenceManage.GetPreference("LoginPreference", "MemberImage", DetailActivity.this)).asBitmap()
                             .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfile);
@@ -887,12 +764,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             } else {
                 llBloodGroup.setVisibility(View.GONE);
             }
-//            txtMobile.setText(objMemberMaster.getPhone1());
-//            txtEmail.setText(objMemberMaster.getEmail());
-//            txtDOB.setText(objMemberMaster.getBirthDate());
-//            txtDesignation.setText(objMemberMaster.getProfession());
-//            txtQualification.setText(objMemberMaster.getQualification());
-//            txtBloodGroup.setText(objMemberMaster.getBloodGroup());
             if (objMemberMaster.getAnniversaryDate() != null) {
                 llAnniversaryDate.setVisibility(View.VISIBLE);
                 txtAnniversaryDate.setText(objMemberMaster.getAnniversaryDate());
@@ -1184,10 +1055,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
     private void SetAdvertise() {
         if (isDetail || isNotification) {
-//            ivAdvertise.setVisibility(View.VISIBLE);
             isAdvertise = true;
-            int delay = 1000; // delay for 10 sec.
-            int period = 15000; // repeat every 10 sec.
+            int delay = 1000; // delay for 1 sec.
+            int period = 15000; // repeat every 15 sec.
             timer = new Timer();
             timer.scheduleAtFixedRate(new TimerTask() {
                 public void run() {
@@ -1240,7 +1110,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             MemberMaster objMemberMaster = new MemberMaster();
             objMemberMaster.setMemberMasterId(Globals.memberMasterId);
             if (imageName != null && !imageName.equals("")) {
-//                strImageName = imageName.substring(0, imageName.lastIndexOf(".")) + "_" + simpleDateFormat.format(new Date()) + imageName.substring(imageName.lastIndexOf("."), imageName.length());
                 strImageName = imageName;
                 objMemberMaster.setImageName(strImageName);
                 if (imagePhysicalNameBytes != null || !imagePhysicalNameBytes.equals("")) {
@@ -1253,8 +1122,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private void SelectImageProfile(final Context context, final int requestCodeCamera, final int requestCodeGallery) {
-//        final CharSequence[] items = {"Take Photo", "Choose from Gallery", "Remove Image"};
+    private void SelectImageProfile(final Context context, final int requestCodeGallery) {
         final CharSequence[] items = {"Choose from Gallery", "Remove Image"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.AlertDialog);
@@ -1262,66 +1130,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (items[item].equals("Take Photo")) {
-                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (marshMallowPermission.checkPermissionForExternalStorage()) {
-//                            try {
-//                                mediaStorageDir = new File(
-//                                        Environment.getExternalStorageDirectory()
-//                                                + File.separator
-//                                                + getString(R.string.directory_name_corp_chat)
-//                                                + File.separator
-//                                                + getString(R.string.directory_name_images));
-//
-//                                if (!mediaStorageDir.exists()) {
-//                                    mediaStorageDir.mkdirs();
-//                                }
-//                                File mediaFile = File.createTempFile(
-//                                        "Ad_" + String.valueOf(System.currentTimeMillis()), ".jpg", mediaStorageDir);
-//                                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-////                                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-////                                File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
-//                                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mediaFile));
-//                                intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-//                                ((Activity) context).startActivityForResult(intent, requestCodeCamera);
-//                            } catch (Exception e) {
-//                                e.printStackTrace();
-//                            }
-                            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                            fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
-//
-//                            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-                            startActivityForResult(cameraIntent, requestCodeCamera);
-                        }
-                    } else {
-//                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                        try {
-//                            mediaStorageDir = new File(
-//                                    Environment.getExternalStorageDirectory()
-//                                            + File.separator
-//                                            + getString(R.string.directory_name_corp_chat)
-//                                            + File.separator
-//                                            + getString(R.string.directory_name_images));
-//
-//                            if (!mediaStorageDir.exists()) {
-//                                mediaStorageDir.mkdirs();
-//                            }
-//                            File mediaFile = File.createTempFile(
-//                                    "Ad_" + String.valueOf(System.currentTimeMillis()), ".jpg", mediaStorageDir);
-//
-//                            Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-//                            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mediaFile));
-//                            intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-////                        File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
-////                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-//                            ((Activity) context).startActivityForResult(intent, requestCodeCamera);
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-                        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(cameraIntent, requestCodeCamera);
-                    }
-                } else if (items[item].equals("Choose from Gallery")) {
+                if (items[item].equals("Choose from Gallery")) {
                     if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (marshMallowPermission.checkPermissionForExternalStorage()) {
                             Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -1344,55 +1153,11 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         builder.show();
     }
 
-//    public Uri getOutputMediaFileUri(int type) {
-//        return Uri.fromFile(getOutputMediaFile(type));
-//    }
-//
-//    private static File getOutputMediaFile(int type) {
-//
-//        // External sdcard location
-//        File mediaStorageDir = new File(
-//                Environment
-//                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-//                IMAGE_DIRECTORY_NAME);
-//
-//        // Create the storage directory if it does not exist
-//        if (!mediaStorageDir.exists()) {
-//            if (!mediaStorageDir.mkdirs()) {
-//                Log.d(IMAGE_DIRECTORY_NAME, "Oops! Failed create "
-//                        + IMAGE_DIRECTORY_NAME + " directory");
-//                return null;
-//            }
-//        }
-//
-//        // Create a media file name
-//        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
-//                Locale.getDefault()).format(new Date());
-//        File mediaFile;
-//        if (type == MEDIA_TYPE_IMAGE) {
-//            mediaFile = new File(mediaStorageDir.getPath() + File.separator
-//                    + "IMG_" + timeStamp + ".jpg");
-//        } else {
-//            return null;
-//        }
-//
-//        return mediaFile;
-//    }
-
     private void OnApprvedFromNotification() {
         try {
-//            objSharePreferenceManage = new SharePreferenceManage();
-//            if (objSharePreferenceManage.GetPreference("LoginPreference", "MemberName", DetailActivity.this) != null && objSharePreferenceManage.GetPreference("LoginPreference", "MemberPassword", DetailActivity.this) != null) {
-//                String userName = objSharePreferenceManage.GetPreference("LoginPreference", "MemberName", DetailActivity.this);
-////            String userPassword = objSharePreferenceManage.GetPreference("LoginPreference", "MemberPassword", DetailActivity.this);
-////            if ((!userName.isEmpty() && !userPassword.isEmpty())) {
             Globals.memberMasterId = Integer.parseInt(objSharePreferenceManage.GetPreference("LoginPreference", "MemberMasterId", DetailActivity.this));
             Globals.memberType = objSharePreferenceManage.GetPreference("LoginPreference", "MemberType", DetailActivity.this);
             Globals.isAdmin = objSharePreferenceManage.GetPreference("LoginPreference", "MemberType", DetailActivity.this).equals("Admin");
-////                        if (objSharePreferenceManage.GetPreference("LoginPreference", "startPage", SplashScreenActivity.this) != null) {
-////                            Globals.startPage = Integer.parseInt(objSharePreferenceManage.GetPreference("LoginPreference", "startPage", SplashScreenActivity.this));
-////                        }
-////                        if (Globals.startPage == 0) {
             Intent intent = new Intent(DetailActivity.this, HomeActivity.class);
             MemberMaster objMemberMaster = new MemberMaster();
             objMemberMaster.setMemberName(objSharePreferenceManage.GetPreference("LoginPreference", "MemberName", DetailActivity.this));
@@ -1405,15 +1170,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             startActivity(intent);
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
             finish();
-//                        Globals.ChangeActivity(SplashScreenActivity.this, HomeActivity.class, true);
-//                        } else {
-//                            Globals.ChangeActivity(SplashScreenActivity.this, RegistartionFragmentActivity.class, true);
-//                        }
-//            } else {
-//                Globals.ClearUserPreference(DetailActivity.this);
-//                Globals.ChangeActivity(DetailActivity.this, SignInActivity.class, true);
-//            }
-//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1425,7 +1181,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void RequestIsApproved(MemberMaster objMemberMaster, boolean isApproved) {
-        if (progressDialog.isAdded()) {
+            if (progressDialog.isAdded()) {
             progressDialog.dismiss();
         }
         progressDialog.show(getSupportFragmentManager(), "");

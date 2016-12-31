@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.StrictMode;
-import android.util.Log;
 
 import org.json.JSONObject;
 import org.json.JSONStringer;
@@ -19,8 +18,8 @@ import java.net.URL;
 public class Service {
 
 //    public static String Url = "http://10.0.3.2:1929/Service.svc/";
-//    public static String Url = "http://10.0.0.100/mym/service/Service.svc/";
-    public static String Url = "http://mym.arraybit.in/service.svc/";
+    public static String Url = "http://10.0.0.100/mym/service/Service.svc/";
+//    public static String Url = "http://mym.arraybit.in/service.svc/";
 
     public static Boolean CheckNet(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -32,7 +31,6 @@ public class Service {
         try {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
-            Log.e("url"," "+url);
             URL Url = new URL(url);
             HttpURLConnection conn = (HttpURLConnection) Url.openConnection();
             conn.setDoInput(true);
@@ -52,7 +50,6 @@ public class Service {
             while ((inputStr = streamReader.readLine()) != null) {
                 responseStrBuilder.append(inputStr);
             }
-            Log.e("response"," "+responseStrBuilder.toString());
             return new JSONObject(responseStrBuilder.toString());
         } catch (Exception e) {
             return null;

@@ -2,7 +2,6 @@ package com.arraybit.parser;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -11,19 +10,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.arraybit.global.Globals;
 import com.arraybit.global.Service;
 import com.arraybit.modal.NotificationTran;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONStringer;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 public class NotificationTranJSONParser {
 
@@ -44,17 +36,14 @@ public class NotificationTranJSONParser {
             stringer.endObject();
 
             stringer.endObject();
-            Log.e("json", " " + stringer.toString());
 
             String url = Service.Url + this.InsertNotificationTran;
 
             RequestQueue queue = Volley.newRequestQueue(context);
-            Log.e("url", " " + url);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(stringer.toString()), new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                     try {
-                        Log.e("jsonObject", " " + jsonObject);
                         JSONObject jsonResponse = jsonObject.getJSONObject(InsertNotificationTran + "Result");
                         if (jsonResponse != null) {
                             objNotificationInsertListener = (NotificationInsertListener) targetFragment;
